@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivetinha Cosméticos - Gestão & Estoque PRO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Ícones Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen">
+
+  <!-- BARRA SUPERIOR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-3">
+        <div class="bg-pink-600 text-white p-2 rounded-xl text-xl flex items-center justify-center shadow-md shadow-pink-200">
+          <i class="ph ph-sparkle"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black text-slate-900 leading-tight">Ivetinha Cosméticos</h1>
+          <p class="text-xs text-slate-500 font-medium">Controle de Estoque & Frente de Caixa</p>
+        </div>
+      </div>
+      
+      <!-- Abas de Navegação -->
+      <nav class="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+        <button onclick="trocarAba('estoque')" id="nav-estoque" class="px-4 py-2 rounded-lg bg-white shadow-sm text-pink-700 transition">📦 Estoque</button>
+        <button onclick="trocarAba('pdv')" id="nav-pdv" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🛒 Frente de Caixa (PDV)</button>
+        <button onclick="trocarAba('vendas')" id="nav-vendas" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">📜 Histórico de Vendas</button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button onclick="exportarCSV()" class="text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-lg hover:bg-emerald-100 transition flex items-center gap-1">
+          <i class="ph ph-file-csv text-base"></i> Exportar CSV
+        </button>
+        <button onclick="resetarPadrao()" class="text-xs text-rose-500 hover:underline px-2">Resetar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+
+    <!-- KPI CARDS -->
+    <section class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">SKUs / Unidades</span>
+        <h3 id="kpi-skus" class="text-lg md:text-xl font-black text-slate-900 mt-1">0</h3>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Custo em Estoque</span>
+        <h3 id="kpi-custo" class="text-lg md:text-xl font-black text-slate-700 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Valor em Venda</span>
+        <h3 id="kpi-venda" class="text-lg md:text-xl font-black text-blue-600 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Lucro Previsto</span>
+        <h3 id="kpi-lucro" class="text-lg md:text-xl font-black text-emerald-600 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Abaixo do Mínimo</span>
+        <h3 id="kpi-criticos" class="text-lg md:text-xl font-black text-rose-600 mt-1">0</h3>
+      </div>
+    </section>
+
+    <!-- ABA 1: GESTÃO DE ESTOQUE -->
+    <div id="aba-estoque" class="space-y-6">
+      
+      <!-- Cadastro Rápido -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2">
+          <i class="ph ph-plus-circle text-pink-600 text-lg"></i> Cadastrar / Editar Produto
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div class="lg:col-span-1">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">SKU:</label>
+            <input id="cad-cod" type="text" placeholder="PERF-001" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold uppercase focus:bg-white">
+          </div>
+          <div class="lg:col-span-1">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Marca:</label>
+            <select id="cad-marca" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white font-medium">
+              <option>O Boticário</option>
+              <option>Natura</option>
+              <option>Eudora</option>
+              <option>Avon</option>
+              <option>Quem Disse Berenice</option>
+              <option>Outras</option>
+            </select>
+          </div>
+          <div class="lg:col-span-1">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Categoria:</label>
+            <select id="cad-cat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white font-medium">
+              <option>Perfumaria</option>
+              <option>Cuidados com a Pele</option>
+              <option>Maquiagem</option>
+              <option>Cabelos</option>
+              <option>Corpo e Banho</option>
+            </select>
+          </div>
+          <div class="lg:col-span-2 sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Descrição:</label>
+            <input id="cad-desc" type="text" placeholder="Nome completo do produto" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Qtd Atual:</label>
+            <input id="cad-qtd" type="number" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Custo (R$):</label>
+            <input id="cad-custo" type="number" step="0.01" value="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Venda (R$):</label>
+            <input id="cad-venda" type="number" step="0.01" value="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white">
+          </div>
+        </div>
+        <div class="mt-4 flex justify-end">
+          <button onclick="salvarProduto()" class="bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-pink-200 transition">Salvar no Catálogo</button>
+        </div>
+      </div>
+
+      <!-- Tabela do Catálogo -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div class="flex items-center gap-2">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Tabela de Estoque</h2>
+            <span id="badge-total-skus" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">0 itens</span>
+          </div>
+          <div class="flex gap-2 w-full md:w-auto">
+            <select id="filtro-marca" onchange="renderizarEstoque()" class="border border-slate-200 bg-slate-50 text-xs rounded-xl px-3 py-2 font-medium">
+              <option value="">Todas as Marcas</option>
+              <option>O Boticário</option>
+              <option>Natura</option>
+              <option>Eudora</option>
+              <option>Avon</option>
+            </select>
+            <input id="filtro-busca" oninput="renderizarEstoque()" type="text" placeholder="Buscar por nome ou SKU..." class="border border-slate-200 bg-slate-50 text-xs rounded-xl px-3 py-2 w-full md:w-64 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3">SKU</th>
+                <th class="p-3">Marca</th>
+                <th class="p-3">Descrição</th>
+                <th class="p-3">Estoque</th>
+                <th class="p-3">Custo Unit.</th>
+                <th class="p-3">Preço Venda</th>
+                <th class="p-3">Margem / Lucro</th>
+                <th class="p-3 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-estoque-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: FRENTE DE CAIXA (PDV) -->
+    <div id="aba-pdv" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Catálogo de Seleção -->
+      <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+            <i class="ph ph-bag text-pink-600 text-lg"></i> Escolher Produtos para Venda
+          </h2>
+          <input id="pdv-busca" oninput="renderizarCatalogoPDV()" type="text" placeholder="Filtrar produtos..." class="border border-slate-200 bg-slate-50 text-xs rounded-xl px-3 py-1.5 w-48">
+        </div>
+        <div id="pdv-catalogo-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-1"></div>
+      </div>
+
+      <!-- Carrinho de Compras / Checkout -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center justify-between">
+            <span>🛒 Carrinho de Venda</span>
+            <button onclick="limparCarrinho()" class="text-xs text-rose-500 hover:underline font-normal">Limpar</button>
+          </h2>
+
+          <div id="carrinho-itens" class="space-y-2 max-h-60 overflow-y-auto text-xs divide-y divide-slate-100">
+            <p class="text-slate-400 italic text-center py-6">Nenhum item adicionado.</p>
+          </div>
+        </div>
+
+        <!-- Fechamento -->
+        <div class="border-t border-slate-200 pt-4 space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome da Cliente (Opcional):</label>
+            <input id="venda-cliente" type="text" placeholder="Ex: Maria Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Forma de Pagamento:</label>
+            <select id="venda-pagto" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium">
+              <option>Pix</option>
+              <option>Cartão de Crédito</option>
+              <option>Cartão de Débito</option>
+              <option>Dinheiro</option>
+              <option>Fiado / Caderninho</option>
+            </select>
+          </div>
+
+          <div class="flex justify-between items-center text-sm font-bold pt-2 border-t border-slate-100">
+            <span>Total a Pagar:</span>
+            <span id="carrinho-total" class="text-lg text-emerald-600 font-black">R$ 0,00</span>
+          </div>
+
+          <button onclick="finalizarVenda()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+            <i class="ph ph-check-circle text-lg"></i> Concluir Venda e Baixar Estoque
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 3: HISTÓRICO DE VENDAS -->
+    <div id="aba-vendas" class="hidden bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+          <i class="ph ph-receipt text-pink-600 text-lg"></i> Histórico de Transações
+        </h2>
+        <span id="badge-total-vendas" class="text-xs bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full font-bold">R$ 0,00 faturados</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-600">
+          <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+            <tr>
+              <th class="p-3">Data/Hora</th>
+              <th class="p-3">Cliente</th>
+              <th class="p-3">Itens Vendidos</th>
+              <th class="p-3">Forma Pagto.</th>
+              <th class="p-3">Faturamento</th>
+              <th class="p-3">Lucro Líquido</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-vendas-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const ESTOQUE_PADRAO = [
+      { codigo: "PERF-001", marca: "O Boticário", categoria: "Perfumaria", descricao: "Malbec Colônia 100ml", quantidade: 10, estoque_minimo: 4, custo: 110.00, venda: 199.90 },
+      { codigo: "PERF-002", marca: "O Boticário", categoria: "Perfumaria", descricao: "Lily Eau de Parfum 75ml", quantidade: 6, estoque_minimo: 3, custo: 160.00, venda: 279.90 },
+      { codigo: "PERF-003", marca: "Natura", categoria: "Perfumaria", descricao: "Essencial Exclusivo 100ml", quantidade: 8, estoque_minimo: 3, custo: 120.00, venda: 235.00 },
+      { codigo: "PERF-004", marca: "Natura", categoria: "Perfumaria", descricao: "Kaiak Clássico Feminino 100ml", quantidade: 12, estoque_minimo: 5, custo: 75.00, venda: 154.90 },
+      { codigo: "PERF-005", marca: "Eudora", categoria: "Perfumaria", descricao: "Eudora Rouge Eau de Parfum 75ml", quantidade: 5, estoque_minimo: 4, custo: 115.00, venda: 219.90 },
+      { codigo: "PERF-006", marca: "Avon", categoria: "Perfumaria", descricao: "Far Away Glamour 50ml", quantidade: 14, estoque_minimo: 5, custo: 45.00, venda: 89.90 },
+      { codigo: "SKIN-001", marca: "O Boticário", categoria: "Cuidados com a Pele", descricao: "Nativa SPA Loção Ameixa 400ml", quantidade: 18, estoque_minimo: 6, custo: 38.00, venda: 74.90 },
+      { codigo: "SKIN-002", marca: "Natura", categoria: "Cuidados com a Pele", descricao: "Tododia Noz Pecã e Cacau 400ml", quantidade: 20, estoque_minimo: 8, custo: 32.00, venda: 67.90 },
+      { codigo: "MAKE-001", marca: "Eudora", categoria: "Maquiagem", descricao: "Batom Glam Vermelho Verniz", quantidade: 15, estoque_minimo: 5, custo: 22.00, venda: 44.99 },
+      { codigo: "MAKE-002", marca: "Avon", categoria: "Maquiagem", descricao: "Batom Ultra Matte Nude Pétala", quantidade: 2, estoque_minimo: 6, custo: 14.50, venda: 29.99 }
+    ];
+
+    let carrinho = [];
+
+    function getEstoque() {
+      const s = localStorage.getItem("estoque_pro");
+      return s ? JSON.parse(s) : ESTOQUE_PADRAO;
+    }
+
+    function setEstoque(dados) {
+      localStorage.setItem("estoque_pro", JSON.stringify(dados));
+      renderizarTudo();
+    }
+
+    function getVendas() {
+      const s = localStorage.getItem("vendas_pro");
+      return s ? JSON.parse(s) : [];
+    }
+
+    function setVendas(dados) {
+      localStorage.setItem("vendas_pro", JSON.stringify(dados));
+      renderizarHistoricoVendas();
+    }
+
+    function resetarPadrao() {
+      if (confirm("Deseja restaurar o banco de estoque original?")) {
+        setEstoque(ESTOQUE_PADRAO);
+      }
+    }
+
+    function trocarAba(aba) {
+      ["estoque", "pdv", "vendas"].forEach(a => {
+        document.getElementById(`aba-${a}`).classList.add("hidden");
+        document.getElementById(`nav-${a}`).classList.remove("bg-white", "shadow-sm", "text-pink-700");
+        document.getElementById(`nav-${a}`).classList.add("text-slate-600");
+      });
+      document.getElementById(`aba-${aba}`).classList.remove("hidden");
+      document.getElementById(`nav-${aba}`).classList.add("bg-white", "shadow-sm", "text-pink-700");
+      document.getElementById(`nav-${aba}`).classList.remove("text-slate-600");
+
+      if (aba === "pdv") renderizarCatalogoPDV();
+      if (aba === "vendas") renderizarHistoricoVendas();
+    }
+
+    // --- ESTOQUE ---
+    function salvarProduto() {
+      const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
+      const marca = document.getElementById("cad-marca").value;
+      const cat = document.getElementById("cad-cat").value;
+      const desc = document.getElementById("cad-desc").value.trim();
+      const qtd = parseFloat(document.getElementById("cad-qtd").value) || 0;
+      const custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+      const venda = parseFloat(document.getElementById("cad-venda").value) || 0;
+
+      if (!cod || !desc) return alert("Preencha Código SKU e Descrição!");
+
+      const estoque = getEstoque();
+      const idx = estoque.findIndex(p => p.codigo === cod);
+      const novo = { codigo: cod, marca: marca, categoria: cat, descricao: desc, quantidade: qtd, estoque_minimo: 3, custo: custo, venda: venda };
+
+      if (idx >= 0) estoque[idx] = novo;
+      else estoque.push(novo);
+
+      setEstoque(estoque);
+      document.getElementById("cad-cod").value = "";
+      document.getElementById("cad-desc").value = "";
+    }
+
+    function excluirProduto(cod) {
+      if (confirm(`Excluir item ${cod}?`)) {
+        setEstoque(getEstoque().filter(p => p.codigo !== cod));
+      }
+    }
+
+    function editarProduto(cod) {
+      const p = getEstoque().find(i => i.codigo === cod);
+      if (p) {
+        document.getElementById("cad-cod").value = p.codigo;
+        document.getElementById("cad-marca").value = p.marca;
+        document.getElementById("cad-cat").value = p.categoria;
+        document.getElementById("cad-desc").value = p.descricao;
+        document.getElementById("cad-qtd").value = p.quantidade;
+        document.getElementById("cad-custo").value = p.custo;
+        document.getElementById("cad-venda").value = p.venda;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // --- FRENTE DE CAIXA (PDV) ---
+    function renderizarCatalogoPDV() {
+      const estoque = getEstoque();
+      const busca = document.getElementById("pdv-busca").value.toLowerCase();
+      const container = document.getElementById("pdv-catalogo-grid");
+
+      const filtrados = estoque.filter(p => p.descricao.toLowerCase().includes(busca) || p.codigo.toLowerCase().includes(busca));
+
+      container.innerHTML = filtrados.map(p => `
+        <div class="border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:border-pink-300 transition bg-slate-50/50">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-[10px] uppercase font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-md">${p.marca}</span>
+              <span class="text-xs font-bold ${p.quantidade > 0 ? 'text-slate-500' : 'text-rose-600'}">${p.quantidade} un</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-800 mt-2 line-clamp-2">${p.descricao}</h4>
+            <p class="text-sm font-black text-slate-900 mt-1">R$ ${p.venda.toFixed(2)}</p>
+          </div>
+          <button onclick="adicionarAoCarrinho('${p.codigo}')" ${p.quantidade <= 0 ? 'disabled' : ''} class="mt-3 w-full text-xs font-bold py-1.5 rounded-lg ${p.quantidade > 0 ? 'bg-pink-600 text-white hover:bg-pink-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'} transition">
+            ${p.quantidade > 0 ? '+ Adicionar' : 'Esgotado'}
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function adicionarAoCarrinho(cod) {
+      const estoque = getEstoque();
+      const prod = estoque.find(p => p.codigo === cod);
+      if (!prod || prod.quantidade <= 0) return;
+
+      const itemNoCarrinho = carrinho.find(c => c.codigo === cod);
+      if (itemNoCarrinho) {
+        if (itemNoCarrinho.qtd + 1 > prod.quantidade) return alert("Limite de estoque atingido para este item.");
+        itemNoCarrinho.qtd++;
+      } else {
+        carrinho.push({ codigo: prod.codigo, descricao: prod.descricao, preco: prod.venda, custo: prod.custo, qtd: 1 });
+      }
+      renderizarCarrinho();
+    }
+
+    function removerDoCarrinho(cod) {
+      carrinho = carrinho.filter(c => c.codigo !== cod);
+      renderizarCarrinho();
+    }
+
+    function limparCarrinho() {
+      carrinho = [];
+      renderizarCarrinho();
+    }
+
+    function renderizarCarrinho() {
+      const container = document.getElementById("carrinho-itens");
+      if (carrinho.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 italic text-center py-6">Nenhum item no carrinho.</p>`;
+        document.getElementById("carrinho-total").innerText = "R$ 0,00";
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = carrinho.map(item => {
+        const sub = item.preco * item.qtd;
+        total += sub;
+        return `
+          <div class="py-2 flex justify-between items-center">
+            <div>
+              <p class="font-bold text-slate-800 leading-tight">${item.descricao}</p>
+              <p class="text-slate-400 text-[11px]">${item.qtd}x R$ ${item.preco.toFixed(2)} = <b>R$ ${sub.toFixed(2)}</b></p>
+            </div>
+            <button onclick="removerDoCarrinho('${item.codigo}')" class="text-rose-500 hover:text-rose-700 text-sm p-1"><i class="ph ph-trash"></i></button>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("carrinho-total").innerText = total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function finalizarVenda() {
+      if (carrinho.length === 0) return alert("Adicione produtos ao carrinho antes de finalizar.");
+
+      const cliente = document.getElementById("venda-cliente").value.trim() || "Cliente Balcão";
+      const pagto = document.getElementById("venda-pagto").value;
+      const estoque = getEstoque();
+      const vendas = getVendas();
+
+      let totalFaturamento = 0;
+      let totalCusto = 0;
+
+      // Abate do estoque
+      carrinho.forEach(item => {
+        const p = estoque.find(prod => prod.codigo === item.codigo);
+        if (p) p.quantidade -= item.qtd;
+        totalFaturamento += item.preco * item.qtd;
+        totalCusto += item.custo * item.qtd;
+      });
+
+      // Registra transação
+      vendas.unshift({
+        data: new Date().toLocaleString("pt-BR"),
+        cliente: cliente,
+        itens: carrinho.map(c => `${c.qtd}x ${c.descricao}`).join(", "),
+        formaPagto: pagto,
+        faturamento: totalFaturamento,
+        lucro: totalFaturamento - totalCusto
+      });
+
+      setEstoque(estoque);
+      setVendas(vendas);
+
+      carrinho = [];
+      document.getElementById("venda-cliente").value = "";
+      renderizarCarrinho();
+      renderizarCatalogoPDV();
+      alert("✅ Venda registrada com sucesso e baixa efetuada no estoque!");
+      trocarAba("vendas");
+    }
+
+    function renderizarHistoricoVendas() {
+      const vendas = getVendas();
+      const corpo = document.getElementById("tabela-vendas-corpo");
+      const faturamentoTotal = vendas.reduce((acc, v) => acc + v.faturamento, 0);
+
+      document.getElementById("badge-total-vendas").innerText = `R$ ${faturamentoTotal.toFixed(2)} faturados`;
+
+      corpo.innerHTML = vendas.map(v => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 text-slate-500 font-mono text-[11px]">${v.data}</td>
+          <td class="p-3 font-bold text-slate-800">${v.cliente}</td>
+          <td class="p-3 text-slate-600">${v.itens}</td>
+          <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px]">${v.formaPagto}</span></td>
+          <td class="p-3 font-bold text-slate-900">R$ ${v.faturamento.toFixed(2)}</td>
+          <td class="p-3 font-bold text-emerald-600">+ R$ ${v.lucro.toFixed(2)}</td>
+        </tr>
+      `).join("");
+    }
+
+    // --- RENDERIZAÇÃO GERAL DO ESTOQUE ---
+    function renderizarEstoque() {
+      const estoque = getEstoque();
+      const busca = document.getElementById("filtro-busca").value.toLowerCase();
+      const marca = document.getElementById("filtro-marca").value;
+
+      const filtrados = estoque.filter(p => {
+        const matchBusca = p.descricao.toLowerCase().includes(busca) || p.codigo.toLowerCase().includes(busca);
+        const matchMarca = marca === "" || p.marca === marca;
+        return matchBusca && matchMarca;
+      });
+
+      const totalUnidades = estoque.reduce((a, b) => a + b.quantidade, 0);
+      const totalCusto = estoque.reduce((a, b) => a + (b.quantidade * b.custo), 0);
+      const totalVenda = estoque.reduce((a, b) => a + (b.quantidade * b.venda), 0);
+      const criticos = estoque.filter(p => p.quantidade <= p.estoque_minimo);
+
+      document.getElementById("kpi-skus").innerText = `${estoque.length} SKUs (${totalUnidades} un)`;
+      document.getElementById("kpi-custo").innerText = totalCusto.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-venda").innerText = totalVenda.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-lucro").innerText = (totalVenda - totalCusto).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-criticos").innerText = `${criticos.length} itens`;
+      document.getElementById("badge-total-skus").innerText = `${filtrados.length} itens`;
+
+      const corpo = document.getElementById("tabela-estoque-corpo");
+      corpo.innerHTML = filtrados.map(p => {
+        const isCritico = p.quantidade <= p.estoque_minimo;
+        const lucroUnit = p.venda - p.custo;
+        const margem = p.venda > 0 ? ((lucroUnit / p.venda) * 100).toFixed(0) : 0;
+        return `
+          <tr class="${isCritico ? 'bg-rose-50/70' : 'hover:bg-slate-50'}">
+            <td class="p-3 font-mono font-bold ${isCritico ? 'text-rose-700' : 'text-slate-800'}">${p.codigo}</td>
+            <td class="p-3 font-semibold text-slate-700">${p.marca}</td>
+            <td class="p-3 font-medium text-slate-800">${p.descricao}</td>
+            <td class="p-3 font-bold ${isCritico ? 'text-rose-600 font-black' : 'text-slate-800'}">${p.quantidade} un</td>
+            <td class="p-3 text-slate-500">R$ ${p.custo.toFixed(2)}</td>
+            <td class="p-3 font-bold text-slate-800">R$ ${p.venda.toFixed(2)}</td>
+            <td class="p-3 font-bold text-emerald-600">+ R$ ${lucroUnit.toFixed(2)} (${margem}%)</td>
+            <td class="p-3 text-center space-x-2">
+              <button onclick="editarProduto('${p.codigo}')" class="text-blue-600 hover:underline">Editar</button>
+              <button onclick="excluirProduto('${p.codigo}')" class="text-rose-600 hover:underline">Excluir</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function exportarCSV() {
+      const estoque = getEstoque();
+      let csv = "Codigo,Marca,Categoria,Descricao,Quantidade,Custo,Venda\n";
+      estoque.forEach(p => {
+        csv += `"${p.codigo}","${p.marca}","${p.categoria}","${p.descricao}",${p.quantidade},${p.custo},${p.venda}\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "estoque_cosmeticos.csv";
+      a.click();
+    }
+
+    function renderizarTudo() {
+      renderizarEstoque();
+      renderizarCatalogoPDV();
+      renderizarHistoricoVendas();
+    }
+
+    renderizarTudo();
+  </script>
+</body>
+</html>
