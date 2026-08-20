@@ -128,7 +128,7 @@
   <script>
     const DADOS_PADRAO = [
       { codigo: "MAT-001", descricao: "Parafuso Sextavado M8", categoria: "Fixadores", quantidade: 450, estoque_minimo: 100, custo_unitario: 0.45 },
-      { codigo: "MAT-002", "descricao": "Chapa de Aço 2mm", categoria: "Matéria-Prima", quantidade: 18, estoque_minimo: 25, custo_unitario: 120.00 },
+      { codigo: "MAT-002", descricao: "Chapa de Aço 2mm", categoria: "Matéria-Prima", quantidade: 18, estoque_minimo: 25, custo_unitario: 120.00 },
       { codigo: "MAT-003", descricao: "Rolamento 6204-2RS", categoria: "Componentes", quantidade: 8, estoque_minimo: 15, custo_unitario: 32.50 },
       { codigo: "MAT-004", descricao: "Sensor Indutivo M12", categoria: "Eletrônica", quantidade: 35, estoque_minimo: 10, custo_unitario: 85.00 },
       { codigo: "MAT-005", descricao: "Tinta Primer Cinza", categoria: "Químicos", quantidade: 12, estoque_minimo: 8, custo_unitario: 95.00 }
@@ -214,18 +214,15 @@
       const busca = document.getElementById("filtro-busca").value.toLowerCase();
       const dadosFiltrados = dados.filter(i => i.descricao.toLowerCase().includes(busca) || i.codigo.toLowerCase().includes(busca));
 
-      // KPIs
       document.getElementById("kpi-skus").innerText = dados.length;
       const valorTotal = dados.reduce((acc, i) => acc + (i.quantidade * i.custo_unitario), 0);
       document.getElementById("kpi-valor").innerText = valorTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
       const criticos = dados.filter(i => i.quantidade <= i.estoque_minimo);
       document.getElementById("kpi-criticos").innerText = criticos.length;
 
-      // Select Dropdown
       const selectMov = document.getElementById("mov-item");
       selectMov.innerHTML = dados.map(i => `<option value="${i.codigo}">${i.codigo} - ${i.descricao}</option>`).join("");
 
-      // Tabela
       const corpo = document.getElementById("tabela-corpo");
       corpo.innerHTML = dadosFiltrados.map(i => {
         const isCritico = i.quantidade <= i.estoque_minimo;
