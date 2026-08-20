@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Estoque</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+  <div class="max-w-6xl mx-auto space-y-6">
+    
+    <!-- Cabeçalho -->
+    <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">📦 Controle de Estoque</h1>
+        <p class="text-sm text-gray-500">MVP Web (Hospedado no GitHub Pages)</p>
+      </div>
+      <button onclick="resetarDados()" class="text-xs text-red-600 hover:underline">Restaurar Padrão</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+        <span class="text-sm text-gray-500 font-medium">Total de SKUs</span>
+        <h3 id="kpi-skus" class="text-2xl font-bold text-gray-800 mt-1">0</h3>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+        <span class="text-sm text-gray-500 font-medium">Valor Total em Estoque</span>
+        <h3 id="kpi-valor" class="text-2xl font-bold text-gray-800 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+        <span class="text-sm text-gray-500 font-medium">Itens Críticos</span>
+        <h3 id="kpi-criticos" class="text-2xl font-bold text-red-600 mt-1">0</h3>
+      </div>
+    </div>
+
+    <!-- Formulários -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Movimentação -->
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">🔄 Movimentação (Entrada/Saída)</h2>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Item:</label>
+            <select id="mov-item" class="w-full border rounded-lg p-2 text-sm bg-gray-50"></select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Tipo:</label>
+              <select id="mov-tipo" class="w-full border rounded-lg p-2 text-sm bg-gray-50">
+                <option value="entrada">Entrada (+)</option>
+                <option value="saida">Saída (-)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Quantidade:</label>
+              <input id="mov-qtd" type="number" min="0.1" step="any" value="1" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <button onclick="registrarMovimentacao()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm transition">Registrar Movimentação</button>
+        </div>
+      </div>
+
+      <!-- Cadastro / Edição -->
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">➕ Novo Item / Edição</h2>
+        <div class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Código SKU:</label>
+              <input id="cad-cod" type="text" placeholder="MAT-001" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Categoria:</label>
+              <input id="cad-cat" type="text" placeholder="Matéria-Prima" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Descrição:</label>
+            <input id="cad-desc" type="text" placeholder="Nome do produto" class="w-full border rounded-lg p-2 text-sm">
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Qtd Atual:</label>
+              <input id="cad-qtd" type="number" step="any" value="0" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Est. Mínimo:</label>
+              <input id="cad-min" type="number" step="any" value="0" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Custo (R$):</label>
+              <input id="cad-custo" type="number" step="0.01" value="0" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <button onclick="salvarItem()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg text-sm transition">Salvar Item</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela Geral -->
+    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-gray-700">📋 Tabela de Estoque</h2>
+        <input id="filtro-busca" oninput="renderizar()" type="text" placeholder="Buscar por código ou nome..." class="border rounded-lg px-3 py-1 text-sm w-64">
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-50 text-gray-700 uppercase text-xs border-b">
+            <tr>
+              <th class="p-3">Código</th>
+              <th class="p-3">Descrição</th>
+              <th class="p-3">Categoria</th>
+              <th class="p-3">Qtd</th>
+              <th class="p-3">Mínimo</th>
+              <th class="p-3">Custo Unit.</th>
+              <th class="p-3">Total</th>
+              <th class="p-3 text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo" class="divide-y"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const DADOS_PADRAO = [
+      { codigo: "MAT-001", descricao: "Parafuso Sextavado M8", categoria: "Fixadores", quantidade: 450, estoque_minimo: 100, custo_unitario: 0.45 },
+      { codigo: "MAT-002", "descricao": "Chapa de Aço 2mm", categoria: "Matéria-Prima", quantidade: 18, estoque_minimo: 25, custo_unitario: 120.00 },
+      { codigo: "MAT-003", descricao: "Rolamento 6204-2RS", categoria: "Componentes", quantidade: 8, estoque_minimo: 15, custo_unitario: 32.50 },
+      { codigo: "MAT-004", descricao: "Sensor Indutivo M12", categoria: "Eletrônica", quantidade: 35, estoque_minimo: 10, custo_unitario: 85.00 },
+      { codigo: "MAT-005", descricao: "Tinta Primer Cinza", categoria: "Químicos", quantidade: 12, estoque_minimo: 8, custo_unitario: 95.00 }
+    ];
+
+    function carregarEstoque() {
+      const salvo = localStorage.getItem("estoque_data");
+      return salvo ? JSON.parse(salvo) : DADOS_PADRAO;
+    }
+
+    function salvarEstoque(dados) {
+      localStorage.setItem("estoque_data", JSON.stringify(dados));
+      renderizar();
+    }
+
+    function resetarDados() {
+      if (confirm("Deseja restaurar os dados originais?")) {
+        salvarEstoque(DADOS_PADRAO);
+      }
+    }
+
+    function registrarMovimentacao() {
+      const cod = document.getElementById("mov-item").value;
+      const tipo = document.getElementById("mov-tipo").value;
+      const qtd = parseFloat(document.getElementById("mov-qtd").value);
+      if (!cod || isNaN(qtd) || qtd <= 0) return alert("Preencha a quantidade corretamente.");
+
+      const dados = carregarEstoque();
+      const item = dados.find(i => i.codigo === cod);
+      if (item) {
+        const novaQtd = tipo === "entrada" ? item.quantidade + qtd : item.quantidade - qtd;
+        if (novaQtd < 0) return alert("Estoque não pode ficar negativo!");
+        item.quantidade = novaQtd;
+        salvarEstoque(dados);
+      }
+    }
+
+    function salvarItem() {
+      const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
+      const desc = document.getElementById("cad-desc").value.trim();
+      const cat = document.getElementById("cad-cat").value.trim() || "Geral";
+      const qtd = parseFloat(document.getElementById("cad-qtd").value) || 0;
+      const min = parseFloat(document.getElementById("cad-min").value) || 0;
+      const custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+
+      if (!cod || !desc) return alert("Preencha Código e Descrição.");
+
+      const dados = carregarEstoque();
+      const index = dados.findIndex(i => i.codigo === cod);
+
+      if (index >= 0) {
+        dados[index] = { codigo: cod, descricao: desc, categoria: cat, quantidade: qtd, estoque_minimo: min, custo_unitario: custo };
+      } else {
+        dados.push({ codigo: cod, descricao: desc, categoria: cat, quantidade: qtd, estoque_minimo: min, custo_unitario: custo });
+      }
+
+      salvarEstoque(dados);
+      document.getElementById("cad-cod").value = "";
+      document.getElementById("cad-desc").value = "";
+    }
+
+    function excluirItem(cod) {
+      if (confirm(`Excluir item ${cod}?`)) {
+        const dados = carregarEstoque().filter(i => i.codigo !== cod);
+        salvarEstoque(dados);
+      }
+    }
+
+    function editarItem(cod) {
+      const item = carregarEstoque().find(i => i.codigo === cod);
+      if (item) {
+        document.getElementById("cad-cod").value = item.codigo;
+        document.getElementById("cad-desc").value = item.descricao;
+        document.getElementById("cad-cat").value = item.categoria;
+        document.getElementById("cad-qtd").value = item.quantidade;
+        document.getElementById("cad-min").value = item.estoque_minimo;
+        document.getElementById("cad-custo").value = item.custo_unitario;
+      }
+    }
+
+    function renderizar() {
+      const dados = carregarEstoque();
+      const busca = document.getElementById("filtro-busca").value.toLowerCase();
+      const dadosFiltrados = dados.filter(i => i.descricao.toLowerCase().includes(busca) || i.codigo.toLowerCase().includes(busca));
+
+      // KPIs
+      document.getElementById("kpi-skus").innerText = dados.length;
+      const valorTotal = dados.reduce((acc, i) => acc + (i.quantidade * i.custo_unitario), 0);
+      document.getElementById("kpi-valor").innerText = valorTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      const criticos = dados.filter(i => i.quantidade <= i.estoque_minimo);
+      document.getElementById("kpi-criticos").innerText = criticos.length;
+
+      // Select Dropdown
+      const selectMov = document.getElementById("mov-item");
+      selectMov.innerHTML = dados.map(i => `<option value="${i.codigo}">${i.codigo} - ${i.descricao}</option>`).join("");
+
+      // Tabela
+      const corpo = document.getElementById("tabela-corpo");
+      corpo.innerHTML = dadosFiltrados.map(i => {
+        const isCritico = i.quantidade <= i.estoque_minimo;
+        const total = i.quantidade * i.custo_unitario;
+        return `
+          <tr class="${isCritico ? 'bg-red-50' : 'hover:bg-gray-50'}">
+            <td class="p-3 font-semibold ${isCritico ? 'text-red-700' : 'text-gray-800'}">${i.codigo}</td>
+            <td class="p-3">${i.descricao}</td>
+            <td class="p-3"><span class="bg-gray-200 px-2 py-0.5 rounded text-xs">${i.categoria}</span></td>
+            <td class="p-3 font-bold ${isCritico ? 'text-red-600' : ''}">${i.quantidade}</td>
+            <td class="p-3 text-gray-500">${i.estoque_minimo}</td>
+            <td class="p-3">R$ ${i.custo_unitario.toFixed(2)}</td>
+            <td class="p-3 font-semibold">R$ ${total.toFixed(2)}</td>
+            <td class="p-3 text-center space-x-2">
+              <button onclick="editarItem('${i.codigo}')" class="text-blue-600 hover:underline text-xs">Editar</button>
+              <button onclick="excluirItem('${i.codigo}')" class="text-red-600 hover:underline text-xs">Excluir</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    renderizar();
+  </script>
+</body>
+</html>
