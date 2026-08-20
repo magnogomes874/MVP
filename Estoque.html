@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivetinha Cosméticos - Catálogo Virtual</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-pink-50/30 font-sans text-slate-800 antialiased min-h-screen pb-24">
+
+  <!-- CABEÇALHO -->
+  <header class="bg-white border-b border-pink-100 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-pink-600 text-white p-2.5 rounded-2xl text-2xl flex items-center justify-center shadow-md shadow-pink-200">
+          <i class="ph ph-sparkle"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black text-pink-900 leading-tight">Ivetinha Cosméticos</h1>
+          <p class="text-xs text-pink-600 font-medium">Catálogo de Pronta Entrega 💄✨</p>
+        </div>
+      </div>
+
+      <!-- Botão Flutuante / Topo do Carrinho -->
+      <button onclick="abrirModalCarrinho()" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-md shadow-pink-200 transition">
+        <i class="ph ph-shopping-bag text-base"></i>
+        <span>Meu Pedido (<span id="cart-count">0</span>)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
+
+    <!-- BARRA DE BUSCA E FILTROS -->
+    <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div class="relative w-full md:w-80">
+        <i class="ph ph-magnifying-glass absolute left-3 top-3 text-slate-400 text-base"></i>
+        <input id="busca-prod" oninput="renderizarCatalogo()" type="text" placeholder="Buscar perfume, batom, creme..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs focus:bg-white focus:outline-pink-500">
+      </div>
+      
+      <!-- Filtros Rápidos por Marca -->
+      <div class="flex gap-1.5 overflow-x-auto w-full md:w-auto pb-1" id="filtros-marcas">
+        <button onclick="filtrarMarca('')" class="filtro-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-pink-600 text-white transition whitespace-nowrap">Todas</button>
+        <button onclick="filtrarMarca('O Boticário')" class="filtro-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-pink-100 transition whitespace-nowrap">O Boticário</button>
+        <button onclick="filtrarMarca('Natura')" class="filtro-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-pink-100 transition whitespace-nowrap">Natura</button>
+        <button onclick="filtrarMarca('Eudora')" class="filtro-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-pink-100 transition whitespace-nowrap">Eudora</button>
+        <button onclick="filtrarMarca('Avon')" class="filtro-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-pink-100 transition whitespace-nowrap">Avon</button>
+      </div>
+    </div>
+
+    <!-- GRADE DE PRODUTOS (VITRINE) -->
+    <div id="grade-produtos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+
+  </main>
+
+  <!-- MODAL / CARRINHO DO CLIENTE -->
+  <div id="modal-carrinho" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+          <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i class="ph ph-shopping-bag text-pink-600 text-lg"></i> Sua Sacola de Compras
+          </h3>
+          <button onclick="fecharModalCarrinho()" class="text-slate-400 hover:text-slate-700 text-xl"><i class="ph ph-x"></i></button>
+        </div>
+
+        <div id="carrinho-itens-cliente" class="divide-y divide-slate-100 my-4 text-xs"></div>
+      </div>
+
+      <div class="border-t border-slate-100 pt-4 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Seu Nome:</label>
+          <input id="cliente-nome" type="text" placeholder="Como podemos te chamar?" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs">
+        </div>
+
+        <div class="flex justify-between items-center text-sm font-bold pt-2">
+          <span>Total:</span>
+          <span id="carrinho-total-cliente" class="text-xl text-pink-600 font-black">R$ 0,00</span>
+        </div>
+
+        <button onclick="enviarPedidoWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <i class="ph ph-whatsapp-logo text-xl"></i> Enviar Pedido no WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // NÚMERO DE WHATSAPP PARA RECEBER OS PEDIDOS (DDI + DDD + Número)
+    const SEU_WHATSAPP = "5561999999999"; // <-- Altere para o seu número aqui!
+
+    const ESTOQUE_PADRAO = [
+      { codigo: "PERF-001", marca: "O Boticário", categoria: "Perfumaria", descricao: "Malbec Desodorante Colônia 100ml", quantidade: 10, preco_venda: 199.90 },
+      { codigo: "PERF-002", marca: "O Boticário", categoria: "Perfumaria", descricao: "Lily Eau de Parfum 75ml", quantidade: 6, preco_venda: 279.90 },
+      { codigo: "PERF-003", marca: "Natura", categoria: "Perfumaria", descricao: "Essencial Exclusivo Deo Parfum Masc 100ml", quantidade: 8, preco_venda: 235.00 },
+      { codigo: "PERF-004", marca: "Natura", categoria: "Perfumaria", descricao: "Kaiak Clássico Feminino 100ml", quantidade: 12, preco_venda: 154.90 },
+      { codigo: "PERF-005", marca: "Eudora", categoria: "Perfumaria", descricao: "Eudora Rouge Eau de Parfum 75ml", quantidade: 5, preco_venda: 219.90 },
+      { codigo: "PERF-006", marca: "Avon", categoria: "Perfumaria", descricao: "Far Away Glamour Deo Parfum 50ml", quantidade: 14, preco_venda: 89.90 },
+      { codigo: "SKIN-001", marca: "O Boticário", categoria: "Cuidados com a Pele", descricao: "Nativa SPA Loção Ameixa Negra 400ml", quantidade: 18, preco_venda: 74.90 },
+      { codigo: "SKIN-002", marca: "Natura", categoria: "Cuidados com a Pele", descricao: "Tododia Creme Noz Pecã e Cacau 400ml", quantidade: 20, preco_venda: 67.90 },
+      { codigo: "SKIN-003", marca: "Avon", categoria: "Cuidados com a Pele", descricao: "Renew Sérum Vitamina C 30ml", quantidade: 0, preco_venda: 99.90 },
+      { codigo: "MAKE-001", marca: "Eudora", categoria: "Maquiagem", descricao: "Batom Líquido Matte Glam Vermelho", quantidade: 15, preco_venda: 44.99 },
+      { codigo: "MAKE-002", marca: "Avon", categoria: "Maquiagem", descricao: "Batom Ultra Matte Nude Pétala", quantidade: 2, preco_venda: 29.99 }
+    ];
+
+    let marcaFiltro = "";
+    let sacola = [];
+
+    function carregarProdutos() {
+      // Lê do mesmo estoque salvo ou carrega o catálogo padrão
+      const s = localStorage.getItem("estoque_pro") || localStorage.getItem("estoque_cosmeticos");
+      if (s) {
+        const dados = JSON.parse(s);
+        return dados.map(item => ({
+          codigo: item.codigo,
+          marca: item.marca,
+          categoria: item.categoria,
+          descricao: item.descricao,
+          quantidade: item.quantidade,
+          preco_venda: item.preco_venda || item.venda || 0
+        }));
+      }
+      return ESTOQUE_PADRAO;
+    }
+
+    function filtrarMarca(marca) {
+      marcaFiltro = marca;
+      document.querySelectorAll(".filtro-btn").forEach(btn => {
+        if (btn.innerText === (marca || "Todas")) {
+          btn.className = "filtro-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-pink-600 text-white transition whitespace-nowrap";
+        } else {
+          btn.className = "filtro-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-pink-100 transition whitespace-nowrap";
+        }
+      });
+      renderizarCatalogo();
+    }
+
+    function renderizarCatalogo() {
+      const produtos = carregarProdutos();
+      const busca = document.getElementById("busca-prod").value.toLowerCase();
+      const grid = document.getElementById("grade-produtos");
+
+      const filtrados = produtos.filter(p => {
+        const matchTexto = p.descricao.toLowerCase().includes(busca) || p.marca.toLowerCase().includes(busca);
+        const matchMarca = marcaFiltro === "" || p.marca === marcaFiltro;
+        return matchTexto && matchMarca;
+      });
+
+      if (filtrados.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 font-medium">Nenhum produto encontrado.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtrados.map(p => {
+        const disponivel = p.quantidade > 0;
+        return `
+          <div class="bg-white rounded-2xl p-4 border border-pink-100 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-pink-200 transition">
+            <div>
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-pink-700 bg-pink-50 px-2 py-0.5 rounded-md">${p.marca}</span>
+                <span class="text-[11px] font-bold ${disponivel ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 bg-slate-100'} px-2 py-0.5 rounded-md">
+                  ${disponivel ? '✓ Pronta Entrega' : 'Esgotado'}
+                </span>
+              </div>
+              <h3 class="text-sm font-bold text-slate-800 mt-2 line-clamp-2">${p.descricao}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">${p.categoria}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
+              <div>
+                <small class="text-[10px] text-slate-400 uppercase font-semibold">Valor</small>
+                <p class="text-lg font-black text-slate-900 leading-none">R$ ${p.preco_venda.toFixed(2)}</p>
+              </div>
+              <button onclick="adicionarSacola('${p.codigo}')" ${!disponivel ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 ${disponivel ? 'bg-pink-600 hover:bg-pink-700 text-white shadow-md shadow-pink-200' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} transition">
+                <i class="ph ph-plus-bold"></i> Quero
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function adicionarSacola(cod) {
+      const produtos = carregarProdutos();
+      const p = produtos.find(item => item.codigo === cod);
+      if (!p || p.quantidade <= 0) return;
+
+      const itemSacola = sacola.find(s => s.codigo === cod);
+      if (itemSacola) {
+        if (itemSacola.qtd + 1 > p.quantidade) return alert("Desculpe, temos apenas essa quantidade em pronta entrega.");
+        itemSacola.qtd++;
+      } else {
+        sacola.push({ codigo: p.codigo, descricao: p.descricao, marca: p.marca, preco: p.preco_venda, qtd: 1 });
+      }
+      atualizarSacolaUI();
+      abrirModalCarrinho();
+    }
+
+    function removerSacola(cod) {
+      sacola = sacola.filter(s => s.codigo !== cod);
+      atualizarSacolaUI();
+    }
+
+    function atualizarSacolaUI() {
+      const totalItens = sacola.reduce((acc, i) => acc + i.qtd, 0);
+      document.getElementById("cart-count").innerText = totalItens;
+
+      const container = document.getElementById("carrinho-itens-cliente");
+      let total = 0;
+
+      if (sacola.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 italic text-center py-8">Sua sacola está vazia.</p>`;
+        document.getElementById("carrinho-total-cliente").innerText = "R$ 0,00";
+        return;
+      }
+
+      container.innerHTML = sacola.map(item => {
+        const sub = item.preco * item.qtd;
+        total += sub;
+        return `
+          <div class="py-3 flex justify-between items-center">
+            <div>
+              <p class="font-bold text-slate-800">${item.descricao}</p>
+              <p class="text-slate-400 text-[11px]">${item.qtd}x R$ ${item.preco.toFixed(2)} = <b class="text-slate-700">R$ ${sub.toFixed(2)}</b></p>
+            </div>
+            <button onclick="removerSacola('${item.codigo}')" class="text-rose-500 hover:text-rose-700 text-base p-1"><i class="ph ph-trash"></i></button>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("carrinho-total-cliente").innerText = total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function abrirModalCarrinho() {
+      document.getElementById("modal-carrinho").classList.remove("hidden");
+    }
+
+    function fecharModalCarrinho() {
+      document.getElementById("modal-carrinho").classList.add("hidden");
+    }
+
+    function enviarPedidoWhatsApp() {
+      if (sacola.length === 0) return alert("Sua sacola está vazia!");
+      const nome = document.getElementById("cliente-nome").value.trim() || "Cliente";
+
+      let total = 0;
+      let texto = `*Olá! Gostaria de fazer um pedido na Ivetinha Cosméticos 💄*\n\n`;
+      texto += `*Cliente:* ${nome}\n`;
+      texto += `*Itens do Pedido:*\n`;
+
+      sacola.forEach(item => {
+        const sub = item.preco * item.qtd;
+        total += sub;
+        texto += `▪️ ${item.qtd}x ${item.descricao} - R$ ${sub.toFixed(2)}\n`;
+      });
+
+      texto += `\n*Valor Total:* R$ ${total.toFixed(2)}\n\n`;
+      texto += `_Poderia confirmar a disponibilidade para entrega/retirada?_`;
+
+      const link = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(texto)}`;
+      window.open(link, '_blank');
+    }
+
+    renderizarCatalogo();
+    atualizarSacolaUI();
+  </script>
+</body>
+</html>
