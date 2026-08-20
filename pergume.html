@@ -1,285 +1,304 @@
-import sqlite3
-import pandas as pd
-import ipywidgets as widgets
-from IPython.display import display, clear_output, HTML
-
-# ==============================================================================
-# 💄 Ivetinha Cosméticos
-# (Código SKU, Marca, Categoria, Descrição, Qtd, Est. Mínimo, Custo R$, Venda R$)
-# ==============================================================================
-DADOS_COSMETICOS = [
-    # Perfumaria
-    ("PERF-001", "O Boticário", "Perfumaria", "Malbec Desodorante Colônia 100ml", 10, 5, 110.00, 199.90),
-    ("PERF-002", "O Boticário", "Perfumaria", "Lily Eau de Parfum 75ml", 6, 3, 160.00, 279.90),
-    ("PERF-003", "Natura", "Perfumaria", "Essencial Exclusivo Deo Parfum Masc 100ml", 8, 4, 120.00, 235.00),
-    ("PERF-004", "Natura", "Perfumaria", "Kaiak Clássico Feminino 100ml", 15, 6, 75.00, 154.90),
-    ("PERF-005", "Eudora", "Perfumaria", "Eudora Rouge Eau de Parfum 75ml", 5, 4, 115.00, 219.90),
-    ("PERF-006", "Avon", "Perfumaria", "Far Away Glamour Deo Parfum 50ml", 14, 5, 45.00, 89.90),
-
-    # Cuidados com o Corpo e Pele (Skincare)
-    ("SKIN-001", "O Boticário", "Cuidados com a Pele", "Nativa SPA Loção Ameixa Negra 400ml", 18, 6, 38.00, 74.90),
-    ("SKIN-002", "Natura", "Cuidados com a Pele", "Tododia Creme Nutritivo Noz Pecã e Cacau 400ml", 22, 8, 32.00, 67.90),
-    ("SKIN-003", "Natura", "Cuidados com a Pele", "Chronos Gel Creme Antissinais 30+ 40g", 4, 5, 68.00, 134.90), # Item em alerta crítico
-    ("SKIN-004", "Avon", "Cuidados com a Pele", "Renew Sérum Facial Vitamina C 30ml", 7, 4, 49.00, 99.90),
-
-    # Maquiagem (Batons, Olhos, Rosto)
-    ("MAKE-001", "Eudora", "Maquiagem", "Batom Líquido Matte Glam Vermelho Verniz", 15, 5, 22.00, 44.99),
-    ("MAKE-002", "Eudora", "Maquiagem", "Máscara de Cílios Soul Turbo 7.0 10g", 10, 4, 25.00, 49.99),
-    ("MAKE-003", "O Boticário", "Maquiagem", "Make B. Base Líquida Mate Salicylic 30g", 3, 5, 52.00, 99.90), # Item em alerta crítico
-    ("MAKE-004", "Avon", "Maquiagem", "Batom Ultra Matte FPS 15 Nude Pétala", 25, 10, 14.50, 29.99),
-    ("MAKE-005", "Avon", "Maquiagem", "Delineador Líquido Preto Color Trend", 16, 6, 9.90, 21.90),
-
-    # Cabelos & Outros
-    ("CAB-001", "Eudora", "Cabelos", "Siàge Máscara Reconstrói os Fios 250g", 9, 4, 38.00, 72.99),
-    ("CAB-002", "O Boticário", "Cabelos", "Match Shampoo Nutrição Profunda 300ml", 11, 4, 23.00, 44.90)
-]
-
-MARCAS = ["O Boticário", "Natura", "Eudora", "Avon", "Quem Disse Berenice", "Outras"]
-CATEGORIAS = ["Perfumaria", "Cuidados com a Pele", "Maquiagem", "Cabelos", "Corpo e Banho", "Outros"]
-
-# --- 1. BANCO DE DADOS (SQLite) ---
-def init_db():
-    conn = sqlite3.connect("estoque_cosmeticos.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS estoque (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            codigo TEXT UNIQUE,
-            marca TEXT,
-            categoria TEXT,
-            descricao TEXT,
-            quantidade REAL,
-            estoque_minimo REAL,
-            custo_unitario REAL,
-            preco_venda REAL
-        )
-    """)
-    for item in DADOS_COSMETICOS:
-        cursor.execute("""
-            INSERT INTO estoque (codigo, marca, categoria, descricao, quantidade, estoque_minimo, custo_unitario, preco_venda)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(codigo) DO UPDATE SET
-                marca = excluded.marca,
-                categoria = excluded.categoria,
-                descricao = excluded.descricao,
-                estoque_minimo = excluded.estoque_minimo,
-                custo_unitario = excluded.custo_unitario,
-                preco_venda = excluded.preco_venda
-        """, item)
-    conn.commit()
-    conn.close()
-
-init_db()
-
-def get_df():
-    conn = sqlite3.connect("estoque_cosmeticos.db")
-    df = pd.read_sql("SELECT * FROM estoque", conn)
-    conn.close()
-    return df
-
-# --- 2. ÁREAS DE EXIBIÇÃO ---
-out_kpis = widgets.Output()
-out_tabela = widgets.Output()
-out_msg = widgets.Output()
-
-# --- 3. WIDGETS DE OPERAÇÃO ---
-
-# Aba 1: Movimentação (Entrada/Saída de Venda)
-dropdown_itens = widgets.Dropdown(description="Produto:", layout=widgets.Layout(width='65%'))
-tipo_mov = widgets.RadioButtons(options=['Venda / Saída (-)', 'Chegada de Pedido / Entrada (+)'], description='Tipo:')
-qtd_mov = widgets.FloatText(value=1.0, description='Qtd:', layout=widgets.Layout(width='30%'))
-btn_mov = widgets.Button(description="Registrar Movimentação", button_style='primary')
-
-def registrar_movimentacao(b):
-    if not dropdown_itens.value:
-        return
-    cod = dropdown_itens.value
-    qtd = qtd_mov.value
-    df = get_df()
-    atual = df.loc[df["codigo"] == cod, "quantidade"].values[0]
-    nova = (atual + qtd) if 'Entrada' in tipo_mov.value else (atual - qtd)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Estoque - Cosméticos & Perfumaria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+  <div class="max-w-6xl mx-auto space-y-6">
     
-    with out_msg:
-        clear_output()
-        if nova < 0:
-            display(HTML("<span style='color:red; font-weight:bold;'>❌ Erro: Quantidade insuficiente em estoque.</span>"))
-            return
-        conn = sqlite3.connect("estoque_cosmeticos.db")
-        conn.execute("UPDATE estoque SET quantidade = ? WHERE codigo = ?", (nova, cod))
-        conn.commit()
-        conn.close()
-        display(HTML("<span style='color:green; font-weight:bold;'>✔️ Estoque atualizado com sucesso!</span>"))
-    atualizar_interface()
+    <!-- Cabeçalho -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-xl shadow-sm border border-gray-200 gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-pink-700">💄 Ivetinha Cosméticos</h1>
+        <p class="text-sm text-gray-500">Controle de Estoque & Vendas (Perfumaria, Skincare, Make)</p>
+      </div>
+      <button onclick="resetarPadrao()" class="text-xs text-red-600 hover:underline">Restaurar Estoque Padrão</button>
+    </div>
 
-btn_mov.on_click(registrar_movimentacao)
+    <!-- Indicadores Financeiros e de Reposição -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
+        <span class="text-xs text-pink-800 font-semibold">SKUs / Unidades</span>
+        <h3 id="kpi-skus" class="text-lg font-bold text-pink-900 mt-1">0</h3>
+      </div>
+      <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+        <span class="text-xs text-emerald-800 font-semibold">Custo em Estoque</span>
+        <h3 id="kpi-custo" class="text-lg font-bold text-emerald-900 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+        <span class="text-xs text-blue-800 font-semibold">Preço Total (Venda)</span>
+        <h3 id="kpi-venda" class="text-lg font-bold text-blue-900 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+        <span class="text-xs text-purple-800 font-semibold">Lucro Estimado</span>
+        <h3 id="kpi-lucro" class="text-lg font-bold text-purple-900 mt-1">R$ 0,00</h3>
+      </div>
+      <div class="bg-rose-50 p-4 rounded-xl border border-rose-200 col-span-2 md:col-span-1">
+        <span class="text-xs text-rose-800 font-semibold">Alerta Reposição</span>
+        <h3 id="kpi-criticos" class="text-lg font-bold text-rose-700 mt-1">0</h3>
+      </div>
+    </div>
 
-# Aba 2: Novo Cadastro
-txt_cod = widgets.Text(description="Código SKU:")
-drop_marca = widgets.Dropdown(options=MARCAS, description="Marca:")
-drop_cat = widgets.Dropdown(options=CATEGORIAS, description="Categoria:")
-txt_desc = widgets.Text(description="Descrição:")
-num_qtd = widgets.FloatText(value=0.0, description="Qtd Inicial:")
-num_min = widgets.FloatText(value=3.0, description="Est. Mínimo:")
-num_custo = widgets.FloatText(value=0.0, description="Custo (R$):")
-num_venda = widgets.FloatText(value=0.0, description="Venda (R$):")
-btn_cad = widgets.Button(description="Cadastrar Produto", button_style='success')
-
-def registrar_cadastro(b):
-    with out_msg:
-        clear_output()
-        if not txt_cod.value or not txt_desc.value:
-            display(HTML("<span style='color:orange; font-weight:bold;'>⚠️ Preencha ao menos o Código SKU e a Descrição.</span>"))
-            return
-        try:
-            conn = sqlite3.connect("estoque_cosmeticos.db")
-            conn.execute("""
-                INSERT INTO estoque (codigo, marca, categoria, descricao, quantidade, estoque_minimo, custo_unitario, preco_venda)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (txt_cod.value.strip().upper(), drop_marca.value, drop_cat.value, txt_desc.value.strip(),
-                  num_qtd.value, num_min.value, num_custo.value, num_venda.value))
-            conn.commit()
-            conn.close()
-            display(HTML("<span style='color:green; font-weight:bold;'>✔️ Produto cadastrado com sucesso!</span>"))
-            txt_cod.value = ""
-            txt_desc.value = ""
-            atualizar_interface()
-        except sqlite3.IntegrityError:
-            display(HTML("<span style='color:red; font-weight:bold;'>❌ Erro: Código SKU já existe.</span>"))
-
-btn_cad.on_click(registrar_cadastro)
-
-# Aba 3: Editar / Excluir
-dropdown_edit = widgets.Dropdown(description="Produto:", layout=widgets.Layout(width='65%'))
-edit_marca = widgets.Dropdown(options=MARCAS, description="Marca:")
-edit_cat = widgets.Dropdown(options=CATEGORIAS, description="Categoria:")
-edit_desc = widgets.Text(description="Descrição:")
-edit_min = widgets.FloatText(description="Est. Mínimo:")
-edit_custo = widgets.FloatText(description="Custo (R$):")
-edit_venda = widgets.FloatText(description="Venda (R$):")
-btn_salvar_edit = widgets.Button(description="Salvar Alterações", button_style='info')
-btn_excluir = widgets.Button(description="Excluir Produto", button_style='danger')
-
-def carregar_dados_edicao(change):
-    if dropdown_edit.value:
-        df = get_df()
-        item = df[df["codigo"] == dropdown_edit.value]
-        if not item.empty:
-            edit_desc.value = str(item.iloc[0]["descricao"])
-            marca_atual = str(item.iloc[0]["marca"])
-            cat_atual = str(item.iloc[0]["categoria"])
-            edit_marca.value = marca_atual if marca_atual in MARCAS else MARCAS[0]
-            edit_cat.value = cat_atual if cat_atual in CATEGORIAS else CATEGORIAS[0]
-            edit_min.value = float(item.iloc[0]["estoque_minimo"])
-            edit_custo.value = float(item.iloc[0]["custo_unitario"])
-            edit_venda.value = float(item.iloc[0]["preco_venda"])
-
-dropdown_edit.observe(carregar_dados_edicao, names='value')
-
-def salvar_edicao(b):
-    cod = dropdown_edit.value
-    if not cod: return
-    with out_msg:
-        clear_output()
-        conn = sqlite3.connect("estoque_cosmeticos.db")
-        conn.execute("""
-            UPDATE estoque 
-            SET marca = ?, categoria = ?, descricao = ?, estoque_minimo = ?, custo_unitario = ?, preco_venda = ?
-            WHERE codigo = ?
-        """, (edit_marca.value, edit_cat.value, edit_desc.value.strip(), edit_min.value, edit_custo.value, edit_venda.value, cod))
-        conn.commit()
-        conn.close()
-        display(HTML("<span style='color:green; font-weight:bold;'>✔️ Informações salvas com sucesso!</span>"))
-    atualizar_interface()
-
-btn_salvar_edit.on_click(salvar_edicao)
-
-def excluir_item(b):
-    cod = dropdown_edit.value
-    if not cod: return
-    with out_msg:
-        clear_output()
-        conn = sqlite3.connect("estoque_cosmeticos.db")
-        conn.execute("DELETE FROM estoque WHERE codigo = ?", (cod,))
-        conn.commit()
-        conn.close()
-        display(HTML(f"<span style='color:red; font-weight:bold;'>🗑️ Produto {cod} removido!</span>"))
-    atualizar_interface()
-
-btn_excluir.on_click(excluir_item)
-
-# --- 4. ATUALIZADOR VISUAL DA TELA ---
-def atualizar_interface():
-    df = get_df()
-    df["total_custo"] = df["quantidade"] * df["custo_unitario"]
-    df["total_venda"] = df["quantidade"] * df["preco_venda"]
-    df["lucro_previsto"] = df["total_venda"] - df["total_custo"]
-    
-    total_skus = len(df)
-    total_unidades = int(df["quantidade"].sum())
-    custo_total = df["total_custo"].sum()
-    venda_total = df["total_venda"].sum()
-    lucro_estimado = df["lucro_previsto"].sum()
-    criticos = df[df["quantidade"] <= df["estoque_minimo"]]
-    
-    with out_kpis:
-        clear_output()
-        display(HTML(f"""
-            <div style="display: flex; gap: 12px; margin-bottom: 12px; font-family: sans-serif; flex-wrap: wrap;">
-                <div style="background: #fdf2f8; border: 1px solid #fbcfe8; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 140px;">
-                    <small style="color: #9d174d;">Produtos / Unidades</small><h3 style="margin: 4px 0; color: #831843;">{total_skus} SKUs ({total_unidades} un.)</h3>
-                </div>
-                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 140px;">
-                    <small style="color: #166534;">Custo em Estoque</small><h3 style="margin: 4px 0; color: #14532d;">R$ {custo_total:,.2f}</h3>
-                </div>
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 140px;">
-                    <small style="color: #1e40af;">Valor Potencial (Venda)</small><h3 style="margin: 4px 0; color: #1e3a8a;">R$ {venda_total:,.2f}</h3>
-                </div>
-                <div style="background: #faf5ff; border: 1px solid #e9d5ff; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 140px;">
-                    <small style="color: #6b21a8;">Lucro Estimado</small><h3 style="margin: 4px 0; color: #581c87;">R$ {lucro_estimado:,.2f}</h3>
-                </div>
-                <div style="background: {'#fff1f2' if len(criticos) > 0 else '#f8fafc'}; border: 1px solid {'#fecdd3' if len(criticos) > 0 else '#e2e8f0'}; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 140px;">
-                    <small style="color: {'#9f1239' if len(criticos) > 0 else '#475569'};">Atenção (Reposição)</small><h3 style="margin: 4px 0; color: {'#e11d48' if len(criticos) > 0 else '#0f172a'};">{len(criticos)} item(ns)</h3>
-                </div>
+    <!-- Formulários -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Registrar Venda / Entrada -->
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+        <h2 class="text-lg font-semibold text-gray-700">🛒 Registrar Venda / Entrada</h2>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Produto:</label>
+            <select id="mov-item" class="w-full border rounded-lg p-2 text-sm bg-gray-50"></select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Operação:</label>
+              <select id="mov-tipo" class="w-full border rounded-lg p-2 text-sm bg-gray-50">
+                <option value="saida">Venda / Saída (-)</option>
+                <option value="entrada">Chegada de Pedido (+)</option>
+              </select>
             </div>
-        """))
-    
-    with out_tabela:
-        clear_output()
-        if len(criticos) > 0:
-            itens_alerta = ", ".join(criticos["descricao"].tolist())
-            display(HTML(f"<div style='background:#ffe4e6; color:#9f1239; padding:8px 12px; border-radius:6px; margin-bottom:10px; font-size:13px;'>⚠️ <b>Comprar reposição:</b> {itens_alerta}</div>"))
-        
-        display(df[["codigo", "marca", "categoria", "descricao", "quantidade", "estoque_minimo", "custo_unitario", "preco_venda", "total_custo", "total_venda"]].style.format({
-            "quantidade": "{:.0f}",
-            "estoque_minimo": "{:.0f}",
-            "custo_unitario": "R$ {:.2f}",
-            "preco_venda": "R$ {:.2f}",
-            "total_custo": "R$ {:.2f}",
-            "total_venda": "R$ {:.2f}"
-        }))
-        
-    opcoes = [(f"[{r['marca']}] {r['codigo']} - {r['descricao']}", r['codigo']) for _, r in df.iterrows()]
-    dropdown_itens.options = opcoes
-    dropdown_edit.options = opcoes
-    if opcoes and not dropdown_edit.value:
-        dropdown_edit.value = opcoes[0][1]
-        carregar_dados_edicao(None)
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Quantidade:</label>
+              <input id="mov-qtd" type="number" min="1" step="1" value="1" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <button onclick="registrarMovimento()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 rounded-lg text-sm transition">Atualizar Estoque</button>
+        </div>
+      </div>
 
-# --- 5. MONTAGEM DAS ABAS ---
-form_mov = widgets.VBox([dropdown_itens, tipo_mov, qtd_mov, btn_mov])
-form_cad = widgets.VBox([txt_cod, drop_marca, drop_cat, txt_desc, num_qtd, num_min, num_custo, num_venda, btn_cad])
-form_edit = widgets.VBox([dropdown_edit, edit_marca, edit_cat, edit_desc, edit_min, edit_custo, edit_venda, widgets.HBox([btn_salvar_edit, btn_excluir])])
+      <!-- Cadastrar ou Editar Produto -->
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+        <h2 class="text-lg font-semibold text-gray-700">➕ Cadastrar / Editar Produto</h2>
+        <div class="space-y-3">
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">SKU:</label>
+              <input id="cad-cod" type="text" placeholder="PERF-007" class="w-full border rounded-lg p-2 text-sm uppercase">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Marca:</label>
+              <select id="cad-marca" class="w-full border rounded-lg p-2 text-sm bg-gray-50">
+                <option>O Boticário</option>
+                <option>Natura</option>
+                <option>Eudora</option>
+                <option>Avon</option>
+                <option>Quem Disse Berenice</option>
+                <option>Outras</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Categoria:</label>
+              <select id="cad-cat" class="w-full border rounded-lg p-2 text-sm bg-gray-50">
+                <option>Perfumaria</option>
+                <option>Cuidados com a Pele</option>
+                <option>Maquiagem</option>
+                <option>Cabelos</option>
+                <option>Corpo e Banho</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Descrição:</label>
+            <input id="cad-desc" type="text" placeholder="Nome completo do produto" class="w-full border rounded-lg p-2 text-sm">
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Qtd:</label>
+              <input id="cad-qtd" type="number" step="1" value="0" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Mínimo:</label>
+              <input id="cad-min" type="number" step="1" value="3" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Custo R$:</label>
+              <input id="cad-custo" type="number" step="0.01" value="0.00" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Venda R$:</label>
+              <input id="cad-venda" type="number" step="0.01" value="0.00" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <button onclick="salvarProduto()" class="w-full bg-gray-800 hover:bg-black text-white font-medium py-2 rounded-lg text-sm transition">Salvar Produto</button>
+        </div>
+      </div>
+    </div>
 
-abas = widgets.Tab(children=[form_mov, form_cad, form_edit])
-abas.set_title(0, "🛒 Venda / Entrada")
-abas.set_title(1, "➕ Novo Produto")
-abas.set_title(2, "✏️ Alterar / Excluir")
+    <!-- Tabela Geral -->
+    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+        <h2 class="text-lg font-semibold text-gray-700">📋 Catálogo de Estoque</h2>
+        <input id="filtro-busca" oninput="renderizar()" type="text" placeholder="Buscar por produto, marca ou código..." class="border rounded-lg px-3 py-2 text-sm w-full md:w-80">
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-50 text-gray-700 uppercase text-xs border-b">
+            <tr>
+              <th class="p-3">SKU</th>
+              <th class="p-3">Marca</th>
+              <th class="p-3">Descrição</th>
+              <th class="p-3">Qtd</th>
+              <th class="p-3">Mín.</th>
+              <th class="p-3">Custo</th>
+              <th class="p-3">Venda</th>
+              <th class="p-3">Total Venda</th>
+              <th class="p-3 text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo" class="divide-y"></tbody>
+        </table>
+      </div>
+    </div>
 
-display(HTML("<h2>💄 Controle de Estoque - Cosméticos & Perfumaria</h2>"))
-display(out_kpis)
-display(out_tabela)
-display(HTML("<hr><h3>Painel de Operações</h3>"))
-display(abas)
-display(out_msg)
+  </div>
 
-atualizar_interface()
+  <script>
+    const DADOS_INICIAIS = [
+      { codigo: "PERF-001", marca: "O Boticário", categoria: "Perfumaria", descricao: "Malbec Desodorante Colônia 100ml", quantidade: 10, estoque_minimo: 5, custo_unitario: 110.00, preco_venda: 199.90 },
+      { codigo: "PERF-002", marca: "O Boticário", categoria: "Perfumaria", descricao: "Lily Eau de Parfum 75ml", quantidade: 6, estoque_minimo: 3, custo_unitario: 160.00, preco_venda: 279.90 },
+      { codigo: "PERF-003", marca: "Natura", categoria: "Perfumaria", descricao: "Essencial Exclusivo Masculino 100ml", quantidade: 8, estoque_minimo: 4, custo_unitario: 120.00, preco_venda: 235.00 },
+      { codigo: "PERF-004", marca: "Natura", categoria: "Perfumaria", descricao: "Kaiak Clássico Feminino 100ml", quantidade: 12, estoque_minimo: 5, custo_unitario: 75.00, preco_venda: 154.90 },
+      { codigo: "PERF-005", marca: "Eudora", categoria: "Perfumaria", descricao: "Eudora Rouge Eau de Parfum 75ml", quantidade: 5, estoque_minimo: 4, custo_unitario: 115.00, preco_venda: 219.90 },
+      { codigo: "PERF-006", marca: "Avon", categoria: "Perfumaria", descricao: "Far Away Glamour 50ml", quantidade: 14, estoque_minimo: 5, custo_unitario: 45.00, preco_venda: 89.90 },
+      { codigo: "SKIN-001", marca: "O Boticário", categoria: "Cuidados com a Pele", descricao: "Nativa SPA Loção Ameixa Negra 400ml", quantidade: 18, estoque_minimo: 6, custo_unitario: 38.00, preco_venda: 74.90 },
+      { codigo: "SKIN-002", marca: "Natura", categoria: "Cuidados com a Pele", descricao: "Tododia Creme Noz Pecã e Cacau 400ml", quantidade: 20, estoque_minimo: 8, custo_unitario: 32.00, preco_venda: 67.90 },
+      { codigo: "SKIN-003", marca: "Avon", categoria: "Cuidados com a Pele", descricao: "Renew Sérum Vitamina C 30ml", quantidade: 3, estoque_minimo: 4, custo_unitario: 49.00, preco_venda: 99.90 },
+      { codigo: "MAKE-001", marca: "Eudora", categoria: "Maquiagem", descricao: "Batom Líquido Matte Glam Vermelho", quantidade: 15, estoque_minimo: 5, custo_unitario: 22.00, preco_venda: 44.99 },
+      { codigo: "MAKE-002", marca: "Avon", categoria: "Maquiagem", descricao: "Batom Ultra Matte Nude Pétala", quantidade: 2, estoque_minimo: 8, custo_unitario: 14.50, preco_venda: 29.99 }
+    ];
+
+    function carregarEstoque() {
+      const salvo = localStorage.getItem("estoque_cosmeticos");
+      return salvo ? JSON.parse(salvo) : DADOS_INICIAIS;
+    }
+
+    function salvarEstoque(dados) {
+      localStorage.setItem("estoque_cosmeticos", JSON.stringify(dados));
+      renderizar();
+    }
+
+    function resetarPadrao() {
+      if (confirm("Deseja redefinir o estoque para a lista padrão?")) {
+        salvarEstoque(DADOS_INICIAIS);
+      }
+    }
+
+    function registrarMovimento() {
+      const cod = document.getElementById("mov-item").value;
+      const tipo = document.getElementById("mov-tipo").value;
+      const qtd = parseFloat(document.getElementById("mov-qtd").value);
+      if (!cod || isNaN(qtd) || qtd <= 0) return alert("Insira uma quantidade válida.");
+
+      const dados = carregarEstoque();
+      const item = dados.find(i => i.codigo === cod);
+      if (item) {
+        const novaQtd = tipo === "entrada" ? item.quantidade + qtd : item.quantidade - qtd;
+        if (novaQtd < 0) return alert("Erro: Quantidade insuficiente em estoque!");
+        item.quantidade = novaQtd;
+        salvarEstoque(dados);
+      }
+    }
+
+    function salvarProduto() {
+      const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
+      const marca = document.getElementById("cad-marca").value;
+      const cat = document.getElementById("cad-cat").value;
+      const desc = document.getElementById("cad-desc").value.trim();
+      const qtd = parseFloat(document.getElementById("cad-qtd").value) || 0;
+      const min = parseFloat(document.getElementById("cad-min").value) || 0;
+      const custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+      const venda = parseFloat(document.getElementById("cad-venda").value) || 0;
+
+      if (!cod || !desc) return alert("Preencha ao menos o Código SKU e a Descrição.");
+
+      const dados = carregarEstoque();
+      const index = dados.findIndex(i => i.codigo === cod);
+      const novoProduto = { codigo: cod, marca: marca, categoria: cat, descricao: desc, quantidade: qtd, estoque_minimo: min, custo_unitario: custo, preco_venda: venda };
+
+      if (index >= 0) {
+        dados[index] = novoProduto;
+      } else {
+        dados.push(novoProduto);
+      }
+
+      salvarEstoque(dados);
+      document.getElementById("cad-cod").value = "";
+      document.getElementById("cad-desc").value = "";
+    }
+
+    function editar(cod) {
+      const item = carregarEstoque().find(i => i.codigo === cod);
+      if (item) {
+        document.getElementById("cad-cod").value = item.codigo;
+        document.getElementById("cad-marca").value = item.marca;
+        document.getElementById("cad-cat").value = item.categoria;
+        document.getElementById("cad-desc").value = item.descricao;
+        document.getElementById("cad-qtd").value = item.quantidade;
+        document.getElementById("cad-min").value = item.estoque_minimo;
+        document.getElementById("cad-custo").value = item.custo_unitario;
+        document.getElementById("cad-venda").value = item.preco_venda;
+      }
+    }
+
+    function excluir(cod) {
+      if (confirm(`Deseja excluir o produto ${cod}?`)) {
+        salvarEstoque(carregarEstoque().filter(i => i.codigo !== cod));
+      }
+    }
+
+    function renderizar() {
+      const dados = carregarEstoque();
+      const busca = document.getElementById("filtro-busca").value.toLowerCase();
+      const filtrados = dados.filter(i => 
+        i.descricao.toLowerCase().includes(busca) || 
+        i.codigo.toLowerCase().includes(busca) ||
+        i.marca.toLowerCase().includes(busca)
+      );
+
+      // Totais
+      const totalUnidades = dados.reduce((acc, i) => acc + i.quantidade, 0);
+      const totalCusto = dados.reduce((acc, i) => acc + (i.quantidade * i.custo_unitario), 0);
+      const totalVenda = dados.reduce((acc, i) => acc + (i.quantidade * i.preco_venda), 0);
+      const criticos = dados.filter(i => i.quantidade <= i.estoque_minimo);
+
+      document.getElementById("kpi-skus").innerText = `${dados.length} SKUs (${totalUnidades} un.)`;
+      document.getElementById("kpi-custo").innerText = totalCusto.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-venda").innerText = totalVenda.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-lucro").innerText = (totalVenda - totalCusto).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      document.getElementById("kpi-criticos").innerText = `${criticos.length} produto(s)`;
+
+      // Dropdown
+      const select = document.getElementById("mov-item");
+      select.innerHTML = dados.map(i => `<option value="${i.codigo}">[${i.marca}] ${i.codigo} - ${i.descricao} (Estoque: ${i.quantidade})</option>`).join("");
+
+      // Tabela
+      const corpo = document.getElementById("tabela-corpo");
+      corpo.innerHTML = filtrados.map(i => {
+        const isCritico = i.quantidade <= i.estoque_minimo;
+        const totalVendaItem = i.quantidade * i.preco_venda;
+        return `
+          <tr class="${isCritico ? 'bg-rose-50' : 'hover:bg-gray-50'}">
+            <td class="p-3 font-semibold ${isCritico ? 'text-rose-700' : 'text-gray-800'}">${i.codigo}</td>
+            <td class="p-3 font-medium text-gray-700">${i.marca}</td>
+            <td class="p-3">${i.descricao}</td>
+            <td class="p-3 font-bold ${isCritico ? 'text-rose-600' : 'text-gray-800'}">${i.quantidade}</td>
+            <td class="p-3 text-gray-400 text-xs">${i.estoque_minimo}</td>
+            <td class="p-3 text-xs">R$ ${i.custo_unitario.toFixed(2)}</td>
+            <td class="p-3 font-medium">R$ ${i.preco_venda.toFixed(2)}</td>
+            <td class="p-3 font-semibold text-emerald-700">R$ ${totalVendaItem.toFixed(2)}</td>
+            <td class="p-3 text-center space-x-2">
+              <button onclick="editar('${i.codigo}')" class="text-blue-600 hover:underline text-xs">Editar</button>
+              <button onclick="excluir('${i.codigo}')" class="text-red-600 hover:underline text-xs">Excluir</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    renderizar();
+  </script>
+</body>
+</html>
