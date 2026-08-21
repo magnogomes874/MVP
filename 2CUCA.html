@@ -4,269 +4,306 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2 Cucas - Bar & Eventos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+    body { background-color: #f8fafc; color: #1e293b; padding-bottom: 50px; }
+    
+    /* Header */
+    header { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .logo-box { display: flex; align-items: center; gap: 10px; }
+    .logo-icon { background: #d97706; color: white; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+    .logo-title h1 { font-size: 18px; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+    .logo-title p { font-size: 11px; color: #b45309; font-weight: 600; }
+    
+    /* Navigation Tabs */
+    .nav-tabs { display: flex; gap: 5px; background: #f1f5f9; padding: 4px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .nav-btn { border: none; background: transparent; padding: 8px 14px; font-size: 12px; font-weight: 600; color: #475569; border-radius: 7px; cursor: pointer; transition: 0.2s; }
+    .nav-btn.active { background: #ffffff; color: #b45309; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    
+    /* Container & Cards */
+    .main-container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .kpi-card { background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .kpi-label { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; }
+    .kpi-value { font-size: 20px; font-weight: 900; margin-top: 5px; color: #0f172a; }
+    
+    .panel-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .panel-title { font-size: 14px; font-weight: 800; text-transform: uppercase; color: #1e293b; margin-bottom: 15px; }
+    
+    /* Forms & Inputs */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #475569; }
+    .form-control { border: 1px solid #cbd5e1; background: #f8fafc; padding: 8px 10px; border-radius: 8px; font-size: 12px; outline: none; }
+    .form-control:focus { border-color: #d97706; background: #ffffff; }
+    
+    /* Buttons */
+    .btn { border: none; padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-primary { background: #d97706; color: #ffffff; }
+    .btn-primary:hover { background: #b45309; }
+    .btn-success { background: #16a34a; color: #ffffff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-danger { background: #ef4444; color: #ffffff; }
+    .btn-danger:hover { background: #dc2626; }
+    
+    /* Tables */
+    .table-container { overflow-x: auto; margin-top: 15px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+    th { background: #f8fafc; color: #475569; padding: 10px; border-bottom: 2px solid #e2e8f0; font-weight: 700; text-transform: uppercase; font-size: 11px; }
+    td { padding: 10px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+    tr:hover { background: #f8fafc; }
+    
+    /* Tab Display */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen pb-16">
+<body>
 
-  <!-- CABEÇALHO CLARO -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
-      <div class="flex items-center gap-3">
-        <div class="bg-amber-500 text-white p-2.5 rounded-xl text-xl flex items-center justify-center font-black shadow-md shadow-amber-200">
-          <i class="ph ph-brandy"></i>
-        </div>
-        <div>
-          <h1 class="text-xl font-black text-slate-900 tracking-tight">2 Cucas</h1>
-          <p class="text-xs text-amber-700 font-semibold">Controle de Estoque & Bar em Eventos</p>
+  <!-- CABEÇALHO -->
+  <header>
+    <div class="header-container">
+      <div class="logo-box">
+        <div class="logo-icon">🍸</div>
+        <div class="logo-title">
+          <h1>2 Cucas</h1>
+          <p>Bar & Eventos - Gestão de Estoque</p>
         </div>
       </div>
 
-      <!-- Abas de Navegação -->
-      <nav class="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-        <button type="button" onclick="trocarAba('galpao')" id="nav-galpao" class="px-3.5 py-2 rounded-lg bg-white text-amber-700 shadow-sm transition font-bold">🏢 Almoxarifado Central</button>
-        <button type="button" onclick="trocarAba('carga')" id="nav-carga" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🚚 Saída p/ Festa</button>
-        <button type="button" onclick="trocarAba('retorno')" id="nav-retorno" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🔄 Retorno & Sobras</button>
-        <button type="button" onclick="trocarAba('relatorios')" id="nav-relatorios" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">📊 Relatórios & Excel</button>
+      <!-- Navegação -->
+      <nav class="nav-tabs">
+        <button id="btn-tab-galpao" class="nav-btn active" onclick="mostrarAba('galpao')">🏢 Almoxarifado</button>
+        <button id="btn-tab-carga" class="nav-btn" onclick="mostrarAba('carga')">🚚 Saída p/ Festa</button>
+        <button id="btn-tab-retorno" class="nav-btn" onclick="mostrarAba('retorno')">🔄 Retorno & Sobras</button>
+        <button id="btn-tab-relatorios" class="nav-btn" onclick="mostrarAba('relatorios')">📊 Relatórios</button>
       </nav>
 
-      <div class="flex items-center gap-2">
-        <button type="button" onclick="exportarCSV()" class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl hover:bg-emerald-100 transition flex items-center gap-1">
-          <i class="ph ph-file-csv text-base"></i> Baixar CSV
-        </button>
-        <button type="button" onclick="resetarDados()" class="text-xs text-rose-600 hover:underline px-2 font-medium">Limpar Banco</button>
+      <div>
+        <button class="btn btn-danger" style="font-size: 11px; padding: 6px 10px;" onclick="restaurarTudo()">Resetar Banco</button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+  <div class="main-container">
 
-    <!-- KPIs DO GALPÃO -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Itens Cadastrados</span>
-        <h3 id="kpi-itens" class="text-lg md:text-xl font-black text-slate-900 mt-1">0</h3>
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Itens no Galpão</div>
+        <div class="kpi-value" id="kpi-itens">0</div>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Capital no Galpão</span>
-        <h3 id="kpi-capital" class="text-lg md:text-xl font-black text-emerald-600 mt-1">R$ 0,00</h3>
+      <div class="kpi-card">
+        <div class="kpi-label">Capital Parado (Custo)</div>
+        <div class="kpi-value" style="color: #16a34a;" id="kpi-capital">R$ 0,00</div>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Eventos Ativos</span>
-        <h3 id="kpi-eventos" class="text-lg md:text-xl font-black text-blue-600 mt-1">0 festa(s)</h3>
+      <div class="kpi-card">
+        <div class="kpi-label">Eventos em Andamento</div>
+        <div class="kpi-value" style="color: #2563eb;" id="kpi-eventos">0</div>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Estoque Baixo</span>
-        <h3 id="kpi-criticos" class="text-lg md:text-xl font-black text-rose-600 mt-1">0 alerta(s)</h3>
+      <div class="kpi-card">
+        <div class="kpi-label">Estoque Crítico (<= 5 un)</div>
+        <div class="kpi-value" style="color: #dc2626;" id="kpi-criticos">0</div>
       </div>
-    </section>
+    </div>
 
     <!-- ABA 1: ALMOXARIFADO CENTRAL -->
-    <div id="aba-galpao" class="space-y-6">
+    <div id="tab-galpao" class="tab-content active">
       
-      <!-- Entrada / Cadastro -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-4 flex items-center gap-2">
-          <i class="ph ph-plus-circle text-amber-500 text-lg"></i> Cadastrar Nova Bebida ou Dar Entrada
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Código SKU:</label>
-            <input id="cad-cod" type="text" placeholder="DEST-TEQ" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold uppercase focus:bg-white focus:border-amber-500 outline-none">
+      <div class="panel-card">
+        <div class="panel-title">➕ Cadastrar Nova Bebida ou Dar Entrada</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Código SKU:</label>
+            <input type="text" id="cad-cod" class="form-control" placeholder="DEST-TEQ">
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Categoria:</label>
-            <select id="cad-cat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none font-medium">
+          <div class="form-group">
+            <label>Categoria:</label>
+            <select id="cad-cat" class="form-control">
               <option>Destilados</option>
               <option>Aperitivos & Licores</option>
               <option>Espumantes & Vinhos</option>
               <option>Cervejas</option>
               <option>Misturas & Não Alcoólicos</option>
               <option>Xaropes & Frutas</option>
-              <option>Utensílios & Gelo</option>
+              <option>Utensílios & Outros</option>
             </select>
           </div>
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Descrição do Item:</label>
-            <input id="cad-desc" type="text" placeholder="Ex: Tequila José Cuervo Ouro 750ml" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
+          <div class="form-group" style="grid-column: span 2;">
+            <label>Descrição do Item:</label>
+            <input type="text" id="cad-desc" class="form-control" placeholder="Ex: Tequila José Cuervo Ouro 750ml">
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Unidade:</label>
-            <select id="cad-un" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none font-medium">
+          <div class="form-group">
+            <label>Unidade:</label>
+            <select id="cad-un" class="form-control">
               <option>Garrafa</option>
               <option>Fardo/Pack</option>
               <option>Lata</option>
-              <option>Kg</option>
               <option>Unidade</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Saldo Galpão:</label>
-            <input id="cad-qtd" type="number" step="0.5" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
+          <div class="form-group">
+            <label>Saldo Inicial:</label>
+            <input type="number" id="cad-qtd" class="form-control" value="0" step="1">
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Custo Unit. (R$):</label>
-            <input id="cad-custo" type="number" step="0.01" value="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
+          <div class="form-group">
+            <label>Custo Unit. (R$):</label>
+            <input type="number" id="cad-custo" class="form-control" value="0.00" step="0.01">
           </div>
         </div>
-        <div class="mt-4 flex justify-end">
-          <button type="button" onclick="salvarItemGalpao()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-amber-200 transition">Gravar no Almoxarifado</button>
+        <div style="margin-top: 15px; text-align: right;">
+          <button class="btn btn-primary" onclick="cadastrarItem()">Gravar no Almoxarifado</button>
         </div>
       </div>
 
-      <!-- Tabela do Almoxarifado -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800">Posição Geral do Galpão</h2>
-          <input id="filtro-busca" oninput="renderizarGalpao()" type="text" placeholder="Buscar por código ou descrição..." class="border border-slate-200 bg-slate-50 text-xs rounded-xl px-3 py-2 w-full md:w-64 focus:bg-white focus:border-amber-500 outline-none">
+      <div class="panel-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div class="panel-title" style="margin: 0;">Posição de Estoque do Galpão</div>
+          <input type="text" id="busca-estoque" class="form-control" style="width: 250px;" placeholder="Filtrar bebidas..." oninput="desenharTabelaGalpao()">
         </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-600">
-            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+        
+        <div class="table-container">
+          <table>
+            <thead>
               <tr>
-                <th class="p-3">SKU</th>
-                <th class="p-3">Categoria</th>
-                <th class="p-3">Item</th>
-                <th class="p-3">Saldo Disponível</th>
-                <th class="p-3">Custo Unit.</th>
-                <th class="p-3">Capital Parado</th>
-                <th class="p-3 text-center">Ações</th>
+                <th>Código SKU</th>
+                <th>Categoria</th>
+                <th>Item</th>
+                <th>Saldo Disponível</th>
+                <th>Custo Unit.</th>
+                <th>Capital Total</th>
+                <th style="text-align: center;">Ação</th>
               </tr>
             </thead>
-            <tbody id="tabela-galpao-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
+            <tbody id="tabela-galpao"></tbody>
           </table>
         </div>
       </div>
+
     </div>
 
     <!-- ABA 2: SAÍDA P/ EVENTO -->
-    <div id="aba-carga" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div id="tab-carga" class="tab-content">
       
-      <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <i class="ph ph-truck text-amber-500 text-lg"></i> 1. Identificação do Evento & Carga
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Evento / Cliente:</label>
-            <input id="evento-nome" type="text" placeholder="Ex: Casamento Marina & Thiago" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+        
+        <div class="panel-card">
+          <div class="panel-title">1. Dados da Festa & Escolha dos Itens</div>
+          
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label>Nome do Evento / Cliente:</label>
+              <input type="text" id="ev-nome" class="form-control" placeholder="Ex: Casamento Beatriz & Pedro">
+            </div>
+            <div class="form-group">
+              <label>Data:</label>
+              <input type="date" id="ev-data" class="form-control">
+            </div>
           </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label>Responsável / Chefe de Bar:</label>
+            <input type="text" id="ev-resp" class="form-control" placeholder="Ex: Lucas Barman">
+          </div>
+
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+          <div style="display: grid; grid-template-columns: 3fr 1fr auto; gap: 10px; align-items: flex-end;">
+            <div class="form-group">
+              <label>Selecionar Bebida:</label>
+              <select id="carga-select-item" class="form-control"></select>
+            </div>
+            <div class="form-group">
+              <label>Qtd Envio:</label>
+              <input type="number" id="carga-qtd-envio" class="form-control" value="1" min="1" step="1">
+            </div>
+            <button class="btn btn-primary" onclick="adicionarNaCarga()">+ Incluir</button>
+          </div>
+        </div>
+
+        <!-- Carga Separada -->
+        <div class="panel-card" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Data:</label>
-            <input id="evento-data" type="date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none text-slate-700">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="panel-title">📦 Itens Separados</div>
+              <button onclick="limparListaCarga()" style="background: none; border: none; color: #dc2626; font-size: 11px; cursor: pointer; text-decoration: underline;">Limpar</button>
+            </div>
+            <div id="lista-carga-visual" style="max-height: 220px; overflow-y: auto; margin-top: 10px;"></div>
           </div>
+
+          <button class="btn btn-primary" style="width: 100%; margin-top: 15px; padding: 12px;" onclick="despacharCargaEvento()">🚚 Despachar Carga & Baixar Galpão</button>
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Barman / Chefe de Bar:</label>
-          <input id="evento-resp" type="text" placeholder="Ex: Rodrigo (Líder da Noite)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
-        </div>
-
-        <div class="border-t border-slate-100 pt-4 grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Bebida / Insumo:</label>
-            <select id="carga-item" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs font-medium focus:bg-white focus:border-amber-500 outline-none"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Qtd Envio:</label>
-            <input id="carga-qtd" type="number" min="0.5" step="0.5" value="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
-          </div>
-          <button type="button" onclick="adicionarNaCarga()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs transition shadow-sm">+ Incluir</button>
-        </div>
       </div>
 
-      <!-- Lista da Carga -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
-        <div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center justify-between">
-            <span>📦 Carga Separada</span>
-            <button type="button" onclick="limparCarga()" class="text-xs text-rose-600 hover:underline font-normal">Limpar</button>
-          </h2>
-
-          <div id="lista-carga-itens" class="space-y-2 max-h-60 overflow-y-auto text-xs divide-y divide-slate-100">
-            <p class="text-slate-400 italic text-center py-6">Nenhum item na carga.</p>
-          </div>
-        </div>
-
-        <button type="button" onclick="despacharEvento()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-3.5 rounded-xl shadow-md shadow-amber-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-          <i class="ph ph-paper-plane-right text-lg"></i> Despachar Carga & Baixar Galpão
-        </button>
-      </div>
     </div>
 
     <!-- ABA 3: RETORNO & SOBRAS -->
-    <div id="aba-retorno" class="hidden space-y-6">
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <i class="ph ph-arrow-counter-clockwise text-amber-500 text-lg"></i> 2. Inventário de Retorno Pós-Evento
-        </h2>
-        <p class="text-xs text-slate-500">Selecione o evento em andamento. Ao lançar garrafas que voltaram lacradas, o saldo retorna automaticamente ao estoque do almoxarifado.</p>
+    <div id="tab-retorno" class="tab-content">
+      
+      <div class="panel-card">
+        <div class="panel-title">2. Inventário de Retorno (Pós-Festa)</div>
+        <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Selecione o evento para lançar o que voltou fechado e calcular o consumo do bar.</p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione a Festa:</label>
-            <select id="retorno-evento-select" onchange="carregarItensRetorno()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 outline-none"></select>
-          </div>
+        <div class="form-group" style="max-width: 400px; margin-bottom: 15px;">
+          <label>Selecione a Festa em Andamento:</label>
+          <select id="retorno-evento-select" class="form-control" onchange="carregarItensRetorno()"></select>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-600">
-            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+        <div class="table-container">
+          <table>
+            <thead>
               <tr>
-                <th class="p-3">Item</th>
-                <th class="p-3">Enviado</th>
-                <th class="p-3">Voltou Lacrado</th>
-                <th class="p-3">Quebra/Avaria</th>
-                <th class="p-3">Consumo Real</th>
-                <th class="p-3">Custo Consumido</th>
-                <th class="p-3 text-center">Ação</th>
+                <th>Item</th>
+                <th>Enviado</th>
+                <th>Voltou Lacrado</th>
+                <th>Quebra/Avaria</th>
+                <th>Consumo Real</th>
+                <th>Custo Total</th>
+                <th style="text-align: center;">Ação</th>
               </tr>
             </thead>
-            <tbody id="tabela-retorno-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
+            <tbody id="tabela-retorno-itens"></tbody>
           </table>
         </div>
 
-        <div class="flex justify-end pt-2">
-          <button type="button" onclick="concluirEvento()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm">
-            🏁 Fechar e Arquivar Evento
-          </button>
+        <div style="margin-top: 15px; text-align: right;">
+          <button class="btn btn-success" onclick="finalizarEvento()">🏁 Concluir e Arquivar Evento</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ABA 4: RELATÓRIOS -->
+    <div id="tab-relatorios" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-title">Relatório de Eventos Realizados</div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Evento</th>
+                <th>Responsável</th>
+                <th>Item</th>
+                <th>Enviado</th>
+                <th>Devolvido</th>
+                <th>Consumido</th>
+                <th>Custo Consumido</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-relatorios"></tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- ABA 4: HISTÓRICO & RELATÓRIOS -->
-    <div id="aba-relatorios" class="hidden bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-      <div class="flex justify-between items-center">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <i class="ph ph-receipt text-amber-500 text-lg"></i> Relatório de Consumo por Evento
-        </h2>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-600">
-          <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
-            <tr>
-              <th class="p-3">Data</th>
-              <th class="p-3">Evento</th>
-              <th class="p-3">Responsável</th>
-              <th class="p-3">Item</th>
-              <th class="p-3">Enviado</th>
-              <th class="p-3">Devolvido</th>
-              <th class="p-3">Consumido</th>
-              <th class="p-3">Custo Total</th>
-            </tr>
-          </thead>
-          <tbody id="tabela-historico-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
-        </table>
-      </div>
-    </div>
-
-  </main>
+  </div>
 
   <script>
-    const GALPAO_PADRAO = [
+    // ESTOQUE BASE GARANTIDO
+    const ESTOQUE_PADRAO = [
       { codigo: "DEST-GIN", categoria: "Destilados", item: "Gin Tanqueray London Dry 750ml", unidade: "Garrafa", saldo: 24, custo: 85.00 },
       { codigo: "DEST-VOD", categoria: "Destilados", item: "Vodka Absolut Regular 1L", unidade: "Garrafa", saldo: 30, custo: 68.00 },
       { codigo: "DEST-WHI1", categoria: "Destilados", item: "Whisky Johnnie Walker Red Label 1L", unidade: "Garrafa", saldo: 18, custo: 74.00 },
@@ -277,255 +314,223 @@
       { codigo: "DEST-CAMP", categoria: "Aperitivos & Licores", item: "Campari Bitter 900ml", unidade: "Garrafa", saldo: 12, custo: 45.00 },
       { codigo: "DEST-LIC", categoria: "Aperitivos & Licores", item: "Licor 43 Diego Zamora 700ml", unidade: "Garrafa", saldo: 6, custo: 125.00 },
       { codigo: "ESP-BRUT", categoria: "Espumantes & Vinhos", item: "Espumante Chandon Réserve Brut 750ml", unidade: "Garrafa", saldo: 36, custo: 75.00 },
-      { codigo: "CERV-HEIN", categoria: "Cervejas", item: "Cerveja Heineken Long Neck 330ml (Pack 24un)", unidade: "Fardo/Pack", 25, custo: 132.00 },
+      { codigo: "CERV-HEIN", categoria: "Cervejas", item: "Cerveja Heineken Long Neck (Pack 24un)", unidade: "Fardo/Pack", 25, custo: 132.00 },
       { codigo: "CERV-CORO", categoria: "Cervejas", item: "Cerveja Corona Extra 330ml (Pack 24un)", unidade: "Fardo/Pack", 15, custo: 148.00 },
-      { codigo: "MIX-TON", categoria: "Misturas & Não Alcoólicos", item: "Água Tônica Antarctica Lata 350ml (Pack 12un)", unidade: "Fardo/Pack", 30, custo: 38.00 },
+      { codigo: "MIX-TON", categoria: "Misturas & Não Alcoólicos", item: "Água Tônica Antarctica (Pack 12un)", unidade: "Fardo/Pack", 30, custo: 38.00 },
       { codigo: "MIX-RED", categoria: "Misturas & Não Alcoólicos", item: "Energético Red Bull 250ml (Pack 24un)", unidade: "Fardo/Pack", 20, custo: 162.00 },
       { codigo: "XAR-FRUT", categoria: "Xaropes & Frutas", item: "Xarope Monin Sabores 700ml", unidade: "Garrafa", 16, custo: 52.00 }
     ];
 
     let cargaAtual = [];
 
-    function getGalpao() {
+    // BANCO LOCAL NATIVO
+    function lerGalpao() {
       try {
-        const s = localStorage.getItem("2cucas_galpao_v2");
-        if (s) {
-          const arr = JSON.parse(s);
-          if (Array.isArray(arr) && arr.length > 0) return arr;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-      return GALPAO_PADRAO;
+        const dados = localStorage.getItem("2cucas_banco_estoque");
+        if (dados) return JSON.parse(dados);
+      } catch (e) {}
+      localStorage.setItem("2cucas_banco_estoque", JSON.stringify(ESTOQUE_PADRAO));
+      return ESTOQUE_PADRAO;
     }
 
-    function setGalpao(dados) {
-      localStorage.setItem("2cucas_galpao_v2", JSON.stringify(dados));
-      renderizarGalpao();
+    function salvarGalpao(dados) {
+      localStorage.setItem("2cucas_banco_estoque", JSON.stringify(dados));
+      atualizarTudo();
     }
 
-    function getEventos() {
+    function lerEventos() {
       try {
-        const s = localStorage.getItem("2cucas_eventos_v2");
-        if (s) {
-          const arr = JSON.parse(s);
-          if (Array.isArray(arr)) return arr;
-        }
-      } catch (e) {
-        console.error(e);
-      }
+        const dados = localStorage.getItem("2cucas_banco_eventos");
+        if (dados) return JSON.parse(dados);
+      } catch (e) {}
       return [];
     }
 
-    function setEventos(dados) {
-      localStorage.setItem("2cucas_eventos_v2", JSON.stringify(dados));
-      carregarDropdownEventosRetorno();
+    function salvarEventos(dados) {
+      localStorage.setItem("2cucas_banco_eventos", JSON.stringify(dados));
+      atualizarTudo();
     }
 
-    function resetarDados() {
-      if (confirm("Deseja restaurar todo o estoque e limpar eventos salvos?")) {
-        localStorage.removeItem("2cucas_galpao_v2");
-        localStorage.removeItem("2cucas_eventos_v2");
-        localStorage.removeItem("2cucas_galpao");
-        localStorage.removeItem("2cucas_eventos");
-        setGalpao(GALPAO_PADRAO);
-        setEventos([]);
-        renderizarTudo();
-        alert("Sistema restaurado com sucesso!");
+    function restaurarTudo() {
+      if (confirm("Deseja resetar todo o estoque e apagar o histórico de festas?")) {
+        localStorage.clear();
+        salvarGalpao(ESTOQUE_PADRAO);
+        salvarEventos([]);
+        alert("Sistema restaurado!");
       }
     }
 
-    function trocarAba(aba) {
+    // CONTROLE DE ABAS NATIVO
+    function mostrarAba(nomeAba) {
       const abas = ["galpao", "carga", "retorno", "relatorios"];
       abas.forEach(a => {
-        const elAba = document.getElementById(`aba-${a}`);
-        const elNav = document.getElementById(`nav-${a}`);
-        if (elAba) elAba.classList.add("hidden");
-        if (elNav) {
-          elNav.classList.remove("bg-white", "text-amber-700", "shadow-sm", "font-bold");
-          elNav.classList.add("text-slate-600");
-        }
+        const elTab = document.getElementById("tab-" + a);
+        const elBtn = document.getElementById("btn-tab-" + a);
+        if (elTab) elTab.classList.remove("active");
+        if (elBtn) elBtn.classList.remove("active");
       });
 
-      const alvoAba = document.getElementById(`aba-${aba}`);
-      const alvoNav = document.getElementById(`nav-${aba}`);
-      if (alvoAba) alvoAba.classList.remove("hidden");
-      if (alvoNav) {
-        alvoNav.classList.add("bg-white", "text-amber-700", "shadow-sm", "font-bold");
-        alvoNav.classList.remove("text-slate-600");
-      }
+      const tabAlvo = document.getElementById("tab-" + nomeAba);
+      const btnAlvo = document.getElementById("btn-tab-" + nomeAba);
+      if (tabAlvo) tabAlvo.classList.add("active");
+      if (btnAlvo) btnAlvo.classList.add("active");
 
-      if (aba === "carga") renderizarCargaUI();
-      if (aba === "retorno") carregarDropdownEventosRetorno();
-      if (aba === "relatorios") renderizarHistorico();
+      if (nomeAba === "retorno") preencherEventosRetorno();
+      if (nomeAba === "relatorios") desenharRelatorios();
     }
 
-    function salvarItemGalpao() {
-      const codEl = document.getElementById("cad-cod");
-      const descEl = document.getElementById("cad-desc");
-      const catEl = document.getElementById("cad-cat");
-      const unEl = document.getElementById("cad-un");
-      const qtdEl = document.getElementById("cad-qtd");
-      const custoEl = document.getElementById("cad-custo");
-
-      const cod = codEl.value.trim().toUpperCase();
-      const desc = descEl.value.trim();
-      const cat = catEl.value;
-      const un = unEl.value;
-      const qtd = parseFloat(qtdEl.value) || 0;
-      const custo = parseFloat(custoEl.value) || 0;
+    // CADASTRO NO GALPÃO
+    function cadastrarItem() {
+      const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
+      const cat = document.getElementById("cad-cat").value;
+      const desc = document.getElementById("cad-desc").value.trim();
+      const un = document.getElementById("cad-un").value;
+      const qtd = parseFloat(document.getElementById("cad-qtd").value) || 0;
+      const custo = parseFloat(document.getElementById("cad-custo").value) || 0;
 
       if (!cod || !desc) {
-        alert("Por favor, preencha o Código SKU e a Descrição do item.");
+        alert("Preencha Código SKU e Descrição!");
         return;
       }
 
-      const galpao = getGalpao();
+      const galpao = lerGalpao();
       const idx = galpao.findIndex(i => i.codigo === cod);
       const novo = { codigo: cod, categoria: cat, item: desc, unidade: un, saldo: qtd, custo: custo };
 
-      if (idx >= 0) {
-        galpao[idx] = novo;
-      } else {
-        galpao.push(novo);
-      }
+      if (idx >= 0) galpao[idx] = novo;
+      else galpao.push(novo);
 
-      setGalpao(galpao);
-      codEl.value = "";
-      descEl.value = "";
-      qtdEl.value = "0";
-      custoEl.value = "0.00";
-      alert(`Item "${desc}" gravado no almoxarifado!`);
+      salvarGalpao(galpao);
+      document.getElementById("cad-cod").value = "";
+      document.getElementById("cad-desc").value = "";
+      document.getElementById("cad-qtd").value = "0";
+      document.getElementById("cad-custo").value = "0.00";
+      alert("Item salvo com sucesso!");
     }
 
-    function excluirItemGalpao(cod) {
-      if (confirm(`Excluir ${cod} do almoxarifado?`)) {
-        setGalpao(getGalpao().filter(i => i.codigo !== cod));
+    function excluirItem(cod) {
+      if (confirm("Excluir item " + cod + "?")) {
+        const galpao = lerGalpao().filter(i => i.codigo !== cod);
+        salvarGalpao(galpao);
       }
     }
 
-    function renderizarGalpao() {
-      const galpao = getGalpao();
-      const buscaEl = document.getElementById("filtro-busca");
-      const busca = buscaEl ? buscaEl.value.toLowerCase() : "";
-      
-      const filtrados = galpao.filter(i => 
-        (i.item && i.item.toLowerCase().includes(busca)) || 
-        (i.codigo && i.codigo.toLowerCase().includes(busca))
-      );
+    // RENDERIZAÇÃO DA TABELA DO GALPÃO
+    function desenharTabelaGalpao() {
+      const galpao = lerGalpao();
+      const busca = (document.getElementById("busca-estoque").value || "").toLowerCase();
+      const tabela = document.getElementById("tabela-galpao");
 
-      const totalUnidades = galpao.reduce((acc, i) => acc + (Number(i.saldo) || 0), 0);
-      const capitalTotal = galpao.reduce((acc, i) => acc + ((Number(i.saldo) || 0) * (Number(i.custo) || 0)), 0);
-      const criticos = galpao.filter(i => (Number(i.saldo) || 0) <= 5);
+      let totalItens = galpao.length;
+      let totalUnidades = 0;
+      let capitalTotal = 0;
+      let criticos = 0;
 
-      document.getElementById("kpi-itens").innerText = `${galpao.length} SKUs (${totalUnidades.toFixed(0)} un)`;
-      document.getElementById("kpi-capital").innerText = capitalTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-      document.getElementById("kpi-criticos").innerText = `${criticos.length} item(ns)`;
+      let html = "";
+      galpao.forEach(i => {
+        totalUnidades += i.saldo;
+        capitalTotal += (i.saldo * i.custo);
+        if (i.saldo <= 5) criticos++;
 
-      const corpo = document.getElementById("tabela-galpao-corpo");
-      if (corpo) {
-        corpo.innerHTML = filtrados.map(i => `
-          <tr class="hover:bg-slate-50">
-            <td class="p-3 font-mono font-bold text-slate-900">${i.codigo}</td>
-            <td class="p-3 text-slate-500">${i.categoria}</td>
-            <td class="p-3 font-semibold text-slate-800">${i.item}</td>
-            <td class="p-3 font-bold ${Number(i.saldo) <= 5 ? 'text-rose-600 font-black' : 'text-slate-800'}">${i.saldo} ${i.unidade}</td>
-            <td class="p-3 text-slate-500">R$ ${Number(i.custo).toFixed(2)}</td>
-            <td class="p-3 font-bold text-emerald-600">R$ ${(Number(i.saldo) * Number(i.custo)).toFixed(2)}</td>
-            <td class="p-3 text-center">
-              <button type="button" onclick="excluirItemGalpao('${i.codigo}')" class="text-rose-600 hover:underline">Excluir</button>
-            </td>
-          </tr>
-        `).join("");
-      }
+        if (i.item.toLowerCase().includes(busca) || i.codigo.toLowerCase().includes(busca)) {
+          html += `
+            <tr>
+              <td style="font-weight:bold; font-family:monospace;">${i.codigo}</td>
+              <td style="color:#64748b;">${i.categoria}</td>
+              <td style="font-weight:600;">${i.item}</td>
+              <td style="font-weight:bold; color: ${i.saldo <= 5 ? '#dc2626' : '#0f172a'};">${i.saldo} ${i.unidade}</td>
+              <td>R$ ${i.custo.toFixed(2)}</td>
+              <td style="font-weight:bold; color:#16a34a;">R$ ${(i.saldo * i.custo).toFixed(2)}</td>
+              <td style="text-align:center;">
+                <button onclick="excluirItem('${i.codigo}')" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:bold;">Excluir</button>
+              </td>
+            </tr>
+          `;
+        }
+      });
 
-      const selectCarga = document.getElementById("carga-item");
+      tabela.innerHTML = html;
+      document.getElementById("kpi-itens").innerText = totalItens + " SKUs (" + totalUnidades + " un)";
+      document.getElementById("kpi-capital").innerText = "R$ " + capitalTotal.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("kpi-criticos").innerText = criticos + " alerta(s)";
+
+      // Atualiza Select de Carga
+      const selectCarga = document.getElementById("carga-select-item");
       if (selectCarga) {
         selectCarga.innerHTML = galpao.map(i => `<option value="${i.codigo}">${i.item} (Saldo: ${i.saldo} ${i.unidade})</option>`).join("");
       }
     }
 
+    // SAÍDA DE CARGA
     function adicionarNaCarga() {
-      const selectCarga = document.getElementById("carga-item");
-      const qtdEl = document.getElementById("carga-qtd");
-      if (!selectCarga || !qtdEl) return;
+      const select = document.getElementById("carga-select-item");
+      const cod = select.value;
+      const qtd = parseFloat(document.getElementById("carga-qtd-envio").value) || 0;
+      if (!cod || qtd <= 0) return;
 
-      const cod = selectCarga.value;
-      const qtd = parseFloat(qtdEl.value);
-      if (!cod || isNaN(qtd) || qtd <= 0) {
-        alert("Informe uma quantidade válida.");
-        return;
-      }
-
-      const galpao = getGalpao();
-      const p = galpao.find(i => i.codigo === cod);
-      if (!p) return;
+      const galpao = lerGalpao();
+      const item = galpao.find(i => i.codigo === cod);
+      if (!item) return;
 
       const jaSeparado = cargaAtual.filter(c => c.codigo === cod).reduce((a, b) => a + b.qtd, 0);
-      if (jaSeparado + qtd > Number(p.saldo)) {
-        alert(`Saldo insuficiente no galpão! Disponível: ${p.saldo} ${p.unidade}`);
+      if (jaSeparado + qtd > item.saldo) {
+        alert("Saldo insuficiente no galpão! Disponível: " + item.saldo + " " + item.unidade);
         return;
       }
 
-      const existente = cargaAtual.find(c => c.codigo === cod);
-      if (existente) {
-        existente.qtd += qtd;
-      } else {
-        cargaAtual.push({ codigo: cod, item: p.item, unidade: p.unidade, qtd: qtd, custo: p.custo });
-      }
+      const itemExistente = cargaAtual.find(c => c.codigo === cod);
+      if (itemExistente) itemExistente.qtd += qtd;
+      else cargaAtual.push({ codigo: cod, item: item.item, unidade: item.unidade, qtd: qtd, custo: item.custo });
 
-      renderizarCargaUI();
+      desenharCargaSeparada();
     }
 
-    function removerDaCarga(cod) {
-      cargaAtual = cargaAtual.filter(c => c.codigo !== cod);
-      renderizarCargaUI();
-    }
-
-    function limparCarga() {
+    function limparListaCarga() {
       cargaAtual = [];
-      renderizarCargaUI();
+      desenharCargaSeparada();
     }
 
-    function renderizarCargaUI() {
-      const container = document.getElementById("lista-carga-itens");
-      if (!container) return;
-
+    function desenharCargaSeparada() {
+      const box = document.getElementById("lista-carga-visual");
       if (cargaAtual.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 italic text-center py-6">Nenhum item na carga.</p>`;
+        box.innerHTML = `<p style="color:#94a3b8; font-size:12px; text-align:center; padding: 20px;">Nenhum item na carga.</p>`;
         return;
       }
-      container.innerHTML = cargaAtual.map(i => `
-        <div class="py-2 flex justify-between items-center">
-          <div>
-            <p class="font-bold text-slate-800">${i.item}</p>
-            <p class="text-slate-500 text-[11px]">${i.qtd} ${i.unidade}</p>
+
+      let html = "";
+      cargaAtual.forEach(c => {
+        html += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">
+            <div>
+              <b>${c.item}</b><br>
+              <span style="color:#64748b;">${c.qtd} ${c.unidade}</span>
+            </div>
           </div>
-          <button type="button" onclick="removerDaCarga('${i.codigo}')" class="text-rose-500 hover:text-rose-700 p-1"><i class="ph ph-trash"></i></button>
-        </div>
-      `).join("");
+        `;
+      });
+      box.innerHTML = html;
     }
 
-    function despacharEvento() {
-      const nome = document.getElementById("evento-nome").value.trim();
-      const data = document.getElementById("evento-data").value || new Date().toISOString().split('T')[0];
-      const resp = document.getElementById("evento-resp").value.trim() || "Equipe de Bar";
+    function despacharCargaEvento() {
+      const nome = document.getElementById("ev-nome").value.trim();
+      const data = document.getElementById("ev-data").value || new Date().toISOString().split('T')[0];
+      const resp = document.getElementById("ev-resp").value.trim() || "Equipe de Bar";
 
       if (!nome) {
-        alert("Digite o nome do evento!");
+        alert("Digite o nome da festa / cliente!");
         return;
       }
       if (cargaAtual.length === 0) {
-        alert("Adicione itens à carga antes de despachar!");
+        alert("Adicione bebidas à carga antes de despachar!");
         return;
       }
 
-      const galpao = getGalpao();
-      const eventos = getEventos();
+      const galpao = lerGalpao();
+      const eventos = lerEventos();
 
       cargaAtual.forEach(c => {
         const item = galpao.find(g => g.codigo === c.codigo);
-        if (item) item.saldo = Math.max(0, Number(item.saldo) - Number(c.qtd));
+        if (item) item.saldo -= c.qtd;
       });
 
       eventos.unshift({
@@ -547,164 +552,147 @@
         }))
       });
 
-      setGalpao(galpao);
-      setEventos(eventos);
+      salvarGalpao(galpao);
+      salvarEventos(eventos);
 
       cargaAtual = [];
-      document.getElementById("evento-nome").value = "";
-      renderizarCargaUI();
-      alert(`🚚 Carga para "${nome}" despachada! Baixa efetuada no galpão.`);
-      trocarAba("retorno");
+      document.getElementById("ev-nome").value = "";
+      desenharCargaSeparada();
+      alert("Carga despachada com sucesso!");
+      mostrarAba("retorno");
     }
 
-    function carregarDropdownEventosRetorno() {
-      const eventos = getEventos().filter(e => e.status === "Em Andamento");
+    // RETORNO E SOBRAS
+    function preencherEventosRetorno() {
+      const eventos = lerEventos().filter(e => e.status === "Em Andamento");
       const select = document.getElementById("retorno-evento-select");
-      const kpiEv = document.getElementById("kpi-eventos");
-      if (kpiEv) kpiEv.innerText = `${eventos.length} festa(s)`;
-
-      if (!select) return;
+      document.getElementById("kpi-eventos").innerText = eventos.length;
 
       if (eventos.length === 0) {
         select.innerHTML = `<option value="">Nenhum evento em andamento</option>`;
-        document.getElementById("tabela-retorno-corpo").innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 italic">Nenhum evento aberto para retorno no momento.</td></tr>`;
+        document.getElementById("tabela-retorno-itens").innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">Nenhum evento em andamento.</td></tr>`;
         return;
       }
 
-      select.innerHTML = eventos.map(e => `<option value="${e.id}">${e.nome} (${e.data}) - Resp: ${e.responsavel}</option>`).join("");
+      select.innerHTML = eventos.map(e => `<option value="${e.id}">${e.nome} (${e.data}) - ${e.responsavel}</option>`).join("");
       carregarItensRetorno();
     }
 
     function carregarItensRetorno() {
       const select = document.getElementById("retorno-evento-select");
-      if (!select) return;
       const evId = parseInt(select.value);
       if (!evId) return;
 
-      const eventos = getEventos();
+      const eventos = lerEventos();
       const ev = eventos.find(e => e.id === evId);
       if (!ev) return;
 
-      const corpo = document.getElementById("tabela-retorno-corpo");
-      if (!corpo) return;
-
-      corpo.innerHTML = ev.itens.map((item, index) => `
-        <tr class="hover:bg-slate-50">
-          <td class="p-3 font-semibold text-slate-800">${item.item}</td>
-          <td class="p-3 font-bold text-amber-700">${item.enviado} ${item.unidade}</td>
-          <td class="p-3">
-            <input type="number" id="dev-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.devolvido}" class="w-20 bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs font-bold text-slate-800">
-          </td>
-          <td class="p-3">
-            <input type="number" id="que-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.quebra}" class="w-20 bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-rose-600 font-bold">
-          </td>
-          <td class="p-3 font-bold text-slate-800">${item.consumido} ${item.unidade}</td>
-          <td class="p-3 font-bold text-emerald-600">R$ ${Number(item.custoTotal).toFixed(2)}</td>
-          <td class="p-3 text-center">
-            <button type="button" onclick="salvarLinhaRetorno(${ev.id}, ${index})" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-xs font-bold transition shadow-sm">Salvar</button>
-          </td>
-        </tr>
-      `).join("");
+      const tabela = document.getElementById("tabela-retorno-itens");
+      let html = "";
+      ev.itens.forEach((item, idx) => {
+        html += `
+          <tr>
+            <td style="font-weight:600;">${item.item}</td>
+            <td style="font-weight:bold; color:#b45309;">${item.enviado} ${item.unidade}</td>
+            <td>
+              <input type="number" id="ret-dev-${idx}" value="${item.devolvido}" min="0" max="${item.enviado}" class="form-control" style="width:70px; padding:4px;">
+            </td>
+            <td>
+              <input type="number" id="ret-que-${idx}" value="${item.quebra}" min="0" max="${item.enviado}" class="form-control" style="width:70px; padding:4px; color:#dc2626;">
+            </td>
+            <td style="font-weight:bold;">${item.consumido} ${item.unidade}</td>
+            <td style="font-weight:bold; color:#16a34a;">R$ ${item.custoTotal.toFixed(2)}</td>
+            <td style="text-align:center;">
+              <button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="salvarItemRetorno(${ev.id}, ${idx})">Salvar</button>
+            </td>
+          </tr>
+        `;
+      });
+      tabela.innerHTML = html;
     }
 
-    function salvarLinhaRetorno(evId, idx) {
-      const eventos = getEventos();
-      const galpao = getGalpao();
+    function salvarItemRetorno(evId, idx) {
+      const eventos = lerEventos();
+      const galpao = lerGalpao();
       const ev = eventos.find(e => e.id === evId);
       if (!ev) return;
 
       const item = ev.itens[idx];
-      const novoDev = parseFloat(document.getElementById(`dev-${idx}`).value) || 0;
-      const novoQue = parseFloat(document.getElementById(`que-${idx}`).value) || 0;
+      const dev = parseFloat(document.getElementById("ret-dev-" + idx).value) || 0;
+      const que = parseFloat(document.getElementById("ret-que-" + idx).value) || 0;
 
-      if (novoDev + novoQue > Number(item.enviado)) {
-        alert("Devolução + Quebras não pode ser maior que o total enviado!");
+      if (dev + que > item.enviado) {
+        alert("Devolvido + Quebrado não pode ser maior que o total enviado!");
         return;
       }
 
-      const diferencaDevolvida = novoDev - Number(item.devolvido);
-      const gItem = galpao.find(g => g.codigo === item.codigo);
-      if (gItem) {
-        gItem.saldo = Number(gItem.saldo) + diferencaDevolvida;
-      }
+      const diferenca = dev - item.devolvido;
+      const itemG = galpao.find(g => g.codigo === item.codigo);
+      if (itemG) itemG.saldo += diferenca;
 
-      item.devolvido = novoDev;
-      item.quebra = novoQue;
-      item.consumido = Number(item.enviado) - (novoDev + novoQue);
-      item.custoTotal = (item.consumido + item.quebra) * Number(item.custo);
+      item.devolvido = dev;
+      item.quebra = que;
+      item.consumido = item.enviado - (dev + que);
+      item.custoTotal = (item.consumido + item.quebra) * item.custo;
 
-      setGalpao(galpao);
-      setEventos(eventos);
+      salvarGalpao(galpao);
+      salvarEventos(eventos);
       carregarItensRetorno();
     }
 
-    function concluirEvento() {
+    function finalizarEvento() {
       const select = document.getElementById("retorno-evento-select");
-      if (!select) return;
       const evId = parseInt(select.value);
       if (!evId) return;
 
-      if (confirm("Deseja concluir e arquivar este evento?")) {
-        const eventos = getEventos();
+      if (confirm("Deseja concluir este evento e arquivar nos relatórios?")) {
+        const eventos = lerEventos();
         const ev = eventos.find(e => e.id === evId);
         if (ev) ev.status = "Finalizado";
-        setEventos(eventos);
-        carregarDropdownEventosRetorno();
-        alert("🏁 Evento finalizado com sucesso!");
+        salvarEventos(eventos);
+        preencherEventosRetorno();
+        alert("Evento finalizado com sucesso!");
       }
     }
 
-    function renderizarHistorico() {
-      const eventos = getEventos();
-      const corpo = document.getElementById("tabela-historico-corpo");
-      if (!corpo) return;
-
+    // RELATÓRIOS
+    function desenharRelatorios() {
+      const eventos = lerEventos();
+      const tabela = document.getElementById("tabela-relatorios");
       let html = "";
+
       eventos.forEach(ev => {
-        if (ev.itens && Array.isArray(ev.itens)) {
-          ev.itens.forEach(i => {
-            html += `
-              <tr class="hover:bg-slate-50">
-                <td class="p-3 font-mono text-slate-500 text-[11px]">${ev.data}</td>
-                <td class="p-3 font-bold text-slate-800">${ev.nome}</td>
-                <td class="p-3 text-slate-500">${ev.responsavel}</td>
-                <td class="p-3">${i.item}</td>
-                <td class="p-3">${i.enviado}</td>
-                <td class="p-3 text-emerald-600 font-bold">${i.devolvido}</td>
-                <td class="p-3 font-bold text-amber-700">${i.consumido}</td>
-                <td class="p-3 font-bold text-emerald-600">R$ ${Number(i.custoTotal).toFixed(2)}</td>
-              </tr>
-            `;
-          });
-        }
+        ev.itens.forEach(i => {
+          html += `
+            <tr>
+              <td style="color:#64748b;">${ev.data}</td>
+              <td style="font-weight:bold;">${ev.nome}</td>
+              <td>${ev.responsavel}</td>
+              <td>${i.item}</td>
+              <td>${i.enviado}</td>
+              <td style="color:#16a34a; font-weight:bold;">${i.devolvido}</td>
+              <td style="color:#b45309; font-weight:bold;">${i.consumido}</td>
+              <td style="color:#16a34a; font-weight:bold;">R$ ${i.custoTotal.toFixed(2)}</td>
+            </tr>
+          `;
+        });
       });
 
-      corpo.innerHTML = html || `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Nenhum evento registrado ainda.</td></tr>`;
+      tabela.innerHTML = html || `<tr><td colspan="8" style="text-align:center; padding:30px; color:#94a3b8;">Nenhum evento registrado ainda.</td></tr>`;
     }
 
-    function exportarCSV() {
-      const galpao = getGalpao();
-      let csv = "Codigo,Categoria,Item,Unidade,Saldo_Galpao,Custo_Unitario,Total_Parado\n";
-      galpao.forEach(i => {
-        csv += `"${i.codigo}","${i.categoria}","${i.item}","${i.unidade}",${i.saldo},${i.custo},${(Number(i.saldo) * Number(i.custo)).toFixed(2)}\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "estoque_galpao_2cucas.csv";
-      a.click();
+    function atualizarTudo() {
+      desenharTabelaGalpao();
+      const evs = lerEventos().filter(e => e.status === "Em Andamento");
+      document.getElementById("kpi-eventos").innerText = evs.length;
     }
 
-    function renderizarTudo() {
-      renderizarGalpao();
-      carregarDropdownEventosRetorno();
-    }
-
-    // Inicialização segura
-    window.addEventListener("DOMContentLoaded", () => {
-      renderizarTudo();
-    });
+    // Executa no carregamento
+    window.onload = function() {
+      atualizarTudo();
+      const dataInput = document.getElementById("ev-data");
+      if (dataInput) dataInput.value = new Date().toISOString().split('T')[0];
+    };
   </script>
 </body>
 </html>
