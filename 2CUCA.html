@@ -1,55 +1,56 @@
 <!DOCTYPE html>
-<html lang="pt-BR" translate="no">
+<html lang="pt-BR" class="notranslate" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2 Cucas - Bar & Eventos</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
-    body { background-color: #f1f5f9; color: #0f172a; padding-bottom: 60px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8fafc; color: #1e293b; padding-bottom: 50px; }
     
-    header { background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 20px; position: sticky; top: 0; z-index: 100; }
+    header { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .header-box { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon { background: #d97706; color: #fff; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; }
-    .brand h1 { font-size: 18px; font-weight: 900; text-transform: uppercase; color: #0f172a; }
+    .brand-icon { background: #d97706; color: #ffffff; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; }
+    .brand h1 { font-size: 18px; font-weight: 900; color: #0f172a; text-transform: uppercase; }
     .brand p { font-size: 11px; color: #b45309; font-weight: bold; }
     
-    .nav-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 8px; }
-    .nav-btn { border: none; background: transparent; padding: 8px 14px; font-size: 12px; font-weight: bold; color: #475569; border-radius: 6px; cursor: pointer; }
-    .nav-btn.active { background: #ffffff; color: #b45309; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .nav-bar { display: flex; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .tab-btn { border: none; background: transparent; padding: 8px 14px; font-size: 12px; font-weight: bold; color: #64748b; border-radius: 6px; cursor: pointer; transition: 0.15s; }
+    .tab-btn.active { background: #ffffff; color: #b45309; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
     
     .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
     .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
-    .kpi-card { background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #cbd5e1; }
+    .kpi-card { background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; }
     .kpi-title { font-size: 11px; text-transform: uppercase; font-weight: bold; color: #64748b; }
     .kpi-val { font-size: 20px; font-weight: 900; margin-top: 4px; color: #0f172a; }
     
-    .card { background: #ffffff; border-radius: 10px; border: 1px solid #cbd5e1; padding: 18px; margin-bottom: 20px; }
+    .card { background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 18px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
     .card-header { font-size: 13px; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-bottom: 12px; }
     
-    .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
-    .field { display: flex; flex-direction: column; gap: 3px; }
+    .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
     .field label { font-size: 11px; font-weight: bold; color: #475569; }
-    .input-ctrl { border: 1px solid #cbd5e1; background: #f8fafc; padding: 7px 9px; border-radius: 6px; font-size: 12px; outline: none; }
-    .input-ctrl:focus { border-color: #d97706; background: #fff; }
+    .input-ctrl { border: 1px solid #cbd5e1; background: #f8fafc; padding: 8px 10px; border-radius: 6px; font-size: 12px; outline: none; }
+    .input-ctrl:focus { border-color: #d97706; background: #ffffff; }
     
-    .btn-action { border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
-    .btn-amber { background: #d97706; color: #fff; }
+    .btn { border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .btn-amber { background: #d97706; color: #ffffff; }
     .btn-amber:hover { background: #b45309; }
-    .btn-green { background: #16a34a; color: #fff; }
+    .btn-green { background: #16a34a; color: #ffffff; }
     .btn-green:hover { background: #15803d; }
-    .btn-red { background: #ef4444; color: #fff; }
+    .btn-red { background: #ef4444; color: #ffffff; }
+    .btn-red:hover { background: #dc2626; }
     
     .table-responsive { overflow-x: auto; margin-top: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    th { background: #f8fafc; color: #475569; padding: 8px; border-bottom: 2px solid #cbd5e1; text-align: left; font-size: 11px; text-transform: uppercase; }
-    td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+    th { background: #f8fafc; color: #475569; padding: 10px; border-bottom: 2px solid #e2e8f0; text-align: left; font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
     tr:hover { background: #f8fafc; }
     
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
   </style>
 </head>
 <body>
@@ -65,14 +66,14 @@
       </div>
 
       <nav class="nav-bar">
-        <button id="tablink-galpao" class="nav-btn active" onclick="alternarAba('galpao')">🏢 Almoxarifado</button>
-        <button id="tablink-carga" class="nav-btn" onclick="alternarAba('carga')">🚚 Saída Festa</button>
-        <button id="tablink-retorno" class="nav-btn" onclick="alternarAba('retorno')">🔄 Retorno & Sobras</button>
-        <button id="tablink-relatorios" class="nav-btn" onclick="alternarAba('relatorios')">📊 Relatórios</button>
+        <button type="button" class="tab-btn active" data-tab="galpao">🏢 Almoxarifado</button>
+        <button type="button" class="tab-btn" data-tab="carga">🚚 Saída Festa</button>
+        <button type="button" class="tab-btn" data-tab="retorno">🔄 Retorno & Sobras</button>
+        <button type="button" class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
       </nav>
 
       <div>
-        <button class="btn-action btn-red" style="font-size: 11px; padding: 6px 8px;" onclick="forcarReset()">Limpar Cache</button>
+        <button type="button" id="btn-reset-cache" class="btn btn-red" style="font-size: 11px; padding: 6px 10px;">Limpar Banco</button>
       </div>
     </div>
   </header>
@@ -82,26 +83,26 @@
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-title">Variedade no Galpão</div>
-        <div class="kpi-val" id="kpi-qtd-skus">0</div>
+        <div class="kpi-val" id="kpi-skus">0</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-title">Capital em Bebidas</div>
-        <div class="kpi-val" style="color: #16a34a;" id="kpi-total-dinheiro">R$ 0,00</div>
+        <div class="kpi-val" style="color: #16a34a;" id="kpi-capital">R$ 0,00</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-title">Festas em Andamento</div>
-        <div class="kpi-val" style="color: #2563eb;" id="kpi-festas-abertas">0</div>
+        <div class="kpi-val" style="color: #2563eb;" id="kpi-eventos">0</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-title">Estoque Crítico (<= 5 un)</div>
-        <div class="kpi-val" style="color: #dc2626;" id="kpi-criticos-cont">0</div>
+        <div class="kpi-title">Estoque Baixo (&lt;= 5 un)</div>
+        <div class="kpi-val" style="color: #dc2626;" id="kpi-criticos">0</div>
       </div>
     </div>
 
     <!-- ABA 1: ALMOXARIFADO -->
-    <div id="tab-galpao" class="tab-pane active">
+    <div id="view-galpao" class="tab-view active">
       <div class="card">
-        <div class="card-header">➕ Cadastrar Nova Bebida no Galpão</div>
+        <div class="card-header">➕ Cadastrar Nova Bebida ou Dar Entrada</div>
         <div class="grid-form">
           <div class="field">
             <label>Código SKU:</label>
@@ -109,14 +110,13 @@
           </div>
           <div class="field">
             <label>Categoria:</label>
-            <select id="cad-categoria" class="input-ctrl">
+            <select id="cad-cat" class="input-ctrl">
               <option>Destilados</option>
               <option>Aperitivos & Licores</option>
               <option>Espumantes & Vinhos</option>
               <option>Cervejas</option>
               <option>Misturas & Não Alcoólicos</option>
               <option>Xaropes & Frutas</option>
-              <option>Utensílios</option>
             </select>
           </div>
           <div class="field" style="grid-column: span 2;">
@@ -125,7 +125,7 @@
           </div>
           <div class="field">
             <label>Unidade:</label>
-            <select id="cad-unidade" class="input-ctrl">
+            <select id="cad-un" class="input-ctrl">
               <option>Garrafa</option>
               <option>Fardo/Pack</option>
               <option>Lata</option>
@@ -134,22 +134,22 @@
           </div>
           <div class="field">
             <label>Saldo Inicial:</label>
-            <input type="number" id="cad-saldo" class="input-ctrl" value="0" step="1">
+            <input type="number" id="cad-saldo" class="input-ctrl" value="10" step="1">
           </div>
           <div class="field">
             <label>Custo Unit. (R$):</label>
-            <input type="number" id="cad-custo-val" class="input-ctrl" value="0.00" step="0.01">
+            <input type="number" id="cad-custo" class="input-ctrl" value="50.00" step="0.01">
           </div>
         </div>
         <div style="margin-top: 12px; text-align: right;">
-          <button class="btn-action btn-amber" onclick="gravarItemGalpao()">Gravar no Almoxarifado</button>
+          <button type="button" id="btn-gravar-item" class="btn btn-amber">Gravar no Almoxarifado</button>
         </div>
       </div>
 
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
           <div class="card-header" style="margin:0;">Posição Geral do Galpão</div>
-          <input type="text" id="filtro-busca" class="input-ctrl" style="width: 220px;" placeholder="Filtrar bebidas..." oninput="exibirTabelaGalpao()">
+          <input type="text" id="filtro-busca" class="input-ctrl" style="width: 220px;" placeholder="Filtrar bebidas...">
         </div>
         <div class="table-responsive">
           <table>
@@ -170,10 +170,9 @@
       </div>
     </div>
 
-    <!-- ABA 2: SAÍDA P/ EVENTO -->
-    <div id="tab-carga" class="tab-pane">
+    <!-- ABA 2: SAÍDA P/ FESTA -->
+    <div id="view-carga" class="tab-view">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
-        
         <div class="card">
           <div class="card-header">1. Identificação da Festa</div>
           <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
@@ -191,7 +190,7 @@
             <input type="text" id="festa-resp" class="input-ctrl" placeholder="Ex: Lucas Barman">
           </div>
 
-          <hr style="border: none; border-top: 1px solid #cbd5e1; margin: 12px 0;">
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 12px 0;">
 
           <div style="display: grid; grid-template-columns: 3fr 1fr auto; gap: 8px; align-items: flex-end;">
             <div class="field">
@@ -202,7 +201,7 @@
               <label>Qtd:</label>
               <input type="number" id="input-carga-qtd" class="input-ctrl" value="1" min="1">
             </div>
-            <button class="btn-action btn-amber" onclick="adicionarItemCarga()">+ Incluir</button>
+            <button type="button" id="btn-add-carga" class="btn btn-amber">+ Incluir</button>
           </div>
         </div>
 
@@ -210,23 +209,22 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div class="card-header">📦 Itens Separados</div>
-              <button onclick="esvaziarCarga()" style="background:none; border:none; color:#dc2626; font-size:11px; cursor:pointer;">Limpar</button>
+              <button type="button" id="btn-limpar-carga" style="background:none; border:none; color:#dc2626; font-size:11px; cursor:pointer;">Limpar</button>
             </div>
             <div id="box-carga-separada" style="max-height: 180px; overflow-y: auto;"></div>
           </div>
-          <button class="btn-action btn-amber" style="width:100%; margin-top:12px; padding: 10px;" onclick="despacharEventoCarga()">🚚 Despachar Carga & Baixar Galpão</button>
+          <button type="button" id="btn-despachar-festa" class="btn btn-amber" style="width:100%; margin-top:12px; padding: 10px;">🚚 Despachar Carga & Baixar Galpão</button>
         </div>
-
       </div>
     </div>
 
     <!-- ABA 3: RETORNO & SOBRAS -->
-    <div id="tab-retorno" class="tab-pane">
+    <div id="view-retorno" class="tab-view">
       <div class="card">
         <div class="card-header">2. Inventário de Retorno Pós-Festa</div>
         <div class="field" style="max-width: 380px; margin-bottom: 12px;">
           <label>Selecione a Festa em Andamento:</label>
-          <select id="select-evento-retorno" class="input-ctrl" onchange="renderizarLinhasRetorno()"></select>
+          <select id="select-evento-retorno" class="input-ctrl"></select>
         </div>
 
         <div class="table-responsive">
@@ -247,13 +245,13 @@
         </div>
 
         <div style="margin-top: 12px; text-align: right;">
-          <button class="btn-action btn-green" onclick="concluirFesta()">🏁 Fechar e Arquivar Evento</button>
+          <button type="button" id="btn-fechar-evento" class="btn btn-green">🏁 Fechar e Arquivar Evento</button>
         </div>
       </div>
     </div>
 
     <!-- ABA 4: RELATÓRIOS -->
-    <div id="tab-relatorios" class="tab-pane">
+    <div id="view-relatorios" class="tab-view">
       <div class="card">
         <div class="card-header">Histórico de Consumo por Evento</div>
         <div class="table-responsive">
@@ -297,276 +295,133 @@
       { codigo: "XAR-FRUT", categoria: "Xaropes & Frutas", item: "Xarope Monin Sabores 700ml", unidade: "Garrafa", 16, custo: 52.00 }
     ];
 
-    var itensCargaTemporaria = [];
+    var cargaTemp = [];
 
-    function obterEstoque() {
+    function carregarEstoque() {
       try {
-        var str = localStorage.getItem("db_galpao_2cucas_vfinal");
-        if (str) return JSON.parse(str);
-      } catch(e) {}
-      localStorage.setItem("db_galpao_2cucas_vfinal", JSON.stringify(DADOS_BASE));
+        var local = localStorage.getItem("cucas_stock_clean_v1");
+        if (local) {
+          var arr = JSON.parse(local);
+          if (Array.isArray(arr) && arr.length > 0) return arr;
+        }
+      } catch (e) {}
+      localStorage.setItem("cucas_stock_clean_v1", JSON.stringify(DADOS_BASE));
       return DADOS_BASE;
     }
 
     function salvarEstoque(dados) {
-      localStorage.setItem("db_galpao_2cucas_vfinal", JSON.stringify(dados));
-      atualizarDashboard();
+      localStorage.setItem("cucas_stock_clean_v1", JSON.stringify(dados));
+      renderizarTudo();
     }
 
-    function obterEventos() {
+    function carregarEventos() {
       try {
-        var str = localStorage.getItem("db_eventos_2cucas_vfinal");
-        if (str) return JSON.parse(str);
-      } catch(e) {}
+        var local = localStorage.getItem("cucas_eventos_clean_v1");
+        if (local) return JSON.parse(local);
+      } catch (e) {}
       return [];
     }
 
     function salvarEventos(dados) {
-      localStorage.setItem("db_eventos_2cucas_vfinal", JSON.stringify(dados));
-      atualizarDashboard();
+      localStorage.setItem("cucas_eventos_clean_v1", JSON.stringify(dados));
+      renderizarTudo();
     }
 
-    function forcarReset() {
-      if (confirm("Resetar todo o estoque e limpar festas cadastradas?")) {
-        localStorage.clear();
-        salvarEstoque(DADOS_BASE);
-        salvarEventos([]);
-        alert("Sistema restaurado!");
-        window.location.reload();
-      }
+    function alternarAba(nomeAba) {
+      document.querySelectorAll(".tab-view").forEach(function(el) { el.classList.remove("active"); });
+      document.querySelectorAll(".tab-btn").forEach(function(el) { el.classList.remove("active"); });
+
+      var tabTarget = document.getElementById("view-" + nomeAba);
+      var btnTarget = document.querySelector('.tab-btn[data-tab="' + nomeAba + '"]');
+      if (tabTarget) tabTarget.classList.add("active");
+      if (btnTarget) btnTarget.classList.add("active");
+
+      if (nomeAba === "retorno") atualizarSelectRetorno();
+      if (nomeAba === "relatorios") renderizarRelatorios();
     }
 
-    function alternarAba(aba) {
-      var listaAbas = ["galpao", "carga", "retorno", "relatorios"];
-      for (var i = 0; i < listaAbas.length; i++) {
-        var elTab = document.getElementById("tab-" + listaAbas[i]);
-        var elBtn = document.getElementById("tablink-" + listaAbas[i]);
-        if (elTab) elTab.className = "tab-pane";
-        if (elBtn) elBtn.className = "nav-btn";
-      }
-
-      var alvoTab = document.getElementById("tab-" + aba);
-      var alvoBtn = document.getElementById("tablink-" + aba);
-      if (alvoTab) alvoTab.className = "tab-pane active";
-      if (alvoBtn) alvoBtn.className = "nav-btn active";
-
-      if (aba === "retorno") atualizarSelectRetorno();
-      if (aba === "relatorios") exibirRelatorios();
-    }
-
-    function gravarItemGalpao() {
-      var cod = (document.getElementById("cad-sku").value || "").trim().toUpperCase();
-      var cat = document.getElementById("cad-categoria").value;
-      var desc = (document.getElementById("cad-item").value || "").trim();
-      var un = document.getElementById("cad-unidade").value;
-      var saldo = parseFloat(document.getElementById("cad-saldo").value) || 0;
-      var custo = parseFloat(document.getElementById("cad-custo-val").value) || 0;
-
-      if (!cod || !desc) {
-        alert("Preencha Código SKU e Descrição!");
-        return;
-      }
-
-      var estoque = obterEstoque();
-      var index = -1;
-      for (var i = 0; i < estoque.length; i++) {
-        if (estoque[i].codigo === cod) { index = i; break; }
-      }
-
-      var obj = { codigo: cod, categoria: cat, item: desc, unidade: un, saldo: saldo, custo: custo };
-      if (index >= 0) estoque[index] = obj;
-      else estoque.push(obj);
-
-      salvarEstoque(estoque);
-      document.getElementById("cad-sku").value = "";
-      document.getElementById("cad-item").value = "";
-      document.getElementById("cad-saldo").value = "0";
-      document.getElementById("cad-custo-val").value = "0.00";
-      alert("Item gravado com sucesso!");
-    }
-
-    function deletarItem(cod) {
-      if (confirm("Remover " + cod + " do estoque?")) {
-        var estoque = obterEstoque().filter(function(i) { return i.codigo !== cod; });
-        salvarEstoque(estoque);
-      }
-    }
-
-    function exibirTabelaGalpao() {
-      var estoque = obterEstoque();
+    function renderizarGalpao() {
+      var estoque = carregarEstoque();
       var busca = (document.getElementById("filtro-busca").value || "").toLowerCase();
       var corpo = document.getElementById("tabela-galpao-corpo");
+      var selCarga = document.getElementById("select-carga-item");
 
-      var skusCont = estoque.length;
-      var totalUnidades = 0;
-      var capitalTotal = 0;
+      var skus = estoque.length;
+      var totalUn = 0;
+      var totalCapital = 0;
       var criticos = 0;
       var html = "";
+      var optHtml = "";
 
       for (var i = 0; i < estoque.length; i++) {
         var it = estoque[i];
-        totalUnidades += it.saldo;
-        capitalTotal += (it.saldo * it.custo);
+        totalUn += it.saldo;
+        totalCapital += (it.saldo * it.custo);
         if (it.saldo <= 5) criticos++;
 
+        optHtml += '<option value="' + it.codigo + '">' + it.item + ' (Saldo: ' + it.saldo + ' ' + it.unidade + ')</option>';
+
         if (it.item.toLowerCase().indexOf(busca) > -1 || it.codigo.toLowerCase().indexOf(busca) > -1) {
-          html += "<tr>" +
-            "<td style='font-weight:bold; font-family:monospace;'>" + it.codigo + "</td>" +
-            "<td style='color:#64748b;'>" + it.categoria + "</td>" +
-            "<td style='font-weight:bold;'>" + it.item + "</td>" +
-            "<td style='font-weight:bold; color:" + (it.saldo <= 5 ? "#dc2626" : "#0f172a") + ";'>" + it.saldo + " " + it.unidade + "</td>" +
-            "<td>R$ " + it.custo.toFixed(2) + "</td>" +
-            "<td style='font-weight:bold; color:#16a34a;'>R$ " + (it.saldo * it.custo).toFixed(2) + "</td>" +
-            "<td style='text-align:center;'><button onclick=\"deletarItem('" + it.codigo + "')\" style='background:none; border:none; color:#dc2626; cursor:pointer; font-weight:bold;'>Excluir</button></td>" +
-          "</tr>";
+          html += '<tr>' +
+            '<td style="font-weight:bold; font-family:monospace;">' + it.codigo + '</td>' +
+            '<td style="color:#64748b;">' + it.categoria + '</td>' +
+            '<td style="font-weight:bold;">' + it.item + '</td>' +
+            '<td style="font-weight:bold; color:' + (it.saldo <= 5 ? '#dc2626' : '#0f172a') + ';">' + it.saldo + ' ' + it.unidade + '</td>' +
+            '<td>R$ ' + it.custo.toFixed(2) + '</td>' +
+            '<td style="font-weight:bold; color:#16a34a;">R$ ' + (it.saldo * it.custo).toFixed(2) + '</td>' +
+            '<td style="text-align:center;"><button type="button" class="btn-excluir-item" data-sku="' + it.codigo + '" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:bold;">Excluir</button></td>' +
+          '</tr>';
         }
       }
 
       corpo.innerHTML = html;
-      document.getElementById("kpi-qtd-skus").innerText = skusCont + " SKUs (" + totalUnidades + " un)";
-      document.getElementById("kpi-total-dinheiro").innerText = "R$ " + capitalTotal.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById("kpi-criticos-cont").innerText = criticos + " alerta(s)";
+      selCarga.innerHTML = optHtml;
 
-      var selCarga = document.getElementById("select-carga-item");
-      if (selCarga) {
-        var optHtml = "";
-        for (var j = 0; j < estoque.length; j++) {
-          optHtml += "<option value='" + estoque[j].codigo + "'>" + estoque[j].item + " (Saldo: " + estoque[j].saldo + " " + estoque[j].unidade + ")</option>";
-        }
-        selCarga.innerHTML = optHtml;
-      }
+      document.getElementById("kpi-skus").innerText = skus + " SKUs (" + totalUn + " un)";
+      document.getElementById("kpi-capital").innerText = "R$ " + totalCapital.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("kpi-criticos").innerText = criticos + " alerta(s)";
+
+      document.querySelectorAll(".btn-excluir-item").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var sku = this.getAttribute("data-sku");
+          if (confirm("Excluir item " + sku + " do almoxarifado?")) {
+            var filtrado = carregarEstoque().filter(function(x) { return x.codigo !== sku; });
+            salvarEstoque(filtrado);
+          }
+        });
+      });
     }
 
-    function adicionarItemCarga() {
-      var sel = document.getElementById("select-carga-item");
-      var cod = sel.value;
-      var qtd = parseFloat(document.getElementById("input-carga-qtd").value) || 0;
-      if (!cod || qtd <= 0) return;
-
-      var estoque = obterEstoque();
-      var prod = null;
-      for (var i = 0; i < estoque.length; i++) {
-        if (estoque[i].codigo === cod) { prod = estoque[i]; break; }
-      }
-      if (!prod) return;
-
-      var jaSeparado = 0;
-      for (var k = 0; k < itensCargaTemporaria.length; k++) {
-        if (itensCargaTemporaria[k].codigo === cod) jaSeparado += itensCargaTemporaria[k].qtd;
-      }
-
-      if (jaSeparado + qtd > prod.saldo) {
-        alert("Saldo insuficiente no galpão! Disponível: " + prod.saldo + " " + prod.unidade);
-        return;
-      }
-
-      var existe = false;
-      for (var m = 0; m < itensCargaTemporaria.length; m++) {
-        if (itensCargaTemporaria[m].codigo === cod) {
-          itensCargaTemporaria[m].qtd += qtd;
-          existe = true;
-          break;
-        }
-      }
-      if (!existe) {
-        itensCargaTemporaria.push({ codigo: cod, item: prod.item, unidade: prod.unidade, qtd: qtd, custo: prod.custo });
-      }
-
-      desenharBoxCarga();
-    }
-
-    function esvaziarCarga() {
-      itensCargaTemporaria = [];
-      desenharBoxCarga();
-    }
-
-    function desenharBoxCarga() {
+    function renderizarCargaBox() {
       var box = document.getElementById("box-carga-separada");
-      if (itensCargaTemporaria.length === 0) {
-        box.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>Nenhum item na carga.</p>";
+      if (cargaTemp.length === 0) {
+        box.innerHTML = '<p style="color:#94a3b8; font-size:12px; text-align:center; padding:15px;">Nenhum item na carga.</p>';
         return;
       }
-
       var html = "";
-      for (var i = 0; i < itensCargaTemporaria.length; i++) {
-        var it = itensCargaTemporaria[i];
-        html += "<div style='display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:12px;'>" +
-          "<div><b>" + it.item + "</b><br><span style='color:#64748b;'>" + it.qtd + " " + it.unidade + "</span></div>" +
-        "</div>";
+      for (var i = 0; i < cargaTemp.length; i++) {
+        var it = cargaTemp[i];
+        html += '<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">' +
+          '<div><b>' + it.item + '</b><br><span style="color:#64748b;">' + it.qtd + ' ' + it.unidade + '</span></div>' +
+        '</div>';
       }
       box.innerHTML = html;
     }
 
-    function despacharEventoCarga() {
-      var nome = (document.getElementById("festa-nome").value || "").trim();
-      var data = document.getElementById("festa-data").value || new Date().toISOString().split('T')[0];
-      var resp = (document.getElementById("festa-resp").value || "").trim() || "Equipe de Bar";
-
-      if (!nome) { alert("Digite o nome da festa / evento!"); return; }
-      if (itensCargaTemporaria.length === 0) { alert("Adicione itens à carga!"); return; }
-
-      var estoque = obterEstoque();
-      var eventos = obterEventos();
-
-      for (var i = 0; i < itensCargaTemporaria.length; i++) {
-        var c = itensCargaTemporaria[i];
-        for (var j = 0; j < estoque.length; j++) {
-          if (estoque[j].codigo === c.codigo) {
-            estoque[j].saldo -= c.qtd;
-            break;
-          }
-        }
-      }
-
-      var listaItensEvento = [];
-      for (var k = 0; k < itensCargaTemporaria.length; k++) {
-        var itemC = itensCargaTemporaria[k];
-        listaItensEvento.push({
-          codigo: itemC.codigo,
-          item: itemC.item,
-          unidade: itemC.unidade,
-          custo: itemC.custo,
-          enviado: itemC.qtd,
-          devolvido: 0,
-          quebra: 0,
-          consumido: 0,
-          custoTotal: 0
-        });
-      }
-
-      eventos.unshift({
-        id: new Date().getTime(),
-        nome: nome,
-        data: data,
-        responsavel: resp,
-        status: "Em Andamento",
-        itens: listaItensEvento
-      });
-
-      salvarEstoque(estoque);
-      salvarEventos(eventos);
-
-      itensCargaTemporaria = [];
-      document.getElementById("festa-nome").value = "";
-      desenharBoxCarga();
-      alert("Carga despachada com sucesso!");
-      alternarAba("retorno");
-    }
-
     function atualizarSelectRetorno() {
-      var eventos = obterEventos().filter(function(e) { return e.status === "Em Andamento"; });
+      var eventos = carregarEventos().filter(function(e) { return e.status === "Em Andamento"; });
       var select = document.getElementById("select-evento-retorno");
-      document.getElementById("kpi-festas-abertas").innerText = eventos.length;
+      document.getElementById("kpi-eventos").innerText = eventos.length;
 
       if (eventos.length === 0) {
-        select.innerHTML = "<option value=''>Nenhuma festa em andamento</option>";
-        document.getElementById("tabela-retorno-corpo").innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#94a3b8;'>Nenhuma festa aberta.</td></tr>";
+        select.innerHTML = '<option value="">Nenhuma festa em andamento</option>';
+        document.getElementById("tabela-retorno-corpo").innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">Nenhuma festa em andamento.</td></tr>';
         return;
       }
 
       var html = "";
       for (var i = 0; i < eventos.length; i++) {
-        html += "<option value='" + eventos[i].id + "'>" + eventos[i].nome + " (" + eventos[i].data + ") - " + eventos[i].responsavel + "</option>";
+        html += '<option value="' + eventos[i].id + '">' + eventos[i].nome + ' (' + eventos[i].data + ')</option>';
       }
       select.innerHTML = html;
       renderizarLinhasRetorno();
@@ -577,84 +432,66 @@
       var evId = parseInt(select.value);
       if (!evId) return;
 
-      var eventos = obterEventos();
-      var ev = null;
-      for (var i = 0; i < eventos.length; i++) {
-        if (eventos[i].id === evId) { ev = eventos[i]; break; }
-      }
+      var eventos = carregarEventos();
+      var ev = eventos.find(function(x) { return x.id === evId; });
       if (!ev) return;
 
       var corpo = document.getElementById("tabela-retorno-corpo");
       var html = "";
       for (var j = 0; j < ev.itens.length; j++) {
         var it = ev.itens[j];
-        html += "<tr>" +
-          "<td style='font-weight:bold;'>" + it.item + "</td>" +
-          "<td style='font-weight:bold; color:#b45309;'>" + it.enviado + " " + it.unidade + "</td>" +
-          "<td><input type='number' id='dev-fld-" + j + "' value='" + it.devolvido + "' min='0' max='" + it.enviado + "' class='input-ctrl' style='width:65px; padding:3px;'></td>" +
-          "<td><input type='number' id='que-fld-" + j + "' value='" + it.quebra + "' min='0' max='" + it.enviado + "' class='input-ctrl' style='width:65px; padding:3px; color:#dc2626;'></td>" +
-          "<td style='font-weight:bold;'>" + it.consumido + " " + it.unidade + "</td>" +
-          "<td style='font-weight:bold; color:#16a34a;'>R$ " + it.custoTotal.toFixed(2) + "</td>" +
-          "<td style='text-align:center;'><button class='btn-action btn-amber' style='padding:3px 8px; font-size:11px;' onclick='salvarLinhaIndividual(" + ev.id + ", " + j + ")'>Salvar</button></td>" +
-        "</tr>";
+        html += '<tr>' +
+          '<td style="font-weight:bold;">' + it.item + '</td>' +
+          '<td style="font-weight:bold; color:#b45309;">' + it.enviado + ' ' + it.unidade + '</td>' +
+          '<td><input type="number" id="dev-inp-' + j + '" value="' + it.devolvido + '" min="0" max="' + it.enviado + '" class="input-ctrl" style="width:65px; padding:3px;"></td>' +
+          '<td><input type="number" id="que-inp-' + j + '" value="' + it.quebra + '" min="0" max="' + it.enviado + '" class="input-ctrl" style="width:65px; padding:3px; color:#dc2626;"></td>' +
+          '<td style="font-weight:bold;">' + it.consumido + ' ' + it.unidade + '</td>' +
+          '<td style="font-weight:bold; color:#16a34a;">R$ ' + it.custoTotal.toFixed(2) + '</td>' +
+          '<td style="text-align:center;"><button type="button" class="btn btn-amber btn-salvar-retorno" data-ev="' + ev.id + '" data-idx="' + j + '" style="padding:3px 8px; font-size:11px;">Salvar</button></td>' +
+        '</tr>';
       }
       corpo.innerHTML = html;
+
+      document.querySelectorAll(".btn-salvar-retorno").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var eId = parseInt(this.getAttribute("data-ev"));
+          var idx = parseInt(this.getAttribute("data-idx"));
+          salvarItemRetorno(eId, idx);
+        });
+      });
     }
 
-    function salvarLinhaIndividual(evId, idx) {
-      var eventos = obterEventos();
-      var estoque = obterEstoque();
-      var ev = null;
-      for (var i = 0; i < eventos.length; i++) {
-        if (eventos[i].id === evId) { ev = eventos[i]; break; }
-      }
+    function salvarItemRetorno(evId, idx) {
+      var eventos = carregarEventos();
+      var estoque = carregarEstoque();
+      var ev = eventos.find(function(x) { return x.id === evId; });
       if (!ev) return;
 
-      var item = ev.itens[idx];
-      var dev = parseFloat(document.getElementById("dev-fld-" + idx).value) || 0;
-      var que = parseFloat(document.getElementById("que-fld-" + idx).value) || 0;
+      var it = ev.itens[idx];
+      var dev = parseFloat(document.getElementById("dev-inp-" + idx).value) || 0;
+      var que = parseFloat(document.getElementById("que-inp-" + idx).value) || 0;
 
-      if (dev + que > item.enviado) {
-        alert("Devolução + Quebra não pode ultrapassar o total enviado!");
+      if (dev + que > it.enviado) {
+        alert("Devolução + Quebra não pode ser maior que o enviado!");
         return;
       }
 
-      var dif = dev - item.devolvido;
-      for (var j = 0; j < estoque.length; j++) {
-        if (estoque[j].codigo === item.codigo) {
-          estoque[j].saldo += dif;
-          break;
-        }
-      }
+      var dif = dev - it.devolvido;
+      var gItem = estoque.find(function(x) { return x.codigo === it.codigo; });
+      if (gItem) gItem.saldo += dif;
 
-      item.devolvido = dev;
-      item.quebra = que;
-      item.consumido = item.enviado - (dev + que);
-      item.custoTotal = (item.consumido + item.quebra) * item.custo;
+      it.devolvido = dev;
+      it.quebra = que;
+      it.consumido = it.enviado - (dev + que);
+      it.custoTotal = (it.consumido + it.quebra) * it.custo;
 
       salvarEstoque(estoque);
       salvarEventos(eventos);
       renderizarLinhasRetorno();
     }
 
-    function concluirFesta() {
-      var select = document.getElementById("select-evento-retorno");
-      var evId = parseInt(select.value);
-      if (!evId) return;
-
-      if (confirm("Finalizar e arquivar este evento nos relatórios?")) {
-        var eventos = obterEventos();
-        for (var i = 0; i < eventos.length; i++) {
-          if (eventos[i].id === evId) { eventos[i].status = "Finalizado"; break; }
-        }
-        salvarEventos(eventos);
-        atualizarSelectRetorno();
-        alert("Evento finalizado com sucesso!");
-      }
-    }
-
-    function exibirRelatorios() {
-      var eventos = obterEventos();
+    function renderizarRelatorios() {
+      var eventos = carregarEventos();
       var corpo = document.getElementById("tabela-relatorios-corpo");
       var html = "";
 
@@ -662,32 +499,180 @@
         var ev = eventos[i];
         for (var j = 0; j < ev.itens.length; j++) {
           var it = ev.itens[j];
-          html += "<tr>" +
-            "<td style='color:#64748b;'>" + ev.data + "</td>" +
-            "<td style='font-weight:bold;'>" + ev.nome + "</td>" +
-            "<td>" + ev.responsavel + "</td>" +
-            "<td>" + it.item + "</td>" +
-            "<td>" + it.enviado + "</td>" +
-            "<td style='color:#16a34a; font-weight:bold;'>" + it.devolvido + "</td>" +
-            "<td style='color:#b45309; font-weight:bold;'>" + it.consumido + "</td>" +
-            "<td style='color:#16a34a; font-weight:bold;'>R$ " + it.custoTotal.toFixed(2) + "</td>" +
-          "</tr>";
+          html += '<tr>' +
+            '<td style="color:#64748b;">' + ev.data + '</td>' +
+            '<td style="font-weight:bold;">' + ev.nome + '</td>' +
+            '<td>' + ev.responsavel + '</td>' +
+            '<td>' + it.item + '</td>' +
+            '<td>' + it.enviado + '</td>' +
+            '<td style="color:#16a34a; font-weight:bold;">' + it.devolvido + '</td>' +
+            '<td style="color:#b45309; font-weight:bold;">' + it.consumido + '</td>' +
+            '<td style="color:#16a34a; font-weight:bold;">R$ ' + it.custoTotal.toFixed(2) + '</td>' +
+          '</tr>';
         }
       }
-      corpo.innerHTML = html || "<tr><td colspan='8' style='text-align:center; padding:20px; color:#94a3b8;'>Nenhum evento registrado ainda.</td></tr>";
+      corpo.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px; color:#94a3b8;">Nenhum evento registrado.</td></tr>';
     }
 
-    function atualizarDashboard() {
-      exibirTabelaGalpao();
-      var evs = obterEventos().filter(function(e) { return e.status === "Em Andamento"; });
-      document.getElementById("kpi-festas-abertas").innerText = evs.length;
+    function renderizarTudo() {
+      renderizarGalpao();
+      renderizarCargaBox();
+      var evs = carregarEventos().filter(function(e) { return e.status === "Em Andamento"; });
+      document.getElementById("kpi-eventos").innerText = evs.length;
     }
 
-    window.onload = function() {
-      atualizarDashboard();
+    // EVENT LISTENERS DESBLOQUEADOS (Sem depender de tags inline)
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      // Abas
+      document.querySelectorAll(".tab-btn").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          alternarAba(this.getAttribute("data-tab"));
+        });
+      });
+
+      // Gravar Item
+      document.getElementById("btn-gravar-item").addEventListener("click", function() {
+        var cod = (document.getElementById("cad-sku").value || "").trim().toUpperCase();
+        var cat = document.getElementById("cad-cat").value;
+        var desc = (document.getElementById("cad-item").value || "").trim();
+        var un = document.getElementById("cad-un").value;
+        var saldo = parseFloat(document.getElementById("cad-saldo").value) || 0;
+        var custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+
+        if (!cod || !desc) {
+          alert("Preencha Código SKU e Descrição!");
+          return;
+        }
+
+        var estoque = carregarEstoque();
+        var idx = estoque.findIndex(function(x) { return x.codigo === cod; });
+        var obj = { codigo: cod, categoria: cat, item: desc, unidade: un, saldo: saldo, custo: custo };
+
+        if (idx >= 0) estoque[idx] = obj;
+        else estoque.push(obj);
+
+        salvarEstoque(estoque);
+        document.getElementById("cad-sku").value = "";
+        document.getElementById("cad-item").value = "";
+        alert("Bebida gravada com sucesso!");
+      });
+
+      // Busca
+      document.getElementById("filtro-busca").addEventListener("input", renderizarGalpao);
+
+      // Adicionar na Carga
+      document.getElementById("btn-add-carga").addEventListener("click", function() {
+        var cod = document.getElementById("select-carga-item").value;
+        var qtd = parseFloat(document.getElementById("input-carga-qtd").value) || 0;
+        if (!cod || qtd <= 0) return;
+
+        var estoque = carregarEstoque();
+        var prod = estoque.find(function(x) { return x.codigo === cod; });
+        if (!prod) return;
+
+        var jaSeparado = cargaTemp.filter(function(x) { return x.codigo === cod; }).reduce(function(a, b) { return a + b.qtd; }, 0);
+        if (jaSeparado + qtd > prod.saldo) {
+          alert("Saldo insuficiente no galpão! Disponível: " + prod.saldo + " " + prod.unidade);
+          return;
+        }
+
+        var existe = cargaTemp.find(function(x) { return x.codigo === cod; });
+        if (existe) existe.qtd += qtd;
+        else cargaTemp.push({ codigo: cod, item: prod.item, unidade: prod.unidade, qtd: qtd, custo: prod.custo });
+
+        renderizarCargaBox();
+      });
+
+      // Limpar Carga
+      document.getElementById("btn-limpar-carga").addEventListener("click", function() {
+        cargaTemp = [];
+        renderizarCargaBox();
+      });
+
+      // Despachar Festa
+      document.getElementById("btn-despachar-festa").addEventListener("click", function() {
+        var nome = (document.getElementById("festa-nome").value || "").trim();
+        var data = document.getElementById("festa-data").value || new Date().toISOString().split('T')[0];
+        var resp = (document.getElementById("festa-resp").value || "").trim() || "Equipe de Bar";
+
+        if (!nome) { alert("Digite o nome da festa / evento!"); return; }
+        if (cargaTemp.length === 0) { alert("Adicione itens à carga!"); return; }
+
+        var estoque = carregarEstoque();
+        var eventos = carregarEventos();
+
+        cargaTemp.forEach(function(c) {
+          var itemG = estoque.find(function(x) { return x.codigo === c.codigo; });
+          if (itemG) itemG.saldo = Math.max(0, itemG.saldo - c.qtd);
+        });
+
+        eventos.unshift({
+          id: new Date().getTime(),
+          nome: nome,
+          data: data,
+          responsavel: resp,
+          status: "Em Andamento",
+          itens: cargaTemp.map(function(c) {
+            return {
+              codigo: c.codigo,
+              item: c.item,
+              unidade: c.unidade,
+              custo: c.custo,
+              enviado: c.qtd,
+              devolvido: 0,
+              quebra: 0,
+              consumido: 0,
+              custoTotal: 0
+            };
+          })
+        });
+
+        salvarEstoque(estoque);
+        salvarEventos(eventos);
+
+        cargaTemp = [];
+        document.getElementById("festa-nome").value = "";
+        renderizarCargaBox();
+        alert("Carga despachada com sucesso!");
+        alternarAba("retorno");
+      });
+
+      // Select de retorno
+      document.getElementById("select-evento-retorno").addEventListener("change", renderizarLinhasRetorno);
+
+      // Concluir Festa
+      document.getElementById("btn-fechar-evento").addEventListener("click", function() {
+        var select = document.getElementById("select-evento-retorno");
+        var evId = parseInt(select.value);
+        if (!evId) return;
+
+        if (confirm("Finalizar e arquivar este evento nos relatórios?")) {
+          var eventos = carregarEventos();
+          var ev = eventos.find(function(x) { return x.id === evId; });
+          if (ev) ev.status = "Finalizado";
+          salvarEventos(eventos);
+          atualizarSelectRetorno();
+          alert("Evento finalizado com sucesso!");
+        }
+      });
+
+      // Reset
+      document.getElementById("btn-reset-cache").addEventListener("click", function() {
+        if (confirm("Deseja restaurar todo o estoque para os 15 produtos padrão?")) {
+          localStorage.clear();
+          salvarEstoque(DADOS_BASE);
+          salvarEventos([]);
+          window.location.reload();
+        }
+      });
+
+      // Data padrão
       var dt = document.getElementById("festa-data");
       if (dt) dt.value = new Date().toISOString().split('T')[0];
-    };
+
+      renderizarTudo();
+    });
   </script>
 </body>
 </html>
