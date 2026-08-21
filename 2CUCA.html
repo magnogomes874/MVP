@@ -3,38 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2 Cucas - Bar & Eventos (Gestão de Estoque)</title>
+  <title>2 Cucas - Bar & Eventos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-slate-900 font-sans text-slate-100 antialiased min-h-screen pb-16">
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen pb-16">
 
-  <!-- CABEÇALHO -->
-  <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-50 shadow-md">
+  <!-- CABEÇALHO CLARO -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="bg-amber-500 text-slate-950 p-2 rounded-xl text-xl flex items-center justify-center font-black shadow-lg shadow-amber-500/20">
+        <div class="bg-amber-500 text-white p-2.5 rounded-xl text-xl flex items-center justify-center font-black shadow-md shadow-amber-200">
           <i class="ph ph-brandy"></i>
         </div>
         <div>
-          <h1 class="text-xl font-black text-amber-400 tracking-wide uppercase">2 Cucas</h1>
-          <p class="text-xs text-slate-400 font-medium">Controle de Estoque & Operação de Bar em Eventos</p>
+          <h1 class="text-xl font-black text-slate-900 tracking-tight">2 Cucas</h1>
+          <p class="text-xs text-amber-700 font-semibold">Controle de Estoque & Bar em Eventos</p>
         </div>
       </div>
 
       <!-- Abas de Navegação -->
-      <nav class="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
-        <button onclick="trocarAba('galpao')" id="nav-galpao" class="px-3.5 py-2 rounded-lg bg-amber-500 text-slate-950 shadow transition font-bold">🏢 Almoxarifado Central</button>
-        <button onclick="trocarAba('carga')" id="nav-carga" class="px-3.5 py-2 rounded-lg text-slate-300 hover:text-white transition">🚚 Saída p/ Festa</button>
-        <button onclick="trocarAba('retorno')" id="nav-retorno" class="px-3.5 py-2 rounded-lg text-slate-300 hover:text-white transition">🔄 Retorno & Sobras</button>
-        <button onclick="trocarAba('relatorios')" id="nav-relatorios" class="px-3.5 py-2 rounded-lg text-slate-300 hover:text-white transition">📊 Relatórios & Excel</button>
+      <nav class="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+        <button onclick="trocarAba('galpao')" id="nav-galpao" class="px-3.5 py-2 rounded-lg bg-white text-amber-700 shadow-sm transition font-bold">🏢 Almoxarifado Central</button>
+        <button onclick="trocarAba('carga')" id="nav-carga" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🚚 Saída p/ Festa</button>
+        <button onclick="trocarAba('retorno')" id="nav-retorno" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🔄 Retorno & Sobras</button>
+        <button onclick="trocarAba('relatorios')" id="nav-relatorios" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">📊 Relatórios & Excel</button>
       </nav>
 
       <div class="flex items-center gap-2">
-        <button onclick="exportarCSV()" class="text-xs font-bold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 px-3 py-2 rounded-xl hover:bg-emerald-600/30 transition flex items-center gap-1">
+        <button onclick="exportarCSV()" class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl hover:bg-emerald-100 transition flex items-center gap-1">
           <i class="ph ph-file-csv text-base"></i> Baixar CSV
         </button>
-        <button onclick="resetarDados()" class="text-xs text-rose-400 hover:underline px-2">Resetar</button>
+        <button onclick="resetarDados()" class="text-xs text-rose-600 hover:underline px-2 font-medium">Resetar</button>
       </div>
     </div>
   </header>
@@ -43,40 +43,40 @@
 
     <!-- KPIs DO GALPÃO -->
     <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Itens / Variedade</span>
-        <h3 id="kpi-itens" class="text-lg md:text-xl font-black text-amber-400 mt-1">0</h3>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Itens Cadastrados</span>
+        <h3 id="kpi-itens" class="text-lg md:text-xl font-black text-slate-900 mt-1">0</h3>
       </div>
-      <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-sm">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
         <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Capital no Galpão</span>
-        <h3 id="kpi-capital" class="text-lg md:text-xl font-black text-emerald-400 mt-1">R$ 0,00</h3>
+        <h3 id="kpi-capital" class="text-lg md:text-xl font-black text-emerald-600 mt-1">R$ 0,00</h3>
       </div>
-      <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Eventos Ativos</span>
-        <h3 id="kpi-eventos" class="text-lg md:text-xl font-black text-blue-400 mt-1">0 festa(s)</h3>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Eventos em Andamento</span>
+        <h3 id="kpi-eventos" class="text-lg md:text-xl font-black text-blue-600 mt-1">0 festa(s)</h3>
       </div>
-      <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-sm col-span-2 md:col-span-1">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Nível de Segurança</span>
-        <h3 id="kpi-criticos" class="text-lg md:text-xl font-black text-rose-400 mt-1">0 alerta(s)</h3>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Estoque Baixo</span>
+        <h3 id="kpi-criticos" class="text-lg md:text-xl font-black text-rose-600 mt-1">0 alerta(s)</h3>
       </div>
     </section>
 
     <!-- ABA 1: ALMOXARIFADO CENTRAL -->
     <div id="aba-galpao" class="space-y-6">
       
-      <!-- Entrada de Compras / Novo Item -->
-      <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4 flex items-center gap-2">
-          <i class="ph ph-plus-circle text-lg"></i> Cadastrar Item ou Dar Entrada de Compra
+      <!-- Entrada / Cadastro -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-4 flex items-center gap-2">
+          <i class="ph ph-plus-circle text-amber-500 text-lg"></i> Cadastrar Nova Bebida ou Dar Entrada
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Código SKU:</label>
-            <input id="cad-cod" type="text" placeholder="DEST-GIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold uppercase focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Código SKU:</label>
+            <input id="cad-cod" type="text" placeholder="DEST-TEQ" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold uppercase focus:bg-white focus:border-amber-500 outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Categoria:</label>
-            <select id="cad-cat" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs focus:border-amber-500 outline-none font-medium">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Categoria:</label>
+            <select id="cad-cat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none font-medium">
               <option>Destilados</option>
               <option>Aperitivos & Licores</option>
               <option>Espumantes & Vinhos</option>
@@ -87,12 +87,12 @@
             </select>
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Descrição do Item:</label>
-            <input id="cad-desc" type="text" placeholder="Ex: Gin Tanqueray London Dry 750ml" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Descrição do Item:</label>
+            <input id="cad-desc" type="text" placeholder="Ex: Tequila José Cuervo Ouro 750ml" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Unidade:</label>
-            <select id="cad-un" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs focus:border-amber-500 outline-none font-medium">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Unidade:</label>
+            <select id="cad-un" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none font-medium">
               <option>Garrafa</option>
               <option>Fardo/Pack</option>
               <option>Lata</option>
@@ -101,29 +101,29 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Saldo Galpão:</label>
-            <input id="cad-qtd" type="number" step="0.5" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Saldo Galpão:</label>
+            <input id="cad-qtd" type="number" step="0.5" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Custo Unit. (R$):</label>
-            <input id="cad-custo" type="number" step="0.01" value="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Custo Unit. (R$):</label>
+            <input id="cad-custo" type="number" step="0.01" value="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
         </div>
         <div class="mt-4 flex justify-end">
-          <button onclick="salvarItemGalpao()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition">Gravar no Almoxarifado</button>
+          <button onclick="salvarItemGalpao()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-amber-200 transition">Gravar no Almoxarifado</button>
         </div>
       </div>
 
       <!-- Tabela do Almoxarifado -->
-      <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm space-y-4">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400">Posição Geral do Galpão</h2>
-          <input id="filtro-busca" oninput="renderizarGalpao()" type="text" placeholder="Buscar por código ou descrição..." class="border border-slate-700 bg-slate-900 text-xs rounded-xl px-3 py-2 w-full md:w-64 focus:border-amber-500 outline-none">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800">Posição Geral do Galpão</h2>
+          <input id="filtro-busca" oninput="renderizarGalpao()" type="text" placeholder="Buscar por código ou descrição..." class="border border-slate-200 bg-slate-50 text-xs rounded-xl px-3 py-2 w-full md:w-64 focus:bg-white focus:border-amber-500 outline-none">
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900 text-slate-400 uppercase font-bold border-b border-slate-800">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
               <tr>
                 <th class="p-3">SKU</th>
                 <th class="p-3">Categoria</th>
@@ -134,86 +134,86 @@
                 <th class="p-3 text-center">Ações</th>
               </tr>
             </thead>
-            <tbody id="tabela-galpao-corpo" class="divide-y divide-slate-800 font-medium"></tbody>
+            <tbody id="tabela-galpao-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ABA 2: SAÍDA P/ EVENTO (ROMANEIO) -->
+    <!-- ABA 2: SAÍDA P/ EVENTO -->
     <div id="aba-carga" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
       
-      <div class="lg:col-span-2 bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm space-y-4">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-          <i class="ph ph-truck text-lg"></i> 1. Identificação do Evento & Adição de Itens
+      <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+          <i class="ph ph-truck text-amber-500 text-lg"></i> 1. Identificação do Evento & Carga
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Nome do Evento / Cliente:</label>
-            <input id="evento-nome" type="text" placeholder="Ex: Casamento Luísa & Gabriel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Evento / Cliente:</label>
+            <input id="evento-nome" type="text" placeholder="Ex: Casamento Marina & Thiago" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Data:</label>
-            <input id="evento-data" type="date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none text-slate-300">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Data:</label>
+            <input id="evento-data" type="date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none text-slate-700">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Barman / Líder Responsável:</label>
-          <input id="evento-resp" type="text" placeholder="Ex: Marcos (Chefe de Bar)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Barman / Chefe de Bar:</label>
+          <input id="evento-resp" type="text" placeholder="Ex: Rodrigo (Líder da Noite)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
         </div>
 
-        <div class="border-t border-slate-800 pt-4 grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
+        <div class="border-t border-slate-100 pt-4 grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
           <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Bebida / Insumo:</label>
-            <select id="carga-item" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs font-medium focus:border-amber-500 outline-none"></select>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Bebida / Insumo:</label>
+            <select id="carga-item" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs font-medium focus:bg-white focus:border-amber-500 outline-none"></select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Qtd Envio:</label>
-            <input id="carga-qtd" type="number" min="0.5" step="0.5" value="1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:border-amber-500 outline-none">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Qtd Envio:</label>
+            <input id="carga-qtd" type="number" min="0.5" step="0.5" value="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
-          <button onclick="adicionarNaCarga()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-xl text-xs transition">+ Incluir</button>
+          <button onclick="adicionarNaCarga()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs transition shadow-sm">+ Incluir</button>
         </div>
       </div>
 
-      <!-- Lista de Carga / Van -->
-      <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+      <!-- Lista da Carga -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
         <div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center justify-between">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center justify-between">
             <span>📦 Carga Separada</span>
-            <button onclick="limparCarga()" class="text-xs text-rose-400 hover:underline font-normal">Limpar</button>
+            <button onclick="limparCarga()" class="text-xs text-rose-600 hover:underline font-normal">Limpar</button>
           </h2>
 
-          <div id="lista-carga-itens" class="space-y-2 max-h-60 overflow-y-auto text-xs divide-y divide-slate-800">
-            <p class="text-slate-500 italic text-center py-6">Nenhum item na carga.</p>
+          <div id="lista-carga-itens" class="space-y-2 max-h-60 overflow-y-auto text-xs divide-y divide-slate-100">
+            <p class="text-slate-400 italic text-center py-6">Nenhum item na carga.</p>
           </div>
         </div>
 
-        <button onclick="despacharEvento()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+        <button onclick="despacharEvento()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-3.5 rounded-xl shadow-md shadow-amber-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
           <i class="ph ph-paper-plane-right text-lg"></i> Despachar Carga & Baixar Galpão
         </button>
       </div>
     </div>
 
-    <!-- ABA 3: RETORNO & SOBRAS (INVENTÁRIO PÓS-EVENTO) -->
+    <!-- ABA 3: RETORNO & SOBRAS -->
     <div id="aba-retorno" class="hidden space-y-6">
-      <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm space-y-4">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-          <i class="ph ph-arrow-counter-clockwise text-lg"></i> 2. Inventário de Retorno Pós-Evento
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+          <i class="ph ph-arrow-counter-clockwise text-amber-500 text-lg"></i> 2. Inventário de Retorno Pós-Evento
         </h2>
-        <p class="text-xs text-slate-400">Selecione o evento em andamento. Ao lançar garrafas que voltaram lacradas, o saldo retorna automaticamente ao almoxarifado.</p>
+        <p class="text-xs text-slate-500">Selecione o evento em andamento. Ao lançar garrafas que voltaram lacradas, o saldo retorna automaticamente ao estoque do almoxarifado.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Selecione a Festa:</label>
-            <select id="retorno-evento-select" onchange="carregarItensRetorno()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-amber-400 focus:border-amber-500 outline-none"></select>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione a Festa:</label>
+            <select id="retorno-evento-select" onchange="carregarItensRetorno()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 outline-none"></select>
           </div>
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900 text-slate-400 uppercase font-bold border-b border-slate-800">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
               <tr>
                 <th class="p-3">Item</th>
                 <th class="p-3">Enviado</th>
@@ -224,12 +224,12 @@
                 <th class="p-3 text-center">Ação</th>
               </tr>
             </thead>
-            <tbody id="tabela-retorno-corpo" class="divide-y divide-slate-800 font-medium"></tbody>
+            <tbody id="tabela-retorno-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
           </table>
         </div>
 
         <div class="flex justify-end pt-2">
-          <button onclick="concluirEvento()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition">
+          <button onclick="concluirEvento()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm">
             🏁 Fechar e Arquivar Evento
           </button>
         </div>
@@ -237,16 +237,16 @@
     </div>
 
     <!-- ABA 4: HISTÓRICO & RELATÓRIOS -->
-    <div id="aba-relatorios" class="hidden bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm space-y-4">
+    <div id="aba-relatorios" class="hidden bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div class="flex justify-between items-center">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-          <i class="ph ph-receipt text-lg"></i> Relatório de Consumo por Evento
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+          <i class="ph ph-receipt text-amber-500 text-lg"></i> Relatório de Consumo por Evento
         </h2>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-900 text-slate-400 uppercase font-bold border-b border-slate-800">
+        <table class="w-full text-left text-xs text-slate-600">
+          <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
             <tr>
               <th class="p-3">Data</th>
               <th class="p-3">Evento</th>
@@ -258,7 +258,7 @@
               <th class="p-3">Custo Total</th>
             </tr>
           </thead>
-          <tbody id="tabela-historico-corpo" class="divide-y divide-slate-800 font-medium"></tbody>
+          <tbody id="tabela-historico-corpo" class="divide-y divide-slate-100 font-medium"></tbody>
         </table>
       </div>
     </div>
@@ -266,17 +266,23 @@
   </main>
 
   <script>
+    // ESTOQUE INICIAL COMPOSTO DE GARRAFAS E FARDOS
     const GALPAO_PADRAO = [
       { codigo: "DEST-GIN", categoria: "Destilados", item: "Gin Tanqueray London Dry 750ml", unidade: "Garrafa", saldo: 24, custo: 85.00 },
-      { codigo: "DEST-VOD", categoria: "Destilados", item: "Vodka Absolut 1L", unidade: "Garrafa", saldo: 30, custo: 68.00 },
+      { codigo: "DEST-VOD", categoria: "Destilados", item: "Vodka Absolut Regular 1L", unidade: "Garrafa", saldo: 30, custo: 68.00 },
       { codigo: "DEST-WHI1", categoria: "Destilados", item: "Whisky Johnnie Walker Red Label 1L", unidade: "Garrafa", saldo: 18, custo: 74.00 },
       { codigo: "DEST-WHI2", categoria: "Destilados", item: "Whisky Black Label 12 Anos 1L", unidade: "Garrafa", saldo: 10, custo: 138.00 },
+      { codigo: "DEST-RUM", categoria: "Destilados", item: "Rum Bacardi Carta Blanca 980ml", unidade: "Garrafa", saldo: 15, custo: 42.00 },
+      { codigo: "DEST-TEQ", categoria: "Destilados", item: "Tequila José Cuervo Ouro 750ml", unidade: "Garrafa", saldo: 8, custo: 95.00 },
       { codigo: "DEST-APER", categoria: "Aperitivos & Licores", item: "Aperitivo Aperol 750ml", unidade: "Garrafa", saldo: 20, custo: 49.90 },
-      { codigo: "ESP-BRUT", categoria: "Espumantes & Vinhos", item: "Espumante Chandon Brut 750ml", unidade: "Garrafa", saldo: 36, custo: 75.00 },
-      { codigo: "CERV-HEIN", categoria: "Cervejas", item: "Cerveja Heineken Long Neck (Pack 24un)", unidade: "Fardo/Pack", 25, custo: 132.00 },
-      { codigo: "MIX-TON", categoria: "Misturas & Não Alcoólicos", item: "Água Tônica Antarctica (Pack 12un)", unidade: "Fardo/Pack", 30, custo: 38.00 },
+      { codigo: "DEST-CAMP", categoria: "Aperitivos & Licores", item: "Campari Bitter 900ml", unidade: "Garrafa", saldo: 12, custo: 45.00 },
+      { codigo: "DEST-LIC", categoria: "Aperitivos & Licores", item: "Licor 43 Diego Zamora 700ml", unidade: "Garrafa", saldo: 6, custo: 125.00 },
+      { codigo: "ESP-BRUT", categoria: "Espumantes & Vinhos", item: "Espumante Chandon Réserve Brut 750ml", unidade: "Garrafa", saldo: 36, custo: 75.00 },
+      { codigo: "CERV-HEIN", categoria: "Cervejas", item: "Cerveja Heineken Long Neck 330ml (Pack 24un)", unidade: "Fardo/Pack", 25, custo: 132.00 },
+      { codigo: "CERV-CORO", categoria: "Cervejas", item: "Cerveja Corona Extra 330ml (Pack 24un)", unidade: "Fardo/Pack", 15, custo: 148.00 },
+      { codigo: "MIX-TON", categoria: "Misturas & Não Alcoólicos", item: "Água Tônica Antarctica Lata 350ml (Pack 12un)", unidade: "Fardo/Pack", 30, custo: 38.00 },
       { codigo: "MIX-RED", categoria: "Misturas & Não Alcoólicos", item: "Energético Red Bull 250ml (Pack 24un)", unidade: "Fardo/Pack", 20, custo: 162.00 },
-      { codigo: "XAR-FRUT", categoria: "Xaropes & Frutas", item: "Xarope Monin Sabores Variados 700ml", unidade: "Garrafa", 16, custo: 52.00 }
+      { codigo: "XAR-FRUT", categoria: "Xaropes & Frutas", item: "Xarope Monin Sabores 700ml", unidade: "Garrafa", 16, custo: 52.00 }
     ];
 
     let cargaAtual = [];
@@ -311,18 +317,17 @@
     function trocarAba(aba) {
       ["galpao", "carga", "retorno", "relatorios"].forEach(a => {
         document.getElementById(`aba-${a}`).classList.add("hidden");
-        document.getElementById(`nav-${a}`).classList.remove("bg-amber-500", "text-slate-950", "font-bold");
-        document.getElementById(`nav-${a}`).classList.add("text-slate-300");
+        document.getElementById(`nav-${a}`).classList.remove("bg-white", "text-amber-700", "shadow-sm", "font-bold");
+        document.getElementById(`nav-${a}`).classList.add("text-slate-600");
       });
       document.getElementById(`aba-${aba}`).classList.remove("hidden");
-      document.getElementById(`nav-${aba}`).classList.add("bg-amber-500", "text-slate-950", "font-bold");
-      document.getElementById(`nav-${aba}`).classList.remove("text-slate-300");
+      document.getElementById(`nav-${aba}`).classList.add("bg-white", "text-amber-700", "shadow-sm", "font-bold");
+      document.getElementById(`nav-${aba}`).classList.remove("text-slate-600");
 
       if (aba === "retorno") carregarDropdownEventosRetorno();
       if (aba === "relatorios") renderizarHistorico();
     }
 
-    // --- ALMOXARIFADO CENTRAL ---
     function salvarItemGalpao() {
       const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
       const cat = document.getElementById("cad-cat").value;
@@ -346,7 +351,7 @@
     }
 
     function excluirItemGalpao(cod) {
-      if (confirm(`Excluir ${cod} do galpão?`)) {
+      if (confirm(`Excluir ${cod} do almoxarifado?`)) {
         setGalpao(getGalpao().filter(i => i.codigo !== cod));
       }
     }
@@ -366,25 +371,23 @@
 
       const corpo = document.getElementById("tabela-galpao-corpo");
       corpo.innerHTML = filtrados.map(i => `
-        <tr class="hover:bg-slate-900/60">
-          <td class="p-3 font-mono font-bold text-amber-400">${i.codigo}</td>
-          <td class="p-3 text-slate-400">${i.categoria}</td>
-          <td class="p-3 font-semibold text-slate-100">${i.item}</td>
-          <td class="p-3 font-bold ${i.saldo <= 5 ? 'text-rose-400' : 'text-slate-100'}">${i.saldo} ${i.unidade}</td>
-          <td class="p-3 text-slate-400">R$ ${i.custo.toFixed(2)}</td>
-          <td class="p-3 font-bold text-emerald-400">R$ ${(i.saldo * i.custo).toFixed(2)}</td>
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 font-mono font-bold text-slate-900">${i.codigo}</td>
+          <td class="p-3 text-slate-500">${i.categoria}</td>
+          <td class="p-3 font-semibold text-slate-800">${i.item}</td>
+          <td class="p-3 font-bold ${i.saldo <= 5 ? 'text-rose-600 font-black' : 'text-slate-800'}">${i.saldo} ${i.unidade}</td>
+          <td class="p-3 text-slate-500">R$ ${i.custo.toFixed(2)}</td>
+          <td class="p-3 font-bold text-emerald-600">R$ ${(i.saldo * i.custo).toFixed(2)}</td>
           <td class="p-3 text-center">
-            <button onclick="excluirItemGalpao('${i.codigo}')" class="text-rose-400 hover:underline">Excluir</button>
+            <button onclick="excluirItemGalpao('${i.codigo}')" class="text-rose-600 hover:underline">Excluir</button>
           </td>
         </tr>
       `).join("");
 
-      // Dropdown de carga
       const selectCarga = document.getElementById("carga-item");
-      selectCarga.innerHTML = galpao.map(i => `<option value="${i.codigo}">${i.item} (Disponível: ${i.saldo} ${i.unidade})</option>`).join("");
+      selectCarga.innerHTML = galpao.map(i => `<option value="${i.codigo}">${i.item} (Saldo: ${i.saldo} ${i.unidade})</option>`).join("");
     }
 
-    // --- SAÍDA DE CARGA ---
     function adicionarNaCarga() {
       const cod = document.getElementById("carga-item").value;
       const qtd = parseFloat(document.getElementById("carga-qtd").value);
@@ -417,16 +420,16 @@
     function renderizarCargaUI() {
       const container = document.getElementById("lista-carga-itens");
       if (cargaAtual.length === 0) {
-        container.innerHTML = `<p class="text-slate-500 italic text-center py-6">Nenhum item na carga.</p>`;
+        container.innerHTML = `<p class="text-slate-400 italic text-center py-6">Nenhum item na carga.</p>`;
         return;
       }
       container.innerHTML = cargaAtual.map(i => `
         <div class="py-2 flex justify-between items-center">
           <div>
-            <p class="font-bold text-slate-100">${i.item}</p>
-            <p class="text-slate-400 text-[11px]">${i.qtd} ${i.unidade}</p>
+            <p class="font-bold text-slate-800">${i.item}</p>
+            <p class="text-slate-500 text-[11px]">${i.qtd} ${i.unidade}</p>
           </div>
-          <button onclick="removerDaCarga('${i.codigo}')" class="text-rose-400 hover:text-rose-600 p-1"><i class="ph ph-trash"></i></button>
+          <button onclick="removerDaCarga('${i.codigo}')" class="text-rose-500 hover:text-rose-700 p-1"><i class="ph ph-trash"></i></button>
         </div>
       `).join("");
     }
@@ -442,13 +445,11 @@
       const galpao = getGalpao();
       const eventos = getEventos();
 
-      // Baixa do galpão
       cargaAtual.forEach(c => {
         const item = galpao.find(g => g.codigo === c.codigo);
         if (item) item.saldo -= c.qtd;
       });
 
-      // Registra evento
       eventos.unshift({
         id: Date.now(),
         nome: nome,
@@ -474,11 +475,10 @@
       cargaAtual = [];
       document.getElementById("evento-nome").value = "";
       renderizarCargaUI();
-      alert(`🚚 Carga para o evento "${nome}" despachada com sucesso!`);
+      alert(`🚚 Carga para "${nome}" despachada! Baixa feita no galpão.`);
       trocarAba("retorno");
     }
 
-    // --- RETORNO & SOBRAS ---
     function carregarDropdownEventosRetorno() {
       const eventos = getEventos().filter(e => e.status === "Em Andamento");
       const select = document.getElementById("retorno-evento-select");
@@ -486,7 +486,7 @@
 
       if (eventos.length === 0) {
         select.innerHTML = `<option value="">Nenhum evento em andamento</option>`;
-        document.getElementById("tabela-retorno-corpo").innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">Nenhum evento aberto para conferência de retorno.</td></tr>`;
+        document.getElementById("tabela-retorno-corpo").innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 italic">Nenhum evento aberto para retorno no momento.</td></tr>`;
         return;
       }
 
@@ -504,19 +504,19 @@
 
       const corpo = document.getElementById("tabela-retorno-corpo");
       corpo.innerHTML = ev.itens.map((item, index) => `
-        <tr class="hover:bg-slate-900/60">
-          <td class="p-3 font-semibold text-slate-100">${item.item}</td>
-          <td class="p-3 font-bold text-amber-400">${item.enviado} ${item.unidade}</td>
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 font-semibold text-slate-800">${item.item}</td>
+          <td class="p-3 font-bold text-amber-700">${item.enviado} ${item.unidade}</td>
           <td class="p-3">
-            <input type="number" id="dev-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.devolvido}" class="w-20 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs">
+            <input type="number" id="dev-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.devolvido}" class="w-20 bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs font-bold text-slate-800">
           </td>
           <td class="p-3">
-            <input type="number" id="que-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.quebra}" class="w-20 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs text-rose-400">
+            <input type="number" id="que-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.quebra}" class="w-20 bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-rose-600 font-bold">
           </td>
-          <td class="p-3 font-bold text-slate-100">${item.consumido} ${item.unidade}</td>
-          <td class="p-3 font-bold text-emerald-400">R$ ${item.custoTotal.toFixed(2)}</td>
+          <td class="p-3 font-bold text-slate-800">${item.consumido} ${item.unidade}</td>
+          <td class="p-3 font-bold text-emerald-600">R$ ${item.custoTotal.toFixed(2)}</td>
           <td class="p-3 text-center">
-            <button onclick="salvarLinhaRetorno(${ev.id}, ${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1 rounded text-xs font-bold transition">Salvar</button>
+            <button onclick="salvarLinhaRetorno(${ev.id}, ${index})" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-xs font-bold transition shadow-sm">Salvar</button>
           </td>
         </tr>
       `).join("");
@@ -532,9 +532,8 @@
       const novoDev = parseFloat(document.getElementById(`dev-${idx}`).value) || 0;
       const novoQue = parseFloat(document.getElementById(`que-${idx}`).value) || 0;
 
-      if (novoDev + novoQue > item.enviado) return alert("A devolução + quebras não pode ser maior que o total enviado!");
+      if (novoDev + novoQue > item.enviado) return alert("Devolução + Quebras não pode ser maior que o total enviado!");
 
-      // Ajusta o galpão com a diferença devolvida
       const diferencaDevolvida = novoDev - item.devolvido;
       const gItem = galpao.find(g => g.codigo === item.codigo);
       if (gItem) gItem.saldo += diferencaDevolvida;
@@ -553,17 +552,16 @@
       const evId = parseInt(document.getElementById("retorno-evento-select").value);
       if (!evId) return;
 
-      if (confirm("Confirmar a conclusão e arquivamento deste evento?")) {
+      if (confirm("Deseja concluir e arquivar este evento?")) {
         const eventos = getEventos();
         const ev = eventos.find(e => e.id === evId);
         if (ev) ev.status = "Finalizado";
         setEventos(eventos);
         carregarDropdownEventosRetorno();
-        alert("🏁 Evento finalizado e registrado nos relatórios!");
+        alert("🏁 Evento finalizado com sucesso!");
       }
     }
 
-    // --- RELATÓRIOS ---
     function renderizarHistorico() {
       const eventos = getEventos();
       const corpo = document.getElementById("tabela-historico-corpo");
@@ -572,21 +570,21 @@
       eventos.forEach(ev => {
         ev.itens.forEach(i => {
           html += `
-            <tr class="hover:bg-slate-900/60">
-              <td class="p-3 font-mono text-slate-400">${ev.data}</td>
-              <td class="p-3 font-bold text-slate-100">${ev.nome}</td>
-              <td class="p-3 text-slate-400">${ev.responsavel}</td>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-mono text-slate-500 text-[11px]">${ev.data}</td>
+              <td class="p-3 font-bold text-slate-800">${ev.nome}</td>
+              <td class="p-3 text-slate-500">${ev.responsavel}</td>
               <td class="p-3">${i.item}</td>
               <td class="p-3">${i.enviado}</td>
-              <td class="p-3 text-emerald-400 font-bold">${i.devolvido}</td>
-              <td class="p-3 font-bold text-amber-400">${i.consumido}</td>
-              <td class="p-3 font-bold text-emerald-400">R$ ${i.custoTotal.toFixed(2)}</td>
+              <td class="p-3 text-emerald-600 font-bold">${i.devolvido}</td>
+              <td class="p-3 font-bold text-amber-700">${i.consumido}</td>
+              <td class="p-3 font-bold text-emerald-600">R$ ${i.custoTotal.toFixed(2)}</td>
             </tr>
           `;
         });
       });
 
-      corpo.innerHTML = html || `<tr><td colspan="8" class="p-6 text-center text-slate-500 italic">Nenhum evento registrado ainda.</td></tr>`;
+      corpo.innerHTML = html || `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Nenhum evento registrado ainda.</td></tr>`;
     }
 
     function exportarCSV() {
