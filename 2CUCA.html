@@ -24,17 +24,17 @@
 
       <!-- Abas de Navegação -->
       <nav class="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-        <button onclick="trocarAba('galpao')" id="nav-galpao" class="px-3.5 py-2 rounded-lg bg-white text-amber-700 shadow-sm transition font-bold">🏢 Almoxarifado Central</button>
-        <button onclick="trocarAba('carga')" id="nav-carga" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🚚 Saída p/ Festa</button>
-        <button onclick="trocarAba('retorno')" id="nav-retorno" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🔄 Retorno & Sobras</button>
-        <button onclick="trocarAba('relatorios')" id="nav-relatorios" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">📊 Relatórios & Excel</button>
+        <button type="button" onclick="trocarAba('galpao')" id="nav-galpao" class="px-3.5 py-2 rounded-lg bg-white text-amber-700 shadow-sm transition font-bold">🏢 Almoxarifado Central</button>
+        <button type="button" onclick="trocarAba('carga')" id="nav-carga" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🚚 Saída p/ Festa</button>
+        <button type="button" onclick="trocarAba('retorno')" id="nav-retorno" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">🔄 Retorno & Sobras</button>
+        <button type="button" onclick="trocarAba('relatorios')" id="nav-relatorios" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">📊 Relatórios & Excel</button>
       </nav>
 
       <div class="flex items-center gap-2">
-        <button onclick="exportarCSV()" class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl hover:bg-emerald-100 transition flex items-center gap-1">
+        <button type="button" onclick="exportarCSV()" class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl hover:bg-emerald-100 transition flex items-center gap-1">
           <i class="ph ph-file-csv text-base"></i> Baixar CSV
         </button>
-        <button onclick="resetarDados()" class="text-xs text-rose-600 hover:underline px-2 font-medium">Resetar</button>
+        <button type="button" onclick="resetarDados()" class="text-xs text-rose-600 hover:underline px-2 font-medium">Limpar Banco</button>
       </div>
     </div>
   </header>
@@ -52,7 +52,7 @@
         <h3 id="kpi-capital" class="text-lg md:text-xl font-black text-emerald-600 mt-1">R$ 0,00</h3>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Eventos em Andamento</span>
+        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Eventos Ativos</span>
         <h3 id="kpi-eventos" class="text-lg md:text-xl font-black text-blue-600 mt-1">0 festa(s)</h3>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="mt-4 flex justify-end">
-          <button onclick="salvarItemGalpao()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-amber-200 transition">Gravar no Almoxarifado</button>
+          <button type="button" onclick="salvarItemGalpao()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md shadow-amber-200 transition">Gravar no Almoxarifado</button>
         </div>
       </div>
 
@@ -173,7 +173,7 @@
             <label class="block text-xs font-semibold text-slate-600 mb-1">Qtd Envio:</label>
             <input id="carga-qtd" type="number" min="0.5" step="0.5" value="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:border-amber-500 outline-none">
           </div>
-          <button onclick="adicionarNaCarga()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs transition shadow-sm">+ Incluir</button>
+          <button type="button" onclick="adicionarNaCarga()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs transition shadow-sm">+ Incluir</button>
         </div>
       </div>
 
@@ -182,7 +182,7 @@
         <div>
           <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center justify-between">
             <span>📦 Carga Separada</span>
-            <button onclick="limparCarga()" class="text-xs text-rose-600 hover:underline font-normal">Limpar</button>
+            <button type="button" onclick="limparCarga()" class="text-xs text-rose-600 hover:underline font-normal">Limpar</button>
           </h2>
 
           <div id="lista-carga-itens" class="space-y-2 max-h-60 overflow-y-auto text-xs divide-y divide-slate-100">
@@ -190,7 +190,7 @@
           </div>
         </div>
 
-        <button onclick="despacharEvento()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-3.5 rounded-xl shadow-md shadow-amber-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+        <button type="button" onclick="despacharEvento()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-3.5 rounded-xl shadow-md shadow-amber-200 transition text-xs uppercase tracking-wider flex items-center justify-center gap-2">
           <i class="ph ph-paper-plane-right text-lg"></i> Despachar Carga & Baixar Galpão
         </button>
       </div>
@@ -229,7 +229,7 @@
         </div>
 
         <div class="flex justify-end pt-2">
-          <button onclick="concluirEvento()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm">
+          <button type="button" onclick="concluirEvento()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm">
             🏁 Fechar e Arquivar Evento
           </button>
         </div>
@@ -266,7 +266,6 @@
   </main>
 
   <script>
-    // ESTOQUE INICIAL COMPOSTO DE GARRAFAS E FARDOS
     const GALPAO_PADRAO = [
       { codigo: "DEST-GIN", categoria: "Destilados", item: "Gin Tanqueray London Dry 750ml", unidade: "Garrafa", saldo: 24, custo: 85.00 },
       { codigo: "DEST-VOD", categoria: "Destilados", item: "Vodka Absolut Regular 1L", unidade: "Garrafa", saldo: 30, custo: 68.00 },
@@ -288,66 +287,115 @@
     let cargaAtual = [];
 
     function getGalpao() {
-      const s = localStorage.getItem("2cucas_galpao");
-      return s ? JSON.parse(s) : GALPAO_PADRAO;
+      try {
+        const s = localStorage.getItem("2cucas_galpao_v2");
+        if (s) {
+          const arr = JSON.parse(s);
+          if (Array.isArray(arr) && arr.length > 0) return arr;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      return GALPAO_PADRAO;
     }
 
     function setGalpao(dados) {
-      localStorage.setItem("2cucas_galpao", JSON.stringify(dados));
-      renderizarTudo();
+      localStorage.setItem("2cucas_galpao_v2", JSON.stringify(dados));
+      renderizarGalpao();
     }
 
     function getEventos() {
-      const s = localStorage.getItem("2cucas_eventos");
-      return s ? JSON.parse(s) : [];
+      try {
+        const s = localStorage.getItem("2cucas_eventos_v2");
+        if (s) {
+          const arr = JSON.parse(s);
+          if (Array.isArray(arr)) return arr;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      return [];
     }
 
     function setEventos(dados) {
-      localStorage.setItem("2cucas_eventos", JSON.stringify(dados));
-      renderizarTudo();
+      localStorage.setItem("2cucas_eventos_v2", JSON.stringify(dados));
+      carregarDropdownEventosRetorno();
     }
 
     function resetarDados() {
-      if (confirm("Restaurar o estoque padrão do Galpão 2 Cucas?")) {
+      if (confirm("Deseja restaurar todo o estoque e limpar eventos salvos?")) {
+        localStorage.removeItem("2cucas_galpao_v2");
+        localStorage.removeItem("2cucas_eventos_v2");
+        localStorage.removeItem("2cucas_galpao");
+        localStorage.removeItem("2cucas_eventos");
         setGalpao(GALPAO_PADRAO);
         setEventos([]);
+        renderizarTudo();
+        alert("Sistema restaurado com sucesso!");
       }
     }
 
     function trocarAba(aba) {
-      ["galpao", "carga", "retorno", "relatorios"].forEach(a => {
-        document.getElementById(`aba-${a}`).classList.add("hidden");
-        document.getElementById(`nav-${a}`).classList.remove("bg-white", "text-amber-700", "shadow-sm", "font-bold");
-        document.getElementById(`nav-${a}`).classList.add("text-slate-600");
+      const abas = ["galpao", "carga", "retorno", "relatorios"];
+      abas.forEach(a => {
+        const elAba = document.getElementById(`aba-${a}`);
+        const elNav = document.getElementById(`nav-${a}`);
+        if (elAba) elAba.classList.add("hidden");
+        if (elNav) {
+          elNav.classList.remove("bg-white", "text-amber-700", "shadow-sm", "font-bold");
+          elNav.classList.add("text-slate-600");
+        }
       });
-      document.getElementById(`aba-${aba}`).classList.remove("hidden");
-      document.getElementById(`nav-${aba}`).classList.add("bg-white", "text-amber-700", "shadow-sm", "font-bold");
-      document.getElementById(`nav-${aba}`).classList.remove("text-slate-600");
 
+      const alvoAba = document.getElementById(`aba-${aba}`);
+      const alvoNav = document.getElementById(`nav-${aba}`);
+      if (alvoAba) alvoAba.classList.remove("hidden");
+      if (alvoNav) {
+        alvoNav.classList.add("bg-white", "text-amber-700", "shadow-sm", "font-bold");
+        alvoNav.classList.remove("text-slate-600");
+      }
+
+      if (aba === "carga") renderizarCargaUI();
       if (aba === "retorno") carregarDropdownEventosRetorno();
       if (aba === "relatorios") renderizarHistorico();
     }
 
     function salvarItemGalpao() {
-      const cod = document.getElementById("cad-cod").value.trim().toUpperCase();
-      const cat = document.getElementById("cad-cat").value;
-      const desc = document.getElementById("cad-desc").value.trim();
-      const un = document.getElementById("cad-un").value;
-      const qtd = parseFloat(document.getElementById("cad-qtd").value) || 0;
-      const custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+      const codEl = document.getElementById("cad-cod");
+      const descEl = document.getElementById("cad-desc");
+      const catEl = document.getElementById("cad-cat");
+      const unEl = document.getElementById("cad-un");
+      const qtdEl = document.getElementById("cad-qtd");
+      const custoEl = document.getElementById("cad-custo");
 
-      if (!cod || !desc) return alert("Preencha SKU e Descrição!");
+      const cod = codEl.value.trim().toUpperCase();
+      const desc = descEl.value.trim();
+      const cat = catEl.value;
+      const un = unEl.value;
+      const qtd = parseFloat(qtdEl.value) || 0;
+      const custo = parseFloat(custoEl.value) || 0;
+
+      if (!cod || !desc) {
+        alert("Por favor, preencha o Código SKU e a Descrição do item.");
+        return;
+      }
 
       const galpao = getGalpao();
       const idx = galpao.findIndex(i => i.codigo === cod);
       const novo = { codigo: cod, categoria: cat, item: desc, unidade: un, saldo: qtd, custo: custo };
 
-      if (idx >= 0) galpao[idx] = novo;
-      else galpao.push(novo);
+      if (idx >= 0) {
+        galpao[idx] = novo;
+      } else {
+        galpao.push(novo);
+      }
 
       setGalpao(galpao);
-      document.getElementById("cad-cod").value = "";
-      document.getElementById("cad-desc").value = "";
+      codEl.value = "";
+      descEl.value = "";
+      qtdEl.value = "0";
+      custoEl.value = "0.00";
+      alert(`Item "${desc}" gravado no almoxarifado!`);
     }
 
     function excluirItemGalpao(cod) {
@@ -358,51 +406,73 @@
 
     function renderizarGalpao() {
       const galpao = getGalpao();
-      const busca = document.getElementById("filtro-busca").value.toLowerCase();
-      const filtrados = galpao.filter(i => i.item.toLowerCase().includes(busca) || i.codigo.toLowerCase().includes(busca));
+      const buscaEl = document.getElementById("filtro-busca");
+      const busca = buscaEl ? buscaEl.value.toLowerCase() : "";
+      
+      const filtrados = galpao.filter(i => 
+        (i.item && i.item.toLowerCase().includes(busca)) || 
+        (i.codigo && i.codigo.toLowerCase().includes(busca))
+      );
 
-      const totalUnidades = galpao.reduce((acc, i) => acc + i.saldo, 0);
-      const capitalTotal = galpao.reduce((acc, i) => acc + (i.saldo * i.custo), 0);
-      const criticos = galpao.filter(i => i.saldo <= 5);
+      const totalUnidades = galpao.reduce((acc, i) => acc + (Number(i.saldo) || 0), 0);
+      const capitalTotal = galpao.reduce((acc, i) => acc + ((Number(i.saldo) || 0) * (Number(i.custo) || 0)), 0);
+      const criticos = galpao.filter(i => (Number(i.saldo) || 0) <= 5);
 
       document.getElementById("kpi-itens").innerText = `${galpao.length} SKUs (${totalUnidades.toFixed(0)} un)`;
       document.getElementById("kpi-capital").innerText = capitalTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
       document.getElementById("kpi-criticos").innerText = `${criticos.length} item(ns)`;
 
       const corpo = document.getElementById("tabela-galpao-corpo");
-      corpo.innerHTML = filtrados.map(i => `
-        <tr class="hover:bg-slate-50">
-          <td class="p-3 font-mono font-bold text-slate-900">${i.codigo}</td>
-          <td class="p-3 text-slate-500">${i.categoria}</td>
-          <td class="p-3 font-semibold text-slate-800">${i.item}</td>
-          <td class="p-3 font-bold ${i.saldo <= 5 ? 'text-rose-600 font-black' : 'text-slate-800'}">${i.saldo} ${i.unidade}</td>
-          <td class="p-3 text-slate-500">R$ ${i.custo.toFixed(2)}</td>
-          <td class="p-3 font-bold text-emerald-600">R$ ${(i.saldo * i.custo).toFixed(2)}</td>
-          <td class="p-3 text-center">
-            <button onclick="excluirItemGalpao('${i.codigo}')" class="text-rose-600 hover:underline">Excluir</button>
-          </td>
-        </tr>
-      `).join("");
+      if (corpo) {
+        corpo.innerHTML = filtrados.map(i => `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 font-mono font-bold text-slate-900">${i.codigo}</td>
+            <td class="p-3 text-slate-500">${i.categoria}</td>
+            <td class="p-3 font-semibold text-slate-800">${i.item}</td>
+            <td class="p-3 font-bold ${Number(i.saldo) <= 5 ? 'text-rose-600 font-black' : 'text-slate-800'}">${i.saldo} ${i.unidade}</td>
+            <td class="p-3 text-slate-500">R$ ${Number(i.custo).toFixed(2)}</td>
+            <td class="p-3 font-bold text-emerald-600">R$ ${(Number(i.saldo) * Number(i.custo)).toFixed(2)}</td>
+            <td class="p-3 text-center">
+              <button type="button" onclick="excluirItemGalpao('${i.codigo}')" class="text-rose-600 hover:underline">Excluir</button>
+            </td>
+          </tr>
+        `).join("");
+      }
 
       const selectCarga = document.getElementById("carga-item");
-      selectCarga.innerHTML = galpao.map(i => `<option value="${i.codigo}">${i.item} (Saldo: ${i.saldo} ${i.unidade})</option>`).join("");
+      if (selectCarga) {
+        selectCarga.innerHTML = galpao.map(i => `<option value="${i.codigo}">${i.item} (Saldo: ${i.saldo} ${i.unidade})</option>`).join("");
+      }
     }
 
     function adicionarNaCarga() {
-      const cod = document.getElementById("carga-item").value;
-      const qtd = parseFloat(document.getElementById("carga-qtd").value);
-      if (!cod || isNaN(qtd) || qtd <= 0) return;
+      const selectCarga = document.getElementById("carga-item");
+      const qtdEl = document.getElementById("carga-qtd");
+      if (!selectCarga || !qtdEl) return;
+
+      const cod = selectCarga.value;
+      const qtd = parseFloat(qtdEl.value);
+      if (!cod || isNaN(qtd) || qtd <= 0) {
+        alert("Informe uma quantidade válida.");
+        return;
+      }
 
       const galpao = getGalpao();
       const p = galpao.find(i => i.codigo === cod);
       if (!p) return;
 
       const jaSeparado = cargaAtual.filter(c => c.codigo === cod).reduce((a, b) => a + b.qtd, 0);
-      if (jaSeparado + qtd > p.saldo) return alert(`Saldo insuficiente no galpão! Disponível: ${p.saldo} ${p.unidade}`);
+      if (jaSeparado + qtd > Number(p.saldo)) {
+        alert(`Saldo insuficiente no galpão! Disponível: ${p.saldo} ${p.unidade}`);
+        return;
+      }
 
       const existente = cargaAtual.find(c => c.codigo === cod);
-      if (existente) existente.qtd += qtd;
-      else cargaAtual.push({ codigo: cod, item: p.item, unidade: p.unidade, qtd: qtd, custo: p.custo });
+      if (existente) {
+        existente.qtd += qtd;
+      } else {
+        cargaAtual.push({ codigo: cod, item: p.item, unidade: p.unidade, qtd: qtd, custo: p.custo });
+      }
 
       renderizarCargaUI();
     }
@@ -419,6 +489,8 @@
 
     function renderizarCargaUI() {
       const container = document.getElementById("lista-carga-itens");
+      if (!container) return;
+
       if (cargaAtual.length === 0) {
         container.innerHTML = `<p class="text-slate-400 italic text-center py-6">Nenhum item na carga.</p>`;
         return;
@@ -429,7 +501,7 @@
             <p class="font-bold text-slate-800">${i.item}</p>
             <p class="text-slate-500 text-[11px]">${i.qtd} ${i.unidade}</p>
           </div>
-          <button onclick="removerDaCarga('${i.codigo}')" class="text-rose-500 hover:text-rose-700 p-1"><i class="ph ph-trash"></i></button>
+          <button type="button" onclick="removerDaCarga('${i.codigo}')" class="text-rose-500 hover:text-rose-700 p-1"><i class="ph ph-trash"></i></button>
         </div>
       `).join("");
     }
@@ -439,15 +511,21 @@
       const data = document.getElementById("evento-data").value || new Date().toISOString().split('T')[0];
       const resp = document.getElementById("evento-resp").value.trim() || "Equipe de Bar";
 
-      if (!nome) return alert("Digite o nome do evento!");
-      if (cargaAtual.length === 0) return alert("Adicione itens à carga!");
+      if (!nome) {
+        alert("Digite o nome do evento!");
+        return;
+      }
+      if (cargaAtual.length === 0) {
+        alert("Adicione itens à carga antes de despachar!");
+        return;
+      }
 
       const galpao = getGalpao();
       const eventos = getEventos();
 
       cargaAtual.forEach(c => {
         const item = galpao.find(g => g.codigo === c.codigo);
-        if (item) item.saldo -= c.qtd;
+        if (item) item.saldo = Math.max(0, Number(item.saldo) - Number(c.qtd));
       });
 
       eventos.unshift({
@@ -475,14 +553,17 @@
       cargaAtual = [];
       document.getElementById("evento-nome").value = "";
       renderizarCargaUI();
-      alert(`🚚 Carga para "${nome}" despachada! Baixa feita no galpão.`);
+      alert(`🚚 Carga para "${nome}" despachada! Baixa efetuada no galpão.`);
       trocarAba("retorno");
     }
 
     function carregarDropdownEventosRetorno() {
       const eventos = getEventos().filter(e => e.status === "Em Andamento");
       const select = document.getElementById("retorno-evento-select");
-      document.getElementById("kpi-eventos").innerText = `${eventos.length} festa(s)`;
+      const kpiEv = document.getElementById("kpi-eventos");
+      if (kpiEv) kpiEv.innerText = `${eventos.length} festa(s)`;
+
+      if (!select) return;
 
       if (eventos.length === 0) {
         select.innerHTML = `<option value="">Nenhum evento em andamento</option>`;
@@ -495,7 +576,9 @@
     }
 
     function carregarItensRetorno() {
-      const evId = parseInt(document.getElementById("retorno-evento-select").value);
+      const select = document.getElementById("retorno-evento-select");
+      if (!select) return;
+      const evId = parseInt(select.value);
       if (!evId) return;
 
       const eventos = getEventos();
@@ -503,6 +586,8 @@
       if (!ev) return;
 
       const corpo = document.getElementById("tabela-retorno-corpo");
+      if (!corpo) return;
+
       corpo.innerHTML = ev.itens.map((item, index) => `
         <tr class="hover:bg-slate-50">
           <td class="p-3 font-semibold text-slate-800">${item.item}</td>
@@ -514,9 +599,9 @@
             <input type="number" id="que-${index}" min="0" max="${item.enviado}" step="0.5" value="${item.quebra}" class="w-20 bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-rose-600 font-bold">
           </td>
           <td class="p-3 font-bold text-slate-800">${item.consumido} ${item.unidade}</td>
-          <td class="p-3 font-bold text-emerald-600">R$ ${item.custoTotal.toFixed(2)}</td>
+          <td class="p-3 font-bold text-emerald-600">R$ ${Number(item.custoTotal).toFixed(2)}</td>
           <td class="p-3 text-center">
-            <button onclick="salvarLinhaRetorno(${ev.id}, ${index})" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-xs font-bold transition shadow-sm">Salvar</button>
+            <button type="button" onclick="salvarLinhaRetorno(${ev.id}, ${index})" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-xs font-bold transition shadow-sm">Salvar</button>
           </td>
         </tr>
       `).join("");
@@ -532,16 +617,21 @@
       const novoDev = parseFloat(document.getElementById(`dev-${idx}`).value) || 0;
       const novoQue = parseFloat(document.getElementById(`que-${idx}`).value) || 0;
 
-      if (novoDev + novoQue > item.enviado) return alert("Devolução + Quebras não pode ser maior que o total enviado!");
+      if (novoDev + novoQue > Number(item.enviado)) {
+        alert("Devolução + Quebras não pode ser maior que o total enviado!");
+        return;
+      }
 
-      const diferencaDevolvida = novoDev - item.devolvido;
+      const diferencaDevolvida = novoDev - Number(item.devolvido);
       const gItem = galpao.find(g => g.codigo === item.codigo);
-      if (gItem) gItem.saldo += diferencaDevolvida;
+      if (gItem) {
+        gItem.saldo = Number(gItem.saldo) + diferencaDevolvida;
+      }
 
       item.devolvido = novoDev;
       item.quebra = novoQue;
-      item.consumido = item.enviado - (novoDev + novoQue);
-      item.custoTotal = (item.consumido + item.quebra) * item.custo;
+      item.consumido = Number(item.enviado) - (novoDev + novoQue);
+      item.custoTotal = (item.consumido + item.quebra) * Number(item.custo);
 
       setGalpao(galpao);
       setEventos(eventos);
@@ -549,7 +639,9 @@
     }
 
     function concluirEvento() {
-      const evId = parseInt(document.getElementById("retorno-evento-select").value);
+      const select = document.getElementById("retorno-evento-select");
+      if (!select) return;
+      const evId = parseInt(select.value);
       if (!evId) return;
 
       if (confirm("Deseja concluir e arquivar este evento?")) {
@@ -565,23 +657,26 @@
     function renderizarHistorico() {
       const eventos = getEventos();
       const corpo = document.getElementById("tabela-historico-corpo");
+      if (!corpo) return;
 
       let html = "";
       eventos.forEach(ev => {
-        ev.itens.forEach(i => {
-          html += `
-            <tr class="hover:bg-slate-50">
-              <td class="p-3 font-mono text-slate-500 text-[11px]">${ev.data}</td>
-              <td class="p-3 font-bold text-slate-800">${ev.nome}</td>
-              <td class="p-3 text-slate-500">${ev.responsavel}</td>
-              <td class="p-3">${i.item}</td>
-              <td class="p-3">${i.enviado}</td>
-              <td class="p-3 text-emerald-600 font-bold">${i.devolvido}</td>
-              <td class="p-3 font-bold text-amber-700">${i.consumido}</td>
-              <td class="p-3 font-bold text-emerald-600">R$ ${i.custoTotal.toFixed(2)}</td>
-            </tr>
-          `;
-        });
+        if (ev.itens && Array.isArray(ev.itens)) {
+          ev.itens.forEach(i => {
+            html += `
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 font-mono text-slate-500 text-[11px]">${ev.data}</td>
+                <td class="p-3 font-bold text-slate-800">${ev.nome}</td>
+                <td class="p-3 text-slate-500">${ev.responsavel}</td>
+                <td class="p-3">${i.item}</td>
+                <td class="p-3">${i.enviado}</td>
+                <td class="p-3 text-emerald-600 font-bold">${i.devolvido}</td>
+                <td class="p-3 font-bold text-amber-700">${i.consumido}</td>
+                <td class="p-3 font-bold text-emerald-600">R$ ${Number(i.custoTotal).toFixed(2)}</td>
+              </tr>
+            `;
+          });
+        }
       });
 
       corpo.innerHTML = html || `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Nenhum evento registrado ainda.</td></tr>`;
@@ -591,7 +686,7 @@
       const galpao = getGalpao();
       let csv = "Codigo,Categoria,Item,Unidade,Saldo_Galpao,Custo_Unitario,Total_Parado\n";
       galpao.forEach(i => {
-        csv += `"${i.codigo}","${i.categoria}","${i.item}","${i.unidade}",${i.saldo},${i.custo},${(i.saldo * i.custo).toFixed(2)}\n`;
+        csv += `"${i.codigo}","${i.categoria}","${i.item}","${i.unidade}",${i.saldo},${i.custo},${(Number(i.saldo) * Number(i.custo)).toFixed(2)}\n`;
       });
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
@@ -606,7 +701,10 @@
       carregarDropdownEventosRetorno();
     }
 
-    renderizarTudo();
+    // Inicialização segura
+    window.addEventListener("DOMContentLoaded", () => {
+      renderizarTudo();
+    });
   </script>
 </body>
 </html>
