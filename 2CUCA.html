@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="notranslate" translate="no">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2 Cuca - Estoque & Eventos (Nuvem)</title>
+<title>2 Cuca - Estoque & Eventos</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 body{background:#f8fafc;color:#1e293b;padding-bottom:60px}
@@ -25,16 +26,16 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <body>
 <header>
 <div class="header-box">
-<div class="brand"><div class="brand-icon">🍸</div><div><h1>2 Cuca</h1><p>Gestão de Estoque & Eventos — Nuvem</p></div></div>
+<div class="brand"><div class="brand-icon">🍸</div><div><h1>2 Cuca</h1><p>Gestão de Estoque & Eventos</p></div></div>
 <nav class="nav-bar">
-<button class="tab-btn active" data-tab="galpao">🏢 Estoque</button>
-<button class="tab-btn" data-tab="carga">🚚 Saída Festa</button>
-<button class="tab-btn" data-tab="edicao">✏️ Editar Carga</button>
-<button class="tab-btn" data-tab="retorno">🔄 Retorno</button>
-<button class="tab-btn" data-tab="balanco">📈 Balanço</button>
-<button class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
+<button type="button" class="tab-btn active" data-tab="galpao">🏢 Estoque</button>
+<button type="button" class="tab-btn" data-tab="carga">🚚 Saída Festa</button>
+<button type="button" class="tab-btn" data-tab="edicao">✏️ Editar Carga</button>
+<button type="button" class="tab-btn" data-tab="retorno">🔄 Retorno</button>
+<button type="button" class="tab-btn" data-tab="balanco">📈 Balanço</button>
+<button type="button" class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
 </nav>
-<div style="display:flex;gap:6px;align-items:center"><span id="conexao" class="status offline" title="Clique para configurar o banco">Conectando...</span><button id="btn-config" class="btn btn-gray">⚙ Banco</button><button id="btn-recarregar" class="btn btn-gray">↻ Atualizar</button></div>
+<div style="display:flex;gap:6px;align-items:center"><span id="conexao" class="status offline" title="Clique para configurar o banco">Armazenamento Local</span><button type="button" id="btn-config" class="btn btn-gray">⚙ Banco</button><button type="button" id="btn-recarregar" class="btn btn-gray">↻ Atualizar</button></div>
 </div>
 </header>
 
@@ -59,7 +60,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="field"><label>Saldo Inicial / Entrada</label><input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0"></div>
 <div class="field"><label>Custo Unitário</label><input id="cad-custo" type="number" class="input-ctrl" value="50" step=".01" min="0"></div>
 </div>
-<div style="margin-top:12px;text-align:right"><button id="btn-gravar-item" class="btn btn-amber">Gravar no Almoxarifado</button></div>
+<div style="margin-top:12px;text-align:right"><button type="button" id="btn-gravar-item" class="btn btn-amber">Gravar no Almoxarifado</button></div>
 </div>
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="card-header" style="margin:0">Posição Geral do Galpão</div><input id="filtro-busca" class="input-ctrl" style="width:240px" placeholder="Filtrar SKU ou produto..."></div>
@@ -75,18 +76,18 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="field"><label>Responsável</label><input id="festa-resp" class="input-ctrl" placeholder="Chefe de Bar"></div>
 <div class="field"><label>Produto</label><select id="select-carga-item" class="input-ctrl"></select></div>
 <div class="field"><label>Quantidade</label><input id="input-carga-qtd" type="number" class="input-ctrl" value="1" min="1"></div>
-<div class="field" style="justify-content:flex-end"><button id="btn-add-carga" class="btn btn-amber">+ Incluir</button></div>
+<div class="field" style="justify-content:flex-end"><button type="button" id="btn-add-carga" class="btn btn-amber">+ Incluir</button></div>
 </div>
 <hr style="border:0;border-top:1px solid #e2e8f0;margin:14px 0">
 <div class="card-header">📦 Itens Separados</div><div id="box-carga-separada"></div>
-<div style="text-align:right;margin-top:12px"><button id="btn-limpar-carga" class="btn btn-gray">Limpar</button> <button id="btn-despachar" class="btn btn-amber">🚚 Despachar Carga</button></div>
+<div style="text-align:right;margin-top:12px"><button type="button" id="btn-limpar-carga" class="btn btn-gray">Limpar</button> <button type="button" id="btn-despachar" class="btn btn-amber">🚚 Despachar Carga</button></div>
 </div>
 </div>
 
 <div id="view-edicao" class="tab-view">
 <div class="card"><div class="card-header">✏️ Editar Carga de Evento em Andamento</div>
 <div class="field" style="max-width:420px"><label>Evento</label><select id="select-evento-edicao" class="input-ctrl"></select></div>
-<div class="grid-form" style="margin-top:14px"><div class="field"><label>Adicionar produto</label><select id="select-extra" class="input-ctrl"></select></div><div class="field"><label>Quantidade</label><input id="input-extra" type="number" class="input-ctrl" value="1" min="1"></div><div class="field" style="justify-content:flex-end"><button id="btn-extra" class="btn btn-blue">+ Adicionar</button></div></div>
+<div class="grid-form" style="margin-top:14px"><div class="field"><label>Adicionar produto</label><select id="select-extra" class="input-ctrl"></select></div><div class="field"><label>Quantidade</label><input id="input-extra" type="number" class="input-ctrl" value="1" min="1"></div><div class="field" style="justify-content:flex-end"><button type="button" id="btn-extra" class="btn btn-blue">+ Adicionar</button></div></div>
 <div class="table-responsive"><table><thead><tr><th>Produto</th><th>Enviado</th><th>Nova quantidade</th><th>Ação</th></tr></thead><tbody id="tabela-edicao"></tbody></table></div>
 </div>
 </div>
@@ -95,14 +96,13 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="card"><div class="card-header">🔄 Retorno & Sobras</div>
 <div class="field" style="max-width:420px"><label>Evento em andamento</label><select id="select-evento-retorno" class="input-ctrl"></select></div>
 <div class="table-responsive"><table><thead><tr><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo</th><th>Ação</th></tr></thead><tbody id="tabela-retorno"></tbody></table></div>
-<div style="text-align:right;margin-top:12px"><button id="btn-fechar-evento" class="btn btn-green">🏁 Finalizar Evento</button></div>
+<div style="text-align:right;margin-top:12px"><button type="button" id="btn-fechar-evento" class="btn btn-green">🏁 Finalizar Evento</button></div>
 </div>
 </div>
 
 <div id="view-balanco" class="tab-view">
-<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div class="card-header" style="margin:0">📈 Balanço por Evento</div><div><button class="btn filtro-balanco btn-amber" data-p="30">30 dias</button> <button class="btn filtro-balanco btn-gray" data-p="180">180 dias</button> <button class="btn filtro-balanco btn-gray" data-p="365">365 dias</button></div></div>
-<div class="alert alert-info">Cada evento é separado. As alterações feitas por qualquer pessoa aparecem para todos os usuários conectados.</div>
-<div class="kpi-row"><div class="kpi-card"><div class="kpi-title">Eventos</div><div class="kpi-val" id="bal-kpi-eventos">0</div></div><div class="kpi-card"><div class="kpi-title">Consumido</div><div class="kpi-val" id="bal-kpi-consumido">0 un</div></div><div class="kpi-card"><div class="kpi-title">Consumo + Avaria</div><div class="kpi-val" id="bal-kpi-custo">R$ 0,00</div></div></div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div class="card-header" style="margin:0">📈 Balanço por Evento</div><div><button type="button" class="btn filtro-balanco btn-amber" data-p="30">30 dias</button> <button type="button" class="btn filtro-balanco btn-gray" data-p="180">180 dias</button> <button type="button" class="btn filtro-balanco btn-gray" data-p="365">365 dias</button></div></div>
+<div class="kpi-row" style="margin-top:14px"><div class="kpi-card"><div class="kpi-title">Eventos</div><div class="kpi-val" id="bal-kpi-eventos">0</div></div><div class="kpi-card"><div class="kpi-title">Consumido</div><div class="kpi-val" id="bal-kpi-consumido">0 un</div></div><div class="kpi-card"><div class="kpi-title">Consumo + Avaria</div><div class="kpi-val" id="bal-kpi-custo">R$ 0,00</div></div></div>
 <div id="balanco-eventos"></div>
 </div>
 </div>
@@ -110,25 +110,17 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div id="view-relatorios" class="tab-view"><div class="card"><div class="card-header">📊 Histórico de Consumo por Evento</div><div class="table-responsive"><table><thead><tr><th>Data</th><th>Evento</th><th>Responsável</th><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo</th></tr></thead><tbody id="tabela-relatorios"></tbody></table></div></div></div>
 </div>
 
-<div id="modal-config" class="modal-back"><div class="modal"><h2>Configurar banco de dados</h2><p>Antes de usar em equipe, crie um projeto no Supabase e cole aqui a URL e a chave <b>publishable</b>. Nunca use a service_role no navegador.</p><div class="field"><label>Supabase Project URL</label><input id="cfg-url" class="input-ctrl" placeholder="https://xxxx.supabase.co"></div><div class="field" style="margin-top:8px"><label>Publishable Key</label><input id="cfg-key" class="input-ctrl" placeholder="sb_publishable_..."></div><div class="row" style="margin-top:15px"><button id="cfg-cancel" class="btn btn-gray">Cancelar</button><button id="cfg-save" class="btn btn-amber">Conectar</button></div></div></div>
+<div id="modal-config" class="modal-back"><div class="modal"><h2>Configurar banco de dados</h2><p>Cole a URL do projeto e a chave anônima (Publishable key) do Supabase para sincronizar em equipe.</p><div class="field"><label>Supabase Project URL</label><input id="cfg-url" class="input-ctrl" placeholder="https://xxxx.supabase.co"></div><div class="field" style="margin-top:8px"><label>Publishable Key</label><input id="cfg-key" class="input-ctrl" placeholder="sb_publishable_..."></div><div class="row" style="margin-top:15px"><button type="button" id="cfg-cancel" class="btn btn-gray">Cancelar</button><button type="button" id="cfg-save" class="btn btn-amber">Conectar</button></div></div></div>
 <div id="toast"><div class="toast" id="toast-text"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* =========================
-   CONFIGURAÇÃO
-   =========================
-   Cole suas credenciais ou use a tela de configuração.
-*/
-const SUPABASE_URL = localStorage.getItem("2cuca_supabase_url") || "";
-const SUPABASE_KEY = localStorage.getItem("2cuca_supabase_key") || "";
 let supabase = null;
 let estoque = [];
 let eventos = [];
 let cargaTemp = [];
 let periodoBalanco = 30;
 let canal = null;
-let sincronizando = false;
 
 const DADOS_BASE = [
 {codigo:"DEST-GIN",categoria:"Destilados",item:"Gin Tanqueray London Dry 750ml",unidade:"Garrafa",saldo:24,custo:85},
@@ -148,232 +140,330 @@ const DADOS_BASE = [
 {codigo:"XAR-FRUT",categoria:"Xaropes & Frutas",item:"Xarope Monin Sabores 700ml",unidade:"Garrafa",saldo:16,custo:52}
 ];
 
-function toast(msg, ok=false){const el=document.getElementById("toast");document.getElementById("toast-text").textContent=msg;el.style.display="block";setTimeout(()=>el.style.display="none",3000)}
+function toast(msg){const el=document.getElementById("toast");document.getElementById("toast-text").textContent=msg;el.style.display="block";setTimeout(()=>el.style.display="none",3000)}
 function money(v){return "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function setConexao(ok,text){const e=document.getElementById("conexao");e.textContent=text;e.className="status "+(ok?"online":"offline")}
-function showMsg(text,type="info"){document.getElementById("mensagem").innerHTML=text?`<div class="alert alert-${type}">${text}</div>`:""}
+
+function carregarLocalStorage(){
+  try {
+    const s = localStorage.getItem("2cuca_estoque_local");
+    const e = localStorage.getItem("2cuca_eventos_local");
+    estoque = s ? JSON.parse(s) : DADOS_BASE.map(x=>({...x}));
+    eventos = e ? JSON.parse(e) : [];
+  } catch(err) {
+    estoque = DADOS_BASE.map(x=>({...x}));
+    eventos = [];
+  }
+}
+
+function salvarLocalStorage(){
+  localStorage.setItem("2cuca_estoque_local", JSON.stringify(estoque));
+  localStorage.setItem("2cuca_eventos_local", JSON.stringify(eventos));
+}
 
 function abrirConfig(){
- document.getElementById("cfg-url").value=localStorage.getItem("2cuca_supabase_url")||"";
- document.getElementById("cfg-key").value=localStorage.getItem("2cuca_supabase_key")||"";
- document.getElementById("modal-config").classList.add("show");
+  document.getElementById("cfg-url").value=localStorage.getItem("2cuca_supabase_url")||"";
+  document.getElementById("cfg-key").value=localStorage.getItem("2cuca_supabase_key")||"";
+  document.getElementById("modal-config").classList.add("show");
 }
 function fecharConfig(){document.getElementById("modal-config").classList.remove("show")}
 
 async function conectar(){
- const url=localStorage.getItem("2cuca_supabase_url")||"";
- const key=localStorage.getItem("2cuca_supabase_key")||"";
- if(!url||!key){setConexao(false,"Banco não configurado");return false}
- try{
-  if(!window.supabase || !window.supabase.createClient) throw new Error("Biblioteca do Supabase não carregou. Verifique sua conexão com a internet.");
-  supabase=window.supabase.createClient(url,key);
-
-  // Evita que uma falha/hang de rede congele a interface.
-  const timeout = new Promise((_, reject)=>setTimeout(()=>reject(new Error("Tempo limite de conexão com o Supabase.")),8000));
-  const conectarBanco = (async()=>{
-    const { data: sess, error: sessError } = await supabase.auth.getSession();
-    if(sessError) throw sessError;
-    if (!sess.session) {
-      const { error: authError } = await supabase.auth.signInAnonymously();
-      if (authError) throw new Error("Ative o login anônimo em Authentication > Providers > Anonymous no Supabase. " + authError.message);
-    }
-    const {error}=await supabase.from("estoque").select("codigo").limit(1);
+  const url=localStorage.getItem("2cuca_supabase_url")||"";
+  const key=localStorage.getItem("2cuca_supabase_key")||"";
+  if(!url||!key){
+    setConexao(false,"Armazenamento Local");
+    return false;
+  }
+  try{
+    if(!window.supabase || !window.supabase.createClient) throw new Error("Supabase JS indisponível");
+    supabase=window.supabase.createClient(url,key);
+    const {error} = await supabase.from("estoque").select("codigo").limit(1);
     if(error) throw error;
     await carregarNuvem();
     assinarRealtime();
-  })();
-  await Promise.race([conectarBanco, timeout]);
-  setConexao(true,"● Online");
-  showMsg("Banco conectado. As alterações serão compartilhadas em tempo real.","ok");
-  return true;
- }catch(e){
-  console.error(e);
-  setConexao(false,"Offline / erro");
-  showMsg("O sistema está aberto, mas não conseguiu conectar ao banco: "+(e.message||e)+"<br><br>Use <b>⚙ Banco</b> para conferir a configuração.","warn");
-  return false;
- }
+    setConexao(true,"● Nuvem Online");
+    toast("Conectado à nuvem com sucesso!");
+    return true;
+  }catch(e){
+    console.error(e);
+    setConexao(false,"Offline (Local)");
+    return false;
+  }
 }
 
 async function carregarNuvem(){
- const [s,e]=await Promise.all([
-  supabase.from("estoque").select("*").order("codigo"),
-  supabase.from("eventos").select("*").order("data",{ascending:false})
- ]);
- if(s.error) throw s.error;if(e.error) throw e.error;
- estoque=(s.data||[]).map(x=>({codigo:x.codigo,categoria:x.categoria,item:x.item,unidade:x.unidade,saldo:Number(x.saldo||0),custo:Number(x.custo||0)}));
- eventos=(e.data||[]).map(x=>({id:x.id,nome:x.nome,data:x.data,responsavel:x.responsavel,status:x.status,itens:x.itens||[]}));
- if(!estoque.length){await importarBaseInicial();return}
- renderizarTudo()
+  if(!supabase) return;
+  const [s,e]=await Promise.all([
+    supabase.from("estoque").select("*").order("codigo"),
+    supabase.from("eventos").select("*").order("data",{ascending:false})
+  ]);
+  if(s.error) throw s.error;if(e.error) throw e.error;
+  estoque=(s.data||[]).map(x=>({codigo:x.codigo,categoria:x.categoria,item:x.item,unidade:x.unidade,saldo:Number(x.saldo||0),custo:Number(x.custo||0)}));
+  eventos=(e.data||[]).map(x=>({id:x.id,nome:x.nome,data:x.data,responsavel:x.responsavel,status:x.status,itens:x.itens||[]}));
+  if(!estoque.length){await importarBaseInicial();return}
+  salvarLocalStorage();
+  renderizarTudo();
 }
 
 async function importarBaseInicial(){
- const rows=DADOS_BASE.map(x=>({...x,updated_at:new Date().toISOString()}));
- const {error}=await supabase.from("estoque").upsert(rows,{onConflict:"codigo"});
- if(error) throw error;
- estoque=DADOS_BASE.map(x=>({...x}));
- renderizarTudo();
+  if(!supabase) return;
+  const rows=DADOS_BASE.map(x=>({...x,updated_at:new Date().toISOString()}));
+  await supabase.from("estoque").upsert(rows,{onConflict:"codigo"});
+  estoque=DADOS_BASE.map(x=>({...x}));
+  salvarLocalStorage();
+  renderizarTudo();
 }
 
 function assinarRealtime(){
- if(canal) supabase.removeChannel(canal);
- canal=supabase.channel("2cuca-estoque-eventos")
- .on("postgres_changes",{event:"*",schema:"public",table:"estoque"},payload=>{
-   if(payload.eventType==="DELETE"){estoque=estoque.filter(x=>x.codigo!==payload.old.codigo)}
-   else {const r=payload.new;const i=estoque.findIndex(x=>x.codigo===r.codigo);const n={codigo:r.codigo,categoria:r.categoria,item:r.item,unidade:r.unidade,saldo:Number(r.saldo||0),custo:Number(r.custo||0)};if(i<0)estoque.push(n);else estoque[i]=n}
-   renderizarTudo();
- })
- .on("postgres_changes",{event:"*",schema:"public",table:"eventos"},payload=>{
-   if(payload.eventType==="DELETE"){eventos=eventos.filter(x=>x.id!==payload.old.id)}
-   else {const r=payload.new;const n={id:r.id,nome:r.nome,data:r.data,responsavel:r.responsavel,status:r.status,itens:r.itens||[]};const i=eventos.findIndex(x=>x.id===r.id);if(i<0)eventos.push(n);else eventos[i]=n}
-   eventos.sort((a,b)=>new Date(b.data)-new Date(a.data));
-   renderizarTudo();
- })
- .subscribe(status=>{if(status==="SUBSCRIBED")setConexao(true,"● Online");else if(status==="CHANNEL_ERROR")setConexao(false,"Realtime erro")});
+  if(!supabase) return;
+  if(canal) supabase.removeChannel(canal);
+  canal=supabase.channel("2cuca-realtime")
+  .on("postgres_changes",{event:"*",schema:"public",table:"estoque"},payload=>{
+    if(payload.eventType==="DELETE"){estoque=estoque.filter(x=>x.codigo!==payload.old.codigo)}
+    else {const r=payload.new;const i=estoque.findIndex(x=>x.codigo===r.codigo);const n={codigo:r.codigo,categoria:r.categoria,item:r.item,unidade:r.unidade,saldo:Number(r.saldo||0),custo:Number(r.custo||0)};if(i<0)estoque.push(n);else estoque[i]=n}
+    salvarLocalStorage();
+    renderizarTudo();
+  })
+  .on("postgres_changes",{event:"*",schema:"public",table:"eventos"},payload=>{
+    if(payload.eventType==="DELETE"){eventos=eventos.filter(x=>x.id!==payload.old.id)}
+    else {const r=payload.new;const n={id:r.id,nome:r.nome,data:r.data,responsavel:r.responsavel,status:r.status,itens:r.itens||[]};const i=eventos.findIndex(x=>x.id===r.id);if(i<0)eventos.push(n);else eventos[i]=n}
+    eventos.sort((a,b)=>new Date(b.data)-new Date(a.data));
+    salvarLocalStorage();
+    renderizarTudo();
+  })
+  .subscribe();
 }
 
-async function upsertEstoque(){
- if(!supabase)return;
- const rows=estoque.map(x=>({...x,updated_at:new Date().toISOString()}));
- const {error}=await supabase.from("estoque").upsert(rows,{onConflict:"codigo"});
- if(error)throw error;
+async function persistirEstoque(){
+  salvarLocalStorage();
+  if(supabase){
+    const rows=estoque.map(x=>({...x,updated_at:new Date().toISOString()}));
+    await supabase.from("estoque").upsert(rows,{onConflict:"codigo"});
+  }
 }
-async function upsertEvento(ev){
- if(!supabase)return;
- const {error}=await supabase.from("eventos").upsert({id:ev.id,nome:ev.nome,data:ev.data,responsavel:ev.responsavel,status:ev.status,itens:ev.itens,updated_at:new Date().toISOString()},{onConflict:"id"});
- if(error)throw error;
+
+async function persistirEvento(ev){
+  salvarLocalStorage();
+  if(supabase){
+    await supabase.from("eventos").upsert({id:ev.id,nome:ev.nome,data:ev.data,responsavel:ev.responsavel,status:ev.status,itens:ev.itens,updated_at:new Date().toISOString()},{onConflict:"id"});
+  }
 }
-async function deleteProdutoCloud(codigo){
- const {error}=await supabase.from("estoque").delete().eq("codigo",codigo);if(error)throw error;
+
+async function deleteProduto(codigo){
+  estoque=estoque.filter(x=>x.codigo!==codigo);
+  salvarLocalStorage();
+  if(supabase){
+    await supabase.from("estoque").delete().eq("codigo",codigo);
+  }
 }
 
 function renderizarGalpao(){
- const busca=(document.getElementById("filtro-busca").value||"").toLowerCase();
- let html="";
- let totalUn=0,totalCap=0,crit=0;
- estoque.forEach(it=>{
-  totalUn+=it.saldo;totalCap+=it.saldo*it.custo;if(it.saldo<=5)crit++;
-  if((it.item+" "+it.codigo).toLowerCase().includes(busca)) html+=`<tr><td><b>${it.codigo}</b></td><td>${it.categoria}</td><td><b>${it.item}</b></td><td style="font-weight:900;color:${it.saldo<=5?"#dc2626":"#0f172a"}">${it.saldo} ${it.unidade}</td><td>${money(it.custo)}</td><td><b>${money(it.saldo*it.custo)}</b></td><td><button class="btn btn-red btn-del" data-sku="${it.codigo}" style="padding:5px 9px">Excluir</button></td></tr>`;
- });
- document.getElementById("tabela-galpao").innerHTML=html||`<tr><td colspan="7" style="text-align:center;padding:25px;color:#94a3b8">Nenhum produto.</td></tr>`;
- const options=estoque.map(it=>`<option value="${it.codigo}">${it.item} — saldo ${it.saldo} ${it.unidade}</option>`).join("");
- document.getElementById("select-carga-item").innerHTML=options;
- document.getElementById("select-extra").innerHTML=options;
- document.getElementById("kpi-skus").textContent=estoque.length;
- document.getElementById("kpi-capital").textContent=money(totalCap);
- document.getElementById("kpi-unidades").textContent=totalUn;
- document.getElementById("kpi-criticos").textContent=crit;
- document.querySelectorAll(".btn-del").forEach(b=>b.onclick=async()=>{if(confirm("Excluir "+b.dataset.sku+"?")){try{await deleteProdutoCloud(b.dataset.sku);estoque=estoque.filter(x=>x.codigo!==b.dataset.sku);renderizarTudo();toast("Produto excluído.")}catch(e){toast("Erro: "+e.message)}}});
+  const busca=(document.getElementById("filtro-busca").value||"").toLowerCase();
+  let html="";
+  let totalUn=0,totalCap=0,crit=0;
+  estoque.forEach(it=>{
+    totalUn+=it.saldo;totalCap+=it.saldo*it.custo;if(it.saldo<=5)crit++;
+    if((it.item+" "+it.codigo).toLowerCase().includes(busca)) {
+      html+=`<tr><td><b>${it.codigo}</b></td><td>${it.categoria}</td><td><b>${it.item}</b></td><td style="font-weight:900;color:${it.saldo<=5?"#dc2626":"#0f172a"}">${it.saldo} ${it.unidade}</td><td>${money(it.custo)}</td><td><b>${money(it.saldo*it.custo)}</b></td><td><button type="button" class="btn btn-red btn-del" data-sku="${it.codigo}" style="padding:5px 9px">Excluir</button></td></tr>`;
+    }
+  });
+  document.getElementById("tabela-galpao").innerHTML=html||`<tr><td colspan="7" style="text-align:center;padding:25px;color:#94a3b8">Nenhum produto cadastrado.</td></tr>`;
+  const options=estoque.map(it=>`<option value="${it.codigo}">${it.item} — saldo ${it.saldo} ${it.unidade}</option>`).join("");
+  document.getElementById("select-carga-item").innerHTML=options;
+  document.getElementById("select-extra").innerHTML=options;
+  document.getElementById("kpi-skus").textContent=estoque.length;
+  document.getElementById("kpi-capital").textContent=money(totalCap);
+  document.getElementById("kpi-unidades").textContent=totalUn;
+  document.getElementById("kpi-criticos").textContent=crit;
+  document.querySelectorAll(".btn-del").forEach(b=>b.onclick=async()=>{
+    if(confirm("Excluir "+b.dataset.sku+"?")){
+      try{
+        await deleteProduto(b.dataset.sku);
+        renderizarTudo();
+        toast("Produto excluído.");
+      }catch(e){toast("Erro: "+e.message)}
+    }
+  });
 }
+
 function renderizarCarga(){
- const box=document.getElementById("box-carga-separada");
- if(!cargaTemp.length){box.innerHTML='<div style="text-align:center;padding:20px;color:#94a3b8">Nenhum item na carga.</div>';return}
- box.innerHTML=cargaTemp.map((x,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9"><span><b>${x.item}</b><br><small>${x.qtd} ${x.unidade}</small></span><button class="btn btn-red" style="padding:4px 8px" onclick="cargaTemp.splice(${i},1);renderizarCarga()">Remover</button></div>`).join("")
+  const box=document.getElementById("box-carga-separada");
+  if(!cargaTemp.length){box.innerHTML='<div style="text-align:center;padding:20px;color:#94a3b8">Nenhum item na carga.</div>';return}
+  box.innerHTML=cargaTemp.map((x,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9"><span><b>${x.item}</b><br><small>${x.qtd} ${x.unidade}</small></span><button type="button" class="btn btn-red" style="padding:4px 8px" onclick="cargaTemp.splice(${i},1);renderizarCarga()">Remover</button></div>`).join("");
 }
+
 function eventosAndamento(){return eventos.filter(e=>e.status==="Em Andamento")}
+
 function preencherSelects(){
- const evs=eventosAndamento();
- const opts=evs.map(e=>`<option value="${e.id}">${e.nome} (${e.data})</option>`).join("");
- document.getElementById("select-evento-edicao").innerHTML=opts||'<option value="">Nenhum evento em andamento</option>';
- document.getElementById("select-evento-retorno").innerHTML=opts||'<option value="">Nenhum evento em andamento</option>';
- document.getElementById("kpi-eventos").textContent=evs.length;
- renderEdicao();renderRetorno();
+  const evs=eventosAndamento();
+  const opts=evs.map(e=>`<option value="${e.id}">${e.nome} (${e.data})</option>`).join("");
+  document.getElementById("select-evento-edicao").innerHTML=opts||'<option value="">Nenhum evento em andamento</option>';
+  document.getElementById("select-evento-retorno").innerHTML=opts||'<option value="">Nenhum evento em andamento</option>';
+  document.getElementById("kpi-eventos").textContent=evs.length;
+  renderEdicao();renderRetorno();
 }
+
 function renderEdicao(){
- const id=Number(document.getElementById("select-evento-edicao").value);const ev=eventos.find(x=>x.id===id);const body=document.getElementById("tabela-edicao");
- if(!ev){body.innerHTML='<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento.</td></tr>';return}
- body.innerHTML=ev.itens.map((it,i)=>`<tr><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td><input id="qed-${i}" type="number" min="1" value="${it.enviado}" class="input-ctrl" style="width:90px"></td><td><button class="btn btn-amber" style="padding:5px 9px" onclick="salvarEdicao(${ev.id},${i})">Atualizar</button></td></tr>`).join("")
+  const id=Number(document.getElementById("select-evento-edicao").value);const ev=eventos.find(x=>x.id===id);const body=document.getElementById("tabela-edicao");
+  if(!ev){body.innerHTML='<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento aberto.</td></tr>';return}
+  body.innerHTML=ev.itens.map((it,i)=>`<tr><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td><input id="qed-${i}" type="number" min="1" value="${it.enviado}" class="input-ctrl" style="width:90px"></td><td><button type="button" class="btn btn-amber" style="padding:5px 9px" onclick="salvarEdicao(${ev.id},${i})">Atualizar</button></td></tr>`).join("");
 }
+
 async function salvarEdicao(evId,idx){
- const ev=eventos.find(x=>x.id===evId);if(!ev)return;const nova=Number(document.getElementById("qed-"+idx).value);const it=ev.itens[idx];if(!nova||nova<=0)return;
- const dif=nova-it.enviado;const g=estoque.find(x=>x.codigo===it.codigo);if(dif>0&&(!g||g.saldo<dif)){alert("Saldo insuficiente.");return}
- if(g)g.saldo-=dif;it.enviado=nova;it.consumido=Math.max(0,it.enviado-(it.devolvido+it.quebra));it.custoTotal=(it.consumido+it.quebra)*it.custo;
- try{await upsertEstoque();await upsertEvento(ev);renderizarTudo();toast("Carga atualizada.")}catch(e){toast("Erro: "+e.message)}
+  const ev=eventos.find(x=>x.id===evId);if(!ev)return;const nova=Number(document.getElementById("qed-"+idx).value);const it=ev.itens[idx];if(!nova||nova<=0)return;
+  const dif=nova-it.enviado;const g=estoque.find(x=>x.codigo===it.codigo);if(dif>0&&(!g||g.saldo<dif)){alert("Saldo insuficiente no galpão.");return}
+  if(g)g.saldo-=dif;it.enviado=nova;it.consumido=Math.max(0,it.enviado-(it.devolvido+it.quebra));it.custoTotal=(it.consumido+it.quebra)*it.custo;
+  try{await persistirEstoque();await persistirEvento(ev);renderizarTudo();toast("Carga atualizada com sucesso.")}catch(e){toast("Erro: "+e.message)}
 }
+
 function renderRetorno(){
- const id=Number(document.getElementById("select-evento-retorno").value);const ev=eventos.find(x=>x.id===id);const body=document.getElementById("tabela-retorno");
- if(!ev){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento.</td></tr>';return}
- body.innerHTML=ev.itens.map((it,i)=>`<tr><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td><input id="dev-${i}" type="number" min="0" max="${it.enviado}" value="${it.devolvido}" class="input-ctrl" style="width:70px"></td><td><input id="que-${i}" type="number" min="0" max="${it.enviado}" value="${it.quebra}" class="input-ctrl" style="width:70px"></td><td><b>${it.consumido} ${it.unidade}</b></td><td>${money(it.custoTotal)}</td><td><button class="btn btn-green" style="padding:5px 9px" onclick="salvarRetorno(${ev.id},${i})">Salvar</button></td></tr>`).join("")
+  const id=Number(document.getElementById("select-evento-retorno").value);const ev=eventos.find(x=>x.id===id);const body=document.getElementById("tabela-retorno");
+  if(!ev){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento aberto.</td></tr>';return}
+  body.innerHTML=ev.itens.map((it,i)=>`<tr><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td><input id="dev-${i}" type="number" min="0" max="${it.enviado}" value="${it.devolvido}" class="input-ctrl" style="width:70px"></td><td><input id="que-${i}" type="number" min="0" max="${it.enviado}" value="${it.quebra}" class="input-ctrl" style="width:70px"></td><td><b>${it.consumido} ${it.unidade}</b></td><td>${money(it.custoTotal)}</td><td><button type="button" class="btn btn-green" style="padding:5px 9px" onclick="salvarRetorno(${ev.id},${i})">Salvar</button></td></tr>`).join("");
 }
+
 async function salvarRetorno(evId,idx){
- const ev=eventos.find(x=>x.id===evId);if(!ev)return;const it=ev.itens[idx];const dev=Number(document.getElementById("dev-"+idx).value)||0;const que=Number(document.getElementById("que-"+idx).value)||0;
- if(dev+que>it.enviado){alert("Devolução + quebra não pode ser maior que o enviado.");return}
- const g=estoque.find(x=>x.codigo===it.codigo);if(g)g.saldo+=dev-it.devolvido;
- it.devolvido=dev;it.quebra=que;it.consumido=it.enviado-(dev+que);it.custoTotal=(it.consumido+it.quebra)*it.custo;
- try{await upsertEstoque();await upsertEvento(ev);renderizarTudo();toast("Retorno salvo.")}catch(e){toast("Erro: "+e.message)}
+  const ev=eventos.find(x=>x.id===evId);if(!ev)return;const it=ev.itens[idx];const dev=Number(document.getElementById("dev-"+idx).value)||0;const que=Number(document.getElementById("que-"+idx).value)||0;
+  if(dev+que>it.enviado){alert("Devolução + quebra não pode ser maior que o enviado.");return}
+  const g=estoque.find(x=>x.codigo===it.codigo);if(g)g.saldo+=dev-it.devolvido;
+  it.devolvido=dev;it.quebra=que;it.consumido=it.enviado-(dev+que);it.custoTotal=(it.consumido+it.quebra)*it.custo;
+  try{await persistirEstoque();await persistirEvento(ev);renderizarTudo();toast("Retorno gravado.")}catch(e){toast("Erro: "+e.message)}
 }
+
 function renderBalanco(){
- const lim=new Date();lim.setDate(lim.getDate()-periodoBalanco);
- const arr=eventos.filter(e=>new Date(e.data)>=lim).sort((a,b)=>new Date(b.data)-new Date(a.data));
- let cons=0,custo=0;
- arr.forEach(e=>e.itens.forEach(it=>{cons+=Number(it.consumido)||0;custo+=(Number(it.consumido)||0+Number(it.quebra)||0)*(Number(it.custo)||0)}));
- document.getElementById("bal-kpi-eventos").textContent=arr.length;
- document.getElementById("bal-kpi-consumido").textContent=cons+" un";
- document.getElementById("bal-kpi-custo").textContent=money(custo);
- document.getElementById("balanco-eventos").innerHTML=arr.length?arr.map(e=>{
-  let en=0,de=0,qu=0,co=0,ct=0;e.itens.forEach(it=>{en+=+it.enviado||0;de+=+it.devolvido||0;qu+=+it.quebra||0;co+=+it.consumido||0;ct+=+it.custoTotal||0});
-  return `<div class="event" id="evb-${e.id}"><button class="event-head" onclick="document.getElementById('evb-${e.id}').classList.toggle('open')"><div><div class="event-title"><span class="arrow">▶</span>${e.nome}</div><div class="event-meta">📅 ${e.data} • 👤 ${e.responsavel} • <span class="status ${e.status==="Finalizado"?"status-final":"status-run"}">${e.status}</span></div></div><div class="event-summary"><div><small>Enviado</small><b>${en}</b></div><div><small>Devolvido</small><b>${de}</b></div><div><small>Consumido</small><b>${co}</b></div><div><small>Quebra</small><b>${qu}</b></div><div><small>Custo</small><b>${money(ct)}</b></div></div></button><div class="event-body"><div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo Total</th></tr></thead><tbody>${e.itens.map(it=>`<tr><td>${it.codigo}</td><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td>${it.devolvido}</td><td>${it.quebra}</td><td><b>${it.consumido}</b></td><td>${money(it.custoTotal)}</td></tr>`).join("")}</tbody></table></div></div></div>`
- }).join(""):'<div style="text-align:center;padding:25px;color:#94a3b8">Nenhum evento no período.</div>'
+  const lim=new Date();lim.setDate(lim.getDate()-periodoBalanco);
+  const arr=eventos.filter(e=>new Date(e.data)>=lim).sort((a,b)=>new Date(b.data)-new Date(a.data));
+  let cons=0,custo=0;
+  arr.forEach(e=>e.itens.forEach(it=>{cons+=Number(it.consumido)||0;custo+=(Number(it.consumido)||0+Number(it.quebra)||0)*(Number(it.custo)||0)}));
+  document.getElementById("bal-kpi-eventos").textContent=arr.length;
+  document.getElementById("bal-kpi-consumido").textContent=cons+" un";
+  document.getElementById("bal-kpi-custo").textContent=money(custo);
+  document.getElementById("balanco-eventos").innerHTML=arr.length?arr.map(e=>{
+    let en=0,de=0,qu=0,co=0,ct=0;e.itens.forEach(it=>{en+=+it.enviado||0;de+=+it.devolvido||0;qu+=+it.quebra||0;co+=+it.consumido||0;ct+=+it.custoTotal||0});
+    return `<div class="event" id="evb-${e.id}"><button type="button" class="event-head" onclick="document.getElementById('evb-${e.id}').classList.toggle('open')"><div><div class="event-title"><span class="arrow">▶</span>${e.nome}</div><div class="event-meta">📅 ${e.data} • 👤 ${e.responsavel} • <span class="status ${e.status==="Finalizado"?"status-final":"status-run"}">${e.status}</span></div></div><div class="event-summary"><div><small>Enviado</small><b>${en}</b></div><div><small>Devolvido</small><b>${de}</b></div><div><small>Consumido</small><b>${co}</b></div><div><small>Quebra</small><b>${qu}</b></div><div><small>Custo</small><b>${money(ct)}</b></div></div></button><div class="event-body"><div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo Total</th></tr></thead><tbody>${e.itens.map(it=>`<tr><td>${it.codigo}</td><td><b>${it.item}</b></td><td>${it.enviado} ${it.unidade}</td><td>${it.devolvido}</td><td>${it.quebra}</td><td><b>${it.consumido}</b></td><td>${money(it.custoTotal)}</td></tr>`).join("")}</tbody></table></div></div></div>`;
+  }).join(""):'<div style="text-align:center;padding:25px;color:#94a3b8">Nenhum evento registrado no período.</div>';
 }
+
 function renderRelatorios(){
- let h="";eventos.forEach(e=>e.itens.forEach(it=>h+=`<tr><td>${e.data}</td><td><b>${e.nome}</b></td><td>${e.responsavel}</td><td>${it.item}</td><td>${it.enviado}</td><td>${it.devolvido}</td><td>${it.quebra}</td><td>${it.consumido}</td><td>${money(it.custoTotal)}</td></tr>`));
- document.getElementById("tabela-relatorios").innerHTML=h||'<tr><td colspan="9" style="text-align:center;padding:25px;color:#94a3b8">Nenhum evento.</td></tr>'
+  let h="";eventos.forEach(e=>e.itens.forEach(it=>h+=`<tr><td>${e.data}</td><td><b>${e.nome}</b></td><td>${e.responsavel}</td><td>${it.item}</td><td>${it.enviado}</td><td>${it.devolvido}</td><td>${it.quebra}</td><td>${it.consumido}</td><td>${money(it.custoTotal)}</td></tr>`));
+  document.getElementById("tabela-relatorios").innerHTML=h||'<tr><td colspan="9" style="text-align:center;padding:25px;color:#94a3b8">Nenhum evento arquivado.</td></tr>';
 }
-function renderizarTudo(){renderizarGalpao();renderizarCarga();preencherSelects();renderBalanco();renderRelatorios()}
+
+function renderizarTudo(){
+  renderizarGalpao();
+  renderizarCarga();
+  preencherSelects();
+  renderBalanco();
+  renderRelatorios();
+}
 
 async function gravarProduto(){
- const codigo=document.getElementById("cad-sku").value.trim().toUpperCase(),categoria=document.getElementById("cad-cat").value,item=document.getElementById("cad-item").value.trim(),unidade=document.getElementById("cad-un").value,saldo=Number(document.getElementById("cad-saldo").value)||0,custo=Number(document.getElementById("cad-custo").value)||0;
- if(!codigo||!item){alert("Preencha SKU e descrição.");return}
- const existente=estoque.find(x=>x.codigo===codigo);if(existente){existente.saldo+=saldo;existente.custo=custo||existente.custo;existente.categoria=categoria;existente.item=item;existente.unidade=unidade}else estoque.push({codigo,categoria,item,unidade,saldo,custo});
- try{await upsertEstoque();renderizarTudo();document.getElementById("cad-sku").value="";document.getElementById("cad-item").value="";toast("Produto salvo na nuvem.")}catch(e){toast("Erro: "+e.message)}
+  const codigo=document.getElementById("cad-sku").value.trim().toUpperCase(),categoria=document.getElementById("cad-cat").value,item=document.getElementById("cad-item").value.trim(),unidade=document.getElementById("cad-un").value,saldo=Number(document.getElementById("cad-saldo").value)||0,custo=Number(document.getElementById("cad-custo").value)||0;
+  if(!codigo||!item){alert("Preencha SKU e descrição.");return}
+  const existente=estoque.find(x=>x.codigo===codigo);
+  if(existente){existente.saldo+=saldo;existente.custo=custo||existente.custo;existente.categoria=categoria;existente.item=item;existente.unidade=unidade}
+  else estoque.push({codigo,categoria,item,unidade,saldo,custo});
+  try{
+    await persistirEstoque();
+    renderizarTudo();
+    document.getElementById("cad-sku").value="";
+    document.getElementById("cad-item").value="";
+    toast("Produto salvo!");
+  }catch(e){toast("Erro: "+e.message)}
 }
+
 function adicionarCarga(){
- const codigo=document.getElementById("select-carga-item").value,qtd=Number(document.getElementById("input-carga-qtd").value)||0,g=estoque.find(x=>x.codigo===codigo);if(!g||qtd<=0)return;
- const ja=cargaTemp.find(x=>x.codigo===codigo);if((ja?ja.qtd:0)+qtd>g.saldo){alert("Quantidade maior que o saldo disponível.");return}
- if(ja)ja.qtd+=qtd;else cargaTemp.push({...g,qtd});renderizarCarga()
+  const codigo=document.getElementById("select-carga-item").value,qtd=Number(document.getElementById("input-carga-qtd").value)||0,g=estoque.find(x=>x.codigo===codigo);if(!g||qtd<=0)return;
+  const ja=cargaTemp.find(x=>x.codigo===codigo);
+  if((ja?ja.qtd:0)+qtd>g.saldo){alert("Quantidade maior que o saldo disponível no galpão.");return}
+  if(ja)ja.qtd+=qtd;else cargaTemp.push({...g,qtd});
+  renderizarCarga();
 }
+
 async function despachar(){
- const nome=document.getElementById("festa-nome").value.trim(),data=document.getElementById("festa-data").value||new Date().toISOString().slice(0,10),resp=document.getElementById("festa-resp").value.trim()||"Equipe de Bar";
- if(!nome||!cargaTemp.length){alert("Informe o evento e inclua itens.");return}
- for(const c of cargaTemp){const g=estoque.find(x=>x.codigo===c.codigo);if(!g||g.saldo<c.qtd){alert("Saldo insuficiente para "+c.item);return}}
- cargaTemp.forEach(c=>{estoque.find(x=>x.codigo===c.codigo).saldo-=c.qtd});
- const ev={id:Date.now(),nome,data,responsavel:resp,status:"Em Andamento",itens:cargaTemp.map(c=>({codigo:c.codigo,item:c.item,unidade:c.unidade,custo:c.custo,enviado:c.qtd,devolvido:0,quebra:0,consumido:0,custoTotal:0}))};
- eventos.unshift(ev);
- try{await upsertEstoque();await upsertEvento(ev);cargaTemp=[];document.getElementById("festa-nome").value="";renderizarTudo();toast("Evento despachado e sincronizado.");alternarAba("retorno")}catch(e){toast("Erro ao salvar: "+e.message)}
+  const nome=document.getElementById("festa-nome").value.trim(),data=document.getElementById("festa-data").value||new Date().toISOString().slice(0,10),resp=document.getElementById("festa-resp").value.trim()||"Equipe de Bar";
+  if(!nome||!cargaTemp.length){alert("Informe o nome do evento e inclua itens.");return}
+  for(const c of cargaTemp){const g=estoque.find(x=>x.codigo===c.codigo);if(!g||g.saldo<c.qtd){alert("Saldo insuficiente para "+c.item);return}}
+  cargaTemp.forEach(c=>{estoque.find(x=>x.codigo===c.codigo).saldo-=c.qtd});
+  const ev={id:Date.now(),nome,data,responsavel:resp,status:"Em Andamento",itens:cargaTemp.map(c=>({codigo:c.codigo,item:c.item,unidade:c.unidade,custo:c.custo,enviado:c.qtd,devolvido:0,quebra:0,consumido:0,custoTotal:0}))};
+  eventos.unshift(ev);
+  try{
+    await persistirEstoque();
+    await persistirEvento(ev);
+    cargaTemp=[];
+    document.getElementById("festa-nome").value="";
+    renderizarTudo();
+    toast("Evento despachado!");
+    alternarAba("retorno");
+  }catch(e){toast("Erro ao salvar: "+e.message)}
 }
+
 async function adicionarExtra(){
- const ev=eventos.find(e=>e.id===Number(document.getElementById("select-evento-edicao").value)),g=estoque.find(x=>x.codigo===document.getElementById("select-extra").value),q=Number(document.getElementById("input-extra").value)||0;if(!ev||!g||q<=0)return;
- if(g.saldo<q){alert("Saldo insuficiente.");return}g.saldo-=q;const it=ev.itens.find(x=>x.codigo===g.codigo);if(it){it.enviado+=q;it.consumido=Math.max(0,it.enviado-it.devolvido-it.quebra);it.custoTotal=(it.consumido+it.quebra)*it.custo}else ev.itens.push({codigo:g.codigo,item:g.item,unidade:g.unidade,custo:g.custo,enviado:q,devolvido:0,quebra:0,consumido:0,custoTotal:0});
- try{await upsertEstoque();await upsertEvento(ev);renderizarTudo();toast("Reforço adicionado.")}catch(e){toast("Erro: "+e.message)}
+  const ev=eventos.find(e=>e.id===Number(document.getElementById("select-evento-edicao").value)),g=estoque.find(x=>x.codigo===document.getElementById("select-extra").value),q=Number(document.getElementById("input-extra").value)||0;
+  if(!ev||!g||q<=0)return;
+  if(g.saldo<q){alert("Saldo insuficiente.");return}
+  g.saldo-=q;
+  const it=ev.itens.find(x=>x.codigo===g.codigo);
+  if(it){it.enviado+=q;it.consumido=Math.max(0,it.enviado-it.devolvido-it.quebra);it.custoTotal=(it.consumido+it.quebra)*it.custo}
+  else ev.itens.push({codigo:g.codigo,item:g.item,unidade:g.unidade,custo:g.custo,enviado:q,devolvido:0,quebra:0,consumido:0,custoTotal:0});
+  try{await persistirEstoque();await persistirEvento(ev);renderizarTudo();toast("Reforço adicionado.")}catch(e){toast("Erro: "+e.message)}
 }
+
 async function fecharEvento(){
- const id=Number(document.getElementById("select-evento-retorno").value),ev=eventos.find(e=>e.id===id);if(!ev)return;if(!confirm("Finalizar este evento?"))return;
- ev.status="Finalizado";try{await upsertEvento(ev);renderizarTudo();toast("Evento finalizado.")}catch(e){toast("Erro: "+e.message)}
+  const id=Number(document.getElementById("select-evento-retorno").value),ev=eventos.find(e=>e.id===id);if(!ev)return;
+  if(!confirm("Finalizar este evento?"))return;
+  ev.status="Finalizado";
+  try{await persistirEvento(ev);renderizarTudo();toast("Evento finalizado e arquivado.")}catch(e){toast("Erro: "+e.message)}
 }
-function alternarAba(n){document.querySelectorAll(".tab-view").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));document.getElementById("view-"+n).classList.add("active");document.querySelector(`[data-tab="${n}"]`).classList.add("active");if(n==="balanco")renderBalanco()}
 
-document.addEventListener("DOMContentLoaded",async()=>{
- document.querySelectorAll(".tab-btn").forEach(b=>b.onclick=()=>alternarAba(b.dataset.tab));
- document.getElementById("filtro-busca").oninput=renderizarGalpao;
- document.getElementById("btn-gravar-item").onclick=gravarProduto;
- document.getElementById("btn-add-carga").onclick=adicionarCarga;
- document.getElementById("btn-limpar-carga").onclick=()=>{cargaTemp=[];renderizarCarga()};
- document.getElementById("btn-despachar").onclick=despachar;
- document.getElementById("btn-extra").onclick=adicionarExtra;
- document.getElementById("btn-fechar-evento").onclick=fecharEvento;
- document.getElementById("select-evento-edicao").onchange=renderEdicao;
- document.getElementById("select-evento-retorno").onchange=renderRetorno;
- document.getElementById("btn-recarregar").onclick=async()=>{try{await carregarNuvem();toast("Dados atualizados.")}catch(e){toast("Erro: "+e.message)}};
- document.querySelectorAll(".filtro-balanco").forEach(b=>b.onclick=()=>{periodoBalanco=Number(b.dataset.p);document.querySelectorAll(".filtro-balanco").forEach(x=>x.className="btn filtro-balanco btn-gray");b.className="btn filtro-balanco btn-amber";renderBalanco()});
- document.getElementById("cfg-save").onclick=async()=>{const u=document.getElementById("cfg-url").value.trim(),k=document.getElementById("cfg-key").value.trim();if(!u||!k)return alert("Informe URL e publishable key.");localStorage.setItem("2cuca_supabase_url",u);localStorage.setItem("2cuca_supabase_key",k);fecharConfig();await conectar()};
- document.getElementById("cfg-cancel").onclick=fecharConfig;
- document.getElementById("btn-config").onclick=abrirConfig;
- document.getElementById("conexao").onclick=abrirConfig;
+function alternarAba(n){
+  document.querySelectorAll(".tab-view").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+  document.getElementById("view-"+n).classList.add("active");
+  document.querySelector(`[data-tab="${n}"]`).classList.add("active");
+  if(n==="balanco")renderBalanco();
+}
 
- // A interface nunca fica bloqueada aguardando a nuvem.
- // Primeiro mostra os dados locais/base; depois tenta sincronizar em segundo plano.
- if(!estoque.length) estoque=DADOS_BASE.map(x=>({...x}));
- renderizarTudo();
- conectar();
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".tab-btn").forEach(b=>b.onclick=()=>alternarAba(b.dataset.tab));
+  document.getElementById("filtro-busca").oninput=renderizarGalpao;
+  document.getElementById("btn-gravar-item").onclick=gravarProduto;
+  document.getElementById("btn-add-carga").onclick=adicionarCarga;
+  document.getElementById("btn-limpar-carga").onclick=()=>{cargaTemp=[];renderizarCarga()};
+  document.getElementById("btn-despachar").onclick=despachar;
+  document.getElementById("btn-extra").onclick=adicionarExtra;
+  document.getElementById("btn-fechar-evento").onclick=fecharEvento;
+  document.getElementById("select-evento-edicao").onchange=renderEdicao;
+  document.getElementById("select-evento-retorno").onchange=renderRetorno;
+  document.getElementById("btn-recarregar").onclick=async()=>{
+    if(supabase) await carregarNuvem();
+    else carregarLocalStorage();
+    renderizarTudo();
+    toast("Dados atualizados.");
+  };
+  document.querySelectorAll(".filtro-balanco").forEach(b=>b.onclick=()=>{
+    periodoBalanco=Number(b.dataset.p);
+    document.querySelectorAll(".filtro-balanco").forEach(x=>x.className="btn filtro-balanco btn-gray");
+    b.className="btn filtro-balanco btn-amber";
+    renderBalanco();
+  });
+  document.getElementById("cfg-save").onclick=async()=>{
+    const u=document.getElementById("cfg-url").value.trim(),k=document.getElementById("cfg-key").value.trim();
+    if(!u||!k)return alert("Informe URL e chave.");
+    localStorage.setItem("2cuca_supabase_url",u);
+    localStorage.setItem("2cuca_supabase_key",k);
+    fecharConfig();
+    await conectar();
+  };
+  document.getElementById("cfg-cancel").onclick=fecharConfig;
+  document.getElementById("btn-config").onclick=abrirConfig;
+  document.getElementById("conexao").onclick=abrirConfig;
+
+  // Inicialização
+  carregarLocalStorage();
+  renderizarTudo();
+  conectar();
 });
 </script>
 </body>
