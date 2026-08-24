@@ -1,1711 +1,986 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="notranslate" translate="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 Cuca - Bar Experience</title>
-
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-    background: #f8fafc;
-    color: #1e293b;
-    padding-bottom: 40px;
-}
-
-header {
-    background: #fff;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 4px rgba(0,0,0,.05);
-}
-
-.header-box {
-    max-width: 1250px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.brand-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 9px;
-    background: #d97706;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
-
-.brand h1 {
-    font-size: 18px;
-    color: #0f172a;
-}
-
-.brand p {
-    color: #b45309;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.nav-bar {
-    display: flex;
-    gap: 4px;
-    background: #f1f5f9;
-    padding: 4px;
-    border-radius: 8px;
-    flex-wrap: wrap;
-}
-
-.tab-btn {
-    border: none;
-    background: transparent;
-    padding: 9px 13px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #64748b;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.tab-btn.active {
-    background: white;
-    color: #b45309;
-    box-shadow: 0 1px 3px rgba(0,0,0,.1);
-}
-
-.container {
-    max-width: 1250px;
-    margin: 20px auto;
-    padding: 0 15px;
-}
-
-.kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.kpi-card {
-    background: white;
-    padding: 16px;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-}
-
-.kpi-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    color: #64748b;
-    font-weight: bold;
-}
-
-.kpi-val {
-    font-size: 21px;
-    font-weight: 900;
-    margin-top: 5px;
-}
-
-.card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 18px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.03);
-}
-
-.card-header {
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 13px;
-    color: #0f172a;
-}
-
-.grid-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-    gap: 10px;
-}
-
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.field label {
-    font-size: 11px;
-    font-weight: bold;
-    color: #475569;
-}
-
-.input-ctrl {
-    width: 100%;
-    border: 1px solid #cbd5e1;
-    background: #f8fafc;
-    padding: 9px 10px;
-    border-radius: 6px;
-    outline: none;
-    font-size: 12px;
-}
-
-.input-ctrl:focus {
-    border-color: #d97706;
-    background: white;
-}
-
-.btn {
-    border: none;
-    padding: 9px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.btn-amber {
-    background: #d97706;
-    color: white;
-}
-
-.btn-amber:hover {
-    background: #b45309;
-}
-
-.btn-green {
-    background: #16a34a;
-    color: white;
-}
-
-.btn-red {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-blue {
-    background: #2563eb;
-    color: white;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-}
-
-th {
-    background: #f8fafc;
-    color: #475569;
-    padding: 10px;
-    text-align: left;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-tr:hover {
-    background: #f8fafc;
-}
-
-.tab-view {
-    display: none;
-}
-
-.tab-view.active {
-    display: block;
-}
-
-.badge {
-    padding: 4px 7px;
-    border-radius: 5px;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-.badge-red {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.badge-green {
-    background: #dcfce7;
-    color: #15803d;
-}
-
-.badge-blue {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.event-box {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 8px;
-}
-
-.flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.empty {
-    text-align: center;
-    color: #94a3b8;
-    padding: 25px;
-}
-
-@media(max-width:700px) {
-    .nav-bar {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .tab-btn {
-        flex: 1;
-    }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2 Cucas - Bar & Eventos</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8fafc; color: #1e293b; padding-bottom: 60px; }
+    
+    header { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .header-box { max-width: 1250px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon { background: #d97706; color: #ffffff; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; }
+    .brand h1 { font-size: 18px; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+    .brand p { font-size: 11px; color: #b45309; font-weight: bold; }
+    
+    .nav-bar { display: flex; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .tab-btn { border: none; background: transparent; padding: 8px 12px; font-size: 12px; font-weight: bold; color: #64748b; border-radius: 6px; cursor: pointer; transition: 0.15s; }
+    .tab-btn.active { background: #ffffff; color: #b45309; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    
+    .container { max-width: 1250px; margin: 20px auto; padding: 0 15px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .kpi-card { background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .kpi-title { font-size: 11px; text-transform: uppercase; font-weight: bold; color: #64748b; }
+    .kpi-val { font-size: 20px; font-weight: 900; margin-top: 4px; color: #0f172a; }
+    
+    .card { background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 18px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .card-header { font-size: 13px; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-bottom: 12px; }
+    
+    .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 11px; font-weight: bold; color: #475569; }
+    .input-ctrl { border: 1px solid #cbd5e1; background: #f8fafc; padding: 8px 10px; border-radius: 6px; font-size: 12px; outline: none; }
+    .input-ctrl:focus { border-color: #d97706; background: #ffffff; }
+    
+    .btn { border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .btn-amber { background: #d97706; color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+    .btn-green { background: #16a34a; color: #ffffff; }
+    .btn-green:hover { background: #15803d; }
+    .btn-red { background: #ef4444; color: #ffffff; }
+    .btn-red:hover { background: #dc2626; }
+    .btn-blue { background: #2563eb; color: #ffffff; }
+    .btn-blue:hover { background: #1d4ed8; }
+    
+    .table-responsive { overflow-x: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #f8fafc; color: #475569; padding: 10px; border-bottom: 2px solid #e2e8f0; text-align: left; font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+    tr:hover { background: #f8fafc; }
+    
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+  </style>
 </head>
-
 <body>
 
-<header>
-<div class="header-box">
-
-<div class="brand">
-<div class="brand-icon">🍸</div>
-<div>
-<h1>2 CUCAS</h1>
-<p>BAR & EVENTOS</p>
-</div>
-</div>
-
-<nav class="nav-bar">
-<button class="tab-btn active" data-tab="estoque">📦 Estoque</button>
-<button class="tab-btn" data-tab="saida">🚚 Saída</button>
-<button class="tab-btn" data-tab="retorno">🔄 Retorno</button>
-<button class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
-</nav>
-
-</div>
-</header>
-
-<div class="container">
-
-<div class="kpi-row">
-
-<div class="kpi-card">
-<div class="kpi-title">Produtos</div>
-<div class="kpi-val" id="kpi-produtos">0</div>
-</div>
-
-<div class="kpi-card">
-<div class="kpi-title">Unidades em Estoque</div>
-<div class="kpi-val" id="kpi-unidades">0</div>
-</div>
-
-<div class="kpi-card">
-<div class="kpi-title">Valor do Estoque</div>
-<div class="kpi-val" id="kpi-valor">R$ 0,00</div>
-</div>
-
-<div class="kpi-card">
-<div class="kpi-title">Estoque Crítico</div>
-<div class="kpi-val" id="kpi-criticos" style="color:#dc2626">0</div>
-</div>
-
-<div class="kpi-card">
-<div class="kpi-title">Eventos em Andamento</div>
-<div class="kpi-val" id="kpi-eventos" style="color:#2563eb">0</div>
-</div>
-
-</div>
-
-<!-- ESTOQUE -->
-
-<section id="view-estoque" class="tab-view active">
-
-<div class="card">
-
-<div class="card-header">➕ Cadastro / Entrada de Produto</div>
-
-<div class="grid-form">
-
-<div class="field">
-<label>SKU</label>
-<input id="cad-sku" class="input-ctrl" placeholder="DEST-GIN">
-</div>
-
-<div class="field">
-<label>Categoria</label>
-<select id="cad-cat" class="input-ctrl">
-<option>Destilados</option>
-<option>Aperitivos & Licores</option>
-<option>Espumantes & Vinhos</option>
-<option>Cervejas</option>
-<option>Misturas & Não Alcoólicos</option>
-<option>Xaropes & Frutas</option>
-<option>Outros</option>
-</select>
-</div>
-
-<div class="field" style="grid-column:span 2">
-<label>Produto</label>
-<input id="cad-item" class="input-ctrl" placeholder="Nome do produto">
-</div>
-
-<div class="field">
-<label>Unidade</label>
-<select id="cad-un" class="input-ctrl">
-<option>Garrafa</option>
-<option>Fardo/Pack</option>
-<option>Lata</option>
-<option>Unidade</option>
-<option>Caixa</option>
-</select>
-</div>
-
-<div class="field">
-<label>Saldo</label>
-<input id="cad-saldo" class="input-ctrl" type="number" min="0" value="10">
-</div>
-
-<div class="field">
-<label>Estoque mínimo</label>
-<input id="cad-min" class="input-ctrl" type="number" min="0" value="5">
-</div>
-
-<div class="field">
-<label>Custo unitário</label>
-<input id="cad-custo" class="input-ctrl" type="number" min="0" step=".01" value="50">
-</div>
-
-</div>
-
-<div style="margin-top:12px;text-align:right">
-<button class="btn btn-amber" id="btn-gravar">Salvar Produto</button>
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="flex">
-<div class="card-header" style="margin:0">📦 Estoque Atual</div>
-
-<input id="busca" class="input-ctrl"
-style="max-width:260px"
-placeholder="Pesquisar produto ou SKU">
-
-</div>
-
-<div class="table-responsive">
-
-<table>
-
-<thead>
-<tr>
-<th>SKU</th>
-<th>Categoria</th>
-<th>Produto</th>
-<th>Saldo</th>
-<th>Mínimo</th>
-<th>Custo</th>
-<th>Total</th>
-<th>Ações</th>
-</tr>
-</thead>
-
-<tbody id="tabela-estoque"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- SAÍDA -->
-
-<section id="view-saida" class="tab-view">
-
-<div class="card">
-
-<div class="card-header">🚚 Criar Saída para Evento</div>
-
-<div class="grid-form">
-
-<div class="field">
-<label>Nome do evento</label>
-<input id="evento-nome" class="input-ctrl"
-placeholder="Casamento, aniversário...">
-</div>
-
-<div class="field">
-<label>Data</label>
-<input id="evento-data" type="date" class="input-ctrl">
-</div>
-
-<div class="field">
-<label>Responsável</label>
-<input id="evento-resp" class="input-ctrl"
-placeholder="Responsável pelo bar">
-</div>
-
-</div>
-
-<hr style="margin:18px 0;border:0;border-top:1px solid #e2e8f0">
-
-<div class="grid-form">
-
-<div class="field">
-<label>Produto</label>
-<select id="saida-produto" class="input-ctrl"></select>
-</div>
-
-<div class="field">
-<label>Quantidade</label>
-<input id="saida-qtd" type="number" min="1"
-value="1" class="input-ctrl">
-</div>
-
-<div class="field" style="justify-content:end">
-<button id="btn-add-saida" class="btn btn-amber">
-+ Adicionar
-</button>
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="card-header">📦 Itens da Carga</div>
-
-<div id="lista-saida"></div>
-
-<div style="text-align:right;margin-top:15px">
-
-<button id="btn-despachar" class="btn btn-amber">
-🚚 Despachar Evento
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- RETORNO -->
-
-<section id="view-retorno" class="tab-view">
-
-<div class="card">
-
-<div class="card-header">🔄 Retorno do Evento</div>
-
-<div class="field" style="max-width:400px">
-<label>Evento</label>
-<select id="retorno-evento" class="input-ctrl"></select>
-</div>
-
-<div class="table-responsive" style="margin-top:18px">
-
-<table>
-
-<thead>
-<tr>
-<th>Produto</th>
-<th>Enviado</th>
-<th>Devolvido</th>
-<th>Avaria</th>
-<th>Consumido</th>
-<th>Custo</th>
-</tr>
-</thead>
-
-<tbody id="tabela-retorno"></tbody>
-
-</table>
-
-</div>
-
-<div style="text-align:right;margin-top:15px">
-
-<button id="btn-finalizar" class="btn btn-green">
-🏁 Finalizar Evento
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- RELATÓRIOS -->
-
-<section id="view-relatorios" class="tab-view">
-
-<div class="card">
-
-<div class="card-header">📊 Histórico de Eventos</div>
-
-<div class="table-responsive">
-
-<table>
-
-<thead>
-<tr>
-<th>Data</th>
-<th>Evento</th>
-<th>Responsável</th>
-<th>Produto</th>
-<th>Enviado</th>
-<th>Devolvido</th>
-<th>Consumido</th>
-<th>Avaria</th>
-<th>Custo</th>
-</tr>
-</thead>
-
-<tbody id="tabela-relatorios"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="card-header">💾 Backup dos Dados</div>
-
-<button class="btn btn-blue" id="btn-exportar">
-⬇ Exportar Backup
-</button>
-
-<button class="btn btn-red" id="btn-reset">
-Resetar Sistema
-</button>
-
-</div>
-
-</section>
-
-</div>
-
-<script>
-
-/* ============================
-   DADOS INICIAIS
-============================ */
-
-const estoqueInicial = [
-
-{
-codigo:"DEST-GIN",
-categoria:"Destilados",
-item:"Gin Tanqueray London Dry 750ml",
-unidade:"Garrafa",
-saldo:24,
-minimo:5,
-custo:85
-},
-
-{
-codigo:"DEST-VOD",
-categoria:"Destilados",
-item:"Vodka Absolut 1L",
-unidade:"Garrafa",
-saldo:30,
-minimo:5,
-custo:68
-},
-
-{
-codigo:"DEST-WHI1",
-categoria:"Destilados",
-item:"Whisky Johnnie Walker Red Label 1L",
-unidade:"Garrafa",
-saldo:18,
-minimo:5,
-custo:74
-},
-
-{
-codigo:"DEST-WHI2",
-categoria:"Destilados",
-item:"Whisky Johnnie Walker Black Label 1L",
-unidade:"Garrafa",
-saldo:10,
-minimo:3,
-custo:138
-},
-
-{
-codigo:"DEST-RUM",
-categoria:"Destilados",
-item:"Rum Bacardi Carta Blanca 980ml",
-unidade:"Garrafa",
-saldo:15,
-minimo:5,
-custo:42
-},
-
-{
-codigo:"DEST-TEQ",
-categoria:"Destilados",
-item:"Tequila José Cuervo Ouro 750ml",
-unidade:"Garrafa",
-saldo:8,
-minimo:3,
-custo:95
-},
-
-{
-codigo:"DEST-APER",
-categoria:"Aperitivos & Licores",
-item:"Aperol 750ml",
-unidade:"Garrafa",
-saldo:20,
-minimo:5,
-custo:49.90
-},
-
-{
-codigo:"DEST-CAMP",
-categoria:"Aperitivos & Licores",
-item:"Campari 900ml",
-unidade:"Garrafa",
-saldo:12,
-minimo:5,
-custo:45
-},
-
-{
-codigo:"DEST-LIC",
-categoria:"Aperitivos & Licores",
-item:"Licor 43 700ml",
-unidade:"Garrafa",
-saldo:6,
-minimo:3,
-custo:125
-},
-
-{
-codigo:"ESP-BRUT",
-categoria:"Espumantes & Vinhos",
-item:"Espumante Chandon Brut 750ml",
-unidade:"Garrafa",
-saldo:36,
-minimo:8,
-custo:75
-},
-
-{
-codigo:"CERV-HEIN",
-categoria:"Cervejas",
-item:"Heineken Long Neck - Pack 24",
-unidade:"Fardo/Pack",
-saldo:25,
-minimo:5,
-custo:132
-},
-
-{
-codigo:"CERV-CORO",
-categoria:"Cervejas",
-item:"Corona Extra - Pack 24",
-unidade:"Fardo/Pack",
-saldo:15,
-minimo:5,
-custo:148
-},
-
-{
-codigo:"MIX-TON",
-categoria:"Misturas & Não Alcoólicos",
-item:"Água Tônica Antarctica - Pack 12",
-unidade:"Fardo/Pack",
-saldo:30,
-minimo:5,
-custo:38
-},
-
-{
-codigo:"MIX-RED",
-categoria:"Misturas & Não Alcoólicos",
-item:"Red Bull 250ml - Pack 24",
-unidade:"Fardo/Pack",
-saldo:20,
-minimo:5,
-custo:162
-},
-
-{
-codigo:"XAR-FRUT",
-categoria:"Xaropes & Frutas",
-item:"Xarope Monin 700ml",
-unidade:"Garrafa",
-saldo:16,
-minimo:4,
-custo:52
-}
-
-];
-
-/* ============================
-   STORAGE
-============================ */
-
-let estoque =
-JSON.parse(localStorage.getItem("cucas_estoque")) ||
-estoqueInicial;
-
-let eventos =
-JSON.parse(localStorage.getItem("cucas_eventos")) ||
-[];
-
-let carga = [];
-
-function salvar() {
-
-localStorage.setItem(
-"cucas_estoque",
-JSON.stringify(estoque)
-);
-
-localStorage.setItem(
-"cucas_eventos",
-JSON.stringify(eventos)
-);
-
-}
-
-/* ============================
-   FORMATAÇÃO
-============================ */
-
-function dinheiro(valor) {
-
-return valor.toLocaleString("pt-BR",{
-style:"currency",
-currency:"BRL"
-});
-
-}
-
-/* ============================
-   DASHBOARD
-============================ */
-
-function atualizarDashboard() {
-
-let unidades = estoque.reduce(
-(total,p)=>total + Number(p.saldo),0
-);
-
-let valor = estoque.reduce(
-(total,p)=>total + p.saldo*p.custo,0
-);
-
-let criticos = estoque.filter(
-p=>p.saldo <= p.minimo
-).length;
-
-let eventosAtivos = eventos.filter(
-e=>e.status==="Em andamento"
-).length;
-
-document.getElementById("kpi-produtos").innerText =
-estoque.length;
-
-document.getElementById("kpi-unidades").innerText =
-unidades;
-
-document.getElementById("kpi-valor").innerText =
-dinheiro(valor);
-
-document.getElementById("kpi-criticos").innerText =
-criticos;
-
-document.getElementById("kpi-eventos").innerText =
-eventosAtivos;
-
-}
-
-/* ============================
-   RENDER ESTOQUE
-============================ */
-
-function renderEstoque() {
-
-const busca =
-document.getElementById("busca").value.toLowerCase();
-
-let html="";
-
-estoque
-.filter(p =>
-p.item.toLowerCase().includes(busca) ||
-p.codigo.toLowerCase().includes(busca) ||
-p.categoria.toLowerCase().includes(busca)
-)
-.forEach((p,index)=>{
-
-const critico = p.saldo <= p.minimo;
-
-html += `
-
-<tr>
-
-<td><b>${p.codigo}</b></td>
-
-<td>${p.categoria}</td>
-
-<td><b>${p.item}</b></td>
-
-<td>
-
-<span class="badge ${critico ?
-"badge-red":"badge-green"}">
-
-${p.saldo} ${p.unidade}
-
-</span>
-
-</td>
-
-<td>${p.minimo}</td>
-
-<td>${dinheiro(p.custo)}</td>
-
-<td><b>${dinheiro(p.saldo*p.custo)}</b></td>
-
-<td>
-
-<button
-class="btn btn-blue"
-onclick="editarProduto(${index})">
-Editar
-</button>
-
-<button
-class="btn btn-red"
-onclick="excluirProduto(${index})">
-Excluir
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-if(!html){
-
-html=`
-<tr>
-<td colspan="8" class="empty">
-Nenhum produto encontrado.
-</td>
-</tr>
-`;
-
-}
-
-document.getElementById("tabela-estoque").innerHTML=html;
-
-atualizarSelectProdutos();
-atualizarDashboard();
-
-}
-
-/* ============================
-   CADASTRO
-============================ */
-
-document.getElementById("btn-gravar")
-.addEventListener("click",()=>{
-
-const codigo =
-document.getElementById("cad-sku")
-.value.trim().toUpperCase();
-
-const categoria =
-document.getElementById("cad-cat").value;
-
-const item =
-document.getElementById("cad-item")
-.value.trim();
-
-const unidade =
-document.getElementById("cad-un").value;
-
-const saldo =
-Number(document.getElementById("cad-saldo").value);
-
-const minimo =
-Number(document.getElementById("cad-min").value);
-
-const custo =
-Number(document.getElementById("cad-custo").value);
-
-if(!codigo || !item){
-
-alert("Preencha o SKU e o nome do produto.");
-
-return;
-
-}
-
-const existente =
-estoque.findIndex(p=>p.codigo===codigo);
-
-const produto={
-codigo,
-categoria,
-item,
-unidade,
-saldo,
-minimo,
-custo
-};
-
-if(existente>=0){
-
-estoque[existente]=produto;
-
-}else{
-
-estoque.push(produto);
-
-}
-
-salvar();
-renderEstoque();
-
-document.getElementById("cad-sku").value="";
-document.getElementById("cad-item").value="";
-
-alert("Produto salvo com sucesso!");
-
-});
-
-/* ============================
-   EDITAR
-============================ */
-
-function editarProduto(index){
-
-const p=estoque[index];
-
-const novoSaldo =
-prompt("Novo saldo:",p.saldo);
-
-if(novoSaldo===null)return;
-
-const novoCusto =
-prompt("Novo custo unitário:",p.custo);
-
-if(novoCusto===null)return;
-
-const novoMinimo =
-prompt("Novo estoque mínimo:",p.minimo);
-
-if(novoMinimo===null)return;
-
-p.saldo=Number(novoSaldo);
-p.custo=Number(novoCusto);
-p.minimo=Number(novoMinimo);
-
-salvar();
-renderEstoque();
-
-}
-
-/* ============================
-   EXCLUIR
-============================ */
-
-function excluirProduto(index){
-
-if(!confirm(
-"Excluir este produto do estoque?"
-))return;
-
-estoque.splice(index,1);
-
-salvar();
-renderEstoque();
-
-}
-
-/* ============================
-   SELECT PRODUTOS
-============================ */
-
-function atualizarSelectProdutos(){
-
-const select=
-document.getElementById("saida-produto");
-
-select.innerHTML="";
-
-estoque.forEach(p=>{
-
-select.innerHTML += `
-
-<option value="${p.codigo}">
-${p.item} — ${p.saldo} ${p.unidade}
-</option>
-
-`;
-
-});
-
-}
-
-/* ============================
-   ADICIONAR CARGA
-============================ */
-
-document.getElementById("btn-add-saida")
-.addEventListener("click",()=>{
-
-const codigo=
-document.getElementById("saida-produto").value;
-
-const qtd=
-Number(document.getElementById("saida-qtd").value);
-
-const produto=
-estoque.find(p=>p.codigo===codigo);
-
-if(!produto || qtd<=0)return;
-
-const existente=
-carga.find(p=>p.codigo===codigo);
-
-const atual=
-existente ? existente.qtd : 0;
-
-if(atual+qtd>produto.saldo){
-
-alert(
-`Estoque insuficiente.\nDisponível: ${produto.saldo}`
-);
-
-return;
-
-}
-
-if(existente){
-
-existente.qtd+=qtd;
-
-}else{
-
-carga.push({
-
-codigo,
-item:produto.item,
-unidade:produto.unidade,
-qtd,
-custo:produto.custo
-
-});
-
-}
-
-renderCarga();
-
-});
-
-/* ============================
-   RENDER CARGA
-============================ */
-
-function renderCarga(){
-
-const div=
-document.getElementById("lista-saida");
-
-if(!carga.length){
-
-div.innerHTML=
-'<div class="empty">Nenhum produto adicionado.</div>';
-
-return;
-
-}
-
-div.innerHTML=carga.map((p,i)=>`
-
-<div class="event-box">
-
-<div class="flex">
-
-<div>
-<b>${p.item}</b>
-<br>
-<small>${p.qtd} ${p.unidade}</small>
-</div>
-
-<button
-class="btn btn-red"
-onclick="removerCarga(${i})">
-Remover
-</button>
-
-</div>
-
-</div>
-
-`).join("");
-
-}
-
-function removerCarga(index){
-
-carga.splice(index,1);
-
-renderCarga();
-
-}
-
-/* ============================
-   DESPACHAR EVENTO
-============================ */
-
-document.getElementById("btn-despachar")
-.addEventListener("click",()=>{
-
-const nome=
-document.getElementById("evento-nome")
-.value.trim();
-
-const data=
-document.getElementById("evento-data").value;
-
-const responsavel=
-document.getElementById("evento-resp")
-.value.trim();
-
-if(!nome){
-
-alert("Informe o nome do evento.");
-
-return;
-
-}
-
-if(!carga.length){
-
-alert("Adicione produtos à carga.");
-
-return;
-
-}
-
-carga.forEach(item=>{
-
-const produto=
-estoque.find(p=>p.codigo===item.codigo);
-
-produto.saldo-=item.qtd;
-
-});
-
-const evento={
-
-id:Date.now(),
-
-nome,
-
-data:data ||
-new Date().toISOString().split("T")[0],
-
-responsavel:
-responsavel || "Não informado",
-
-status:"Em andamento",
-
-itens:carga.map(p=>({
-
-codigo:p.codigo,
-
-item:p.item,
-
-unidade:p.unidade,
-
-custo:p.custo,
-
-enviado:p.qtd,
-
-devolvido:0,
-
-avaria:0,
-
-consumido:0,
-
-custoTotal:0
-
-}))
-
-};
-
-eventos.unshift(evento);
-
-carga=[];
-
-salvar();
-
-renderEstoque();
-renderCarga();
-renderRetorno();
-renderRelatorios();
-
-document.getElementById("evento-nome").value="";
-document.getElementById("evento-resp").value="";
-
-alert("Evento despachado com sucesso!");
-
-mudarAba("retorno");
-
-});
-
-/* ============================
-   RETORNO
-============================ */
-
-function renderRetorno(){
-
-const select=
-document.getElementById("retorno-evento");
-
-const ativos=
-eventos.filter(e=>e.status==="Em andamento");
-
-select.innerHTML="";
-
-if(!ativos.length){
-
-select.innerHTML=
-'<option value="">Nenhum evento em andamento</option>';
-
-document.getElementById(
-"tabela-retorno"
-).innerHTML="";
-
-return;
-
-}
-
-ativos.forEach(e=>{
-
-select.innerHTML += `
-
-<option value="${e.id}">
-${e.nome} — ${e.data}
-</option>
-
-`;
-
-});
-
-renderItensRetorno();
-
-}
-
-document.getElementById("retorno-evento")
-.addEventListener("change",renderItensRetorno);
-
-function renderItensRetorno(){
-
-const id=
-Number(document.getElementById("retorno-evento").value);
-
-const evento=
-eventos.find(e=>e.id===id);
-
-if(!evento)return;
-
-let html="";
-
-evento.itens.forEach((item,index)=>{
-
-html+=`
-
-<tr>
-
-<td><b>${item.item}</b></td>
-
-<td>${item.enviado}</td>
-
-<td>
-
-<input
-class="input-ctrl"
-style="width:80px"
-type="number"
-min="0"
-max="${item.enviado}"
-value="${item.devolvido}"
-onchange="alterarRetorno(${index},'devolvido',this.value)">
-
-</td>
-
-<td>
-
-<input
-class="input-ctrl"
-style="width:80px"
-type="number"
-min="0"
-max="${item.enviado}"
-value="${item.avaria}"
-onchange="alterarRetorno(${index},'avaria',this.value)">
-
-</td>
-
-<td><b>${item.consumido}</b></td>
-
-<td>${dinheiro(item.custoTotal)}</td>
-
-</tr>
-
-`;
-
-});
-
-document.getElementById(
-"tabela-retorno"
-).innerHTML=html;
-
-}
-
-function alterarRetorno(index,campo,valor){
-
-const id=
-Number(document.getElementById("retorno-evento").value);
-
-const evento=
-eventos.find(e=>e.id===id);
-
-if(!evento)return;
-
-const item=evento.itens[index];
-
-const numero=Math.max(
-0,
-Number(valor)||0
-);
-
-if(campo==="devolvido"){
-
-item.devolvido=
-Math.min(numero,item.enviado);
-
-}
-
-if(campo==="avaria"){
-
-item.avaria=
-Math.min(numero,item.enviado);
-
-}
-
-if(item.devolvido+item.avaria>item.enviado){
-
-alert(
-"Devolução + avaria não pode ser maior que o enviado."
-);
-
-item[campo]=0;
-
-}
-
-item.consumido=
-item.enviado -
-item.devolvido -
-item.avaria;
-
-item.custoTotal=
-(item.consumido+item.avaria)*
-item.custo;
-
-salvar();
-
-renderItensRetorno();
-
-}
-
-/* ============================
-   FINALIZAR EVENTO
-============================ */
-
-document.getElementById("btn-finalizar")
-.addEventListener("click",()=>{
-
-const id=
-Number(document.getElementById("retorno-evento").value);
-
-const evento=
-eventos.find(e=>e.id===id);
-
-if(!evento)return;
-
-if(!confirm(
-"Finalizar este evento?"
-))return;
-
-/*
-Retorna ao estoque somente o que
-foi registrado como devolvido.
-*/
-
-evento.itens.forEach(item=>{
-
-const produto=
-estoque.find(p=>p.codigo===item.codigo);
-
-if(produto){
-
-produto.saldo += item.devolvido;
-
-}
-
-});
-
-evento.status="Finalizado";
-
-salvar();
-
-renderEstoque();
-renderRetorno();
-renderRelatorios();
-
-alert("Evento finalizado com sucesso!");
-
-});
-
-/* ============================
-   RELATÓRIOS
-============================ */
-
-function renderRelatorios(){
-
-let html="";
-
-eventos.forEach(evento=>{
-
-evento.itens.forEach(item=>{
-
-html+=`
-
-<tr>
-
-<td>${evento.data}</td>
-
-<td><b>${evento.nome}</b></td>
-
-<td>${evento.responsavel}</td>
-
-<td>${item.item}</td>
-
-<td>${item.enviado}</td>
-
-<td>${item.devolvido}</td>
-
-<td>${item.consumido}</td>
-
-<td>${item.avaria}</td>
-
-<td>${dinheiro(item.custoTotal)}</td>
-
-</tr>
-
-`;
-
-});
-
-});
-
-if(!html){
-
-html=`
-
-<tr>
-<td colspan="9" class="empty">
-Nenhum evento registrado.
-</td>
-</tr>
-
-`;
-
-}
-
-document.getElementById(
-"tabela-relatorios"
-).innerHTML=html;
-
-}
-
-/* ============================
-   ABAS
-============================ */
-
-function mudarAba(nome){
-
-document
-.querySelectorAll(".tab-view")
-.forEach(el=>el.classList.remove("active"));
-
-document
-.querySelectorAll(".tab-btn")
-.forEach(el=>el.classList.remove("active"));
-
-document
-.getElementById("view-"+nome)
-.classList.add("active");
-
-document
-.querySelector(`[data-tab="${nome}"]`)
-.classList.add("active");
-
-if(nome==="retorno")renderRetorno();
-
-if(nome==="relatorios")renderRelatorios();
-
-}
-
-document
-.querySelectorAll(".tab-btn")
-.forEach(btn=>{
-
-btn.addEventListener("click",()=>{
-
-mudarAba(btn.dataset.tab);
-
-});
-
-});
-
-/* ============================
-   BUSCA
-============================ */
-
-document
-.getElementById("busca")
-.addEventListener("input",renderEstoque);
-
-/* ============================
-   EXPORTAR BACKUP
-============================ */
-
-document
-.getElementById("btn-exportar")
-.addEventListener("click",()=>{
-
-const dados={estoque,eventos};
-
-const blob=new Blob(
-[JSON.stringify(dados,null,2)],
-{type:"application/json"}
-);
-
-const url=
-URL.createObjectURL(blob);
-
-const a=
-document.createElement("a");
-
-a.href=url;
-
-a.download=
-"backup_2_cucas.json";
-
-a.click();
-
-URL.revokeObjectURL(url);
-
-});
-
-/* ============================
-   RESET
-============================ */
-
-document
-.getElementById("btn-reset")
-.addEventListener("click",()=>{
-
-if(!confirm(
-"Isso apagará todos os dados. Continuar?"
-))return;
-
-localStorage.removeItem("cucas_estoque");
-localStorage.removeItem("cucas_eventos");
-
-location.reload();
-
-});
-
-/* ============================
-   DATA PADRÃO
-============================ */
-
-document.getElementById("evento-data").value=
-new Date().toISOString().split("T")[0];
-
-/* ============================
-   INICIALIZAÇÃO
-============================ */
-
-renderEstoque();
-renderCarga();
-renderRetorno();
-renderRelatorios();
-atualizarDashboard();
-
-</script>
-
+  <header>
+    <div class="header-box">
+      <div class="brand">
+        <div class="brand-icon">🍸</div>
+        <div>
+          <h1>2 Cucas</h1>
+          <p>Bar & Eventos</p>
+        </div>
+      </div>
+
+      <nav class="nav-bar">
+        <button type="button" class="tab-btn active" data-tab="galpao">🏢 Almoxarifado</button>
+        <button type="button" class="tab-btn" data-tab="carga">🚚 Saída Festa</button>
+        <button type="button" class="tab-btn" data-tab="edicao">✏️ Editar Carga</button>
+        <button type="button" class="tab-btn" data-tab="retorno">🔄 Retorno & Sobras</button>
+        <button type="button" class="tab-btn" data-tab="balanco">📈 Balanço Periódico</button>
+        <button type="button" class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
+      </nav>
+
+      <div>
+        <button type="button" id="btn-reset-cache" class="btn btn-red" style="font-size: 11px; padding: 6px 10px;">Limpar Banco</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">Variedade no Galpão</div>
+        <div class="kpi-val" id="kpi-skus">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Capital em Bebidas</div>
+        <div class="kpi-val" style="color: #16a34a;" id="kpi-capital">R$ 0,00</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Festas em Andamento</div>
+        <div class="kpi-val" style="color: #2563eb;" id="kpi-eventos">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Estoque Baixo (&lt;= 5 un)</div>
+        <div class="kpi-val" style="color: #dc2626;" id="kpi-criticos">0</div>
+      </div>
+    </div>
+
+    <!-- ABA 1: ALMOXARIFADO -->
+    <div id="view-galpao" class="tab-view active">
+      <div class="card">
+        <div class="card-header">➕ Cadastrar Nova Bebida ou Dar Entrada</div>
+        <div class="grid-form">
+          <div class="field">
+            <label>Código SKU:</label>
+            <input type="text" id="cad-sku" class="input-ctrl" placeholder="DEST-TEQ">
+          </div>
+          <div class="field">
+            <label>Categoria:</label>
+            <select id="cad-cat" class="input-ctrl">
+              <option>Destilados</option>
+              <option>Aperitivos & Licores</option>
+              <option>Espumantes & Vinhos</option>
+              <option>Cervejas</option>
+              <option>Misturas & Não Alcoólicos</option>
+              <option>Xaropes & Frutas</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column: span 2;">
+            <label>Descrição:</label>
+            <input type="text" id="cad-item" class="input-ctrl" placeholder="Ex: Tequila José Cuervo Ouro 750ml">
+          </div>
+          <div class="field">
+            <label>Unidade:</label>
+            <select id="cad-un" class="input-ctrl">
+              <option>Garrafa</option>
+              <option>Fardo/Pack</option>
+              <option>Lata</option>
+              <option>Unidade</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Saldo Inicial:</label>
+            <input type="number" id="cad-saldo" class="input-ctrl" value="10" step="1">
+          </div>
+          <div class="field">
+            <label>Custo Unit. (R$):</label>
+            <input type="number" id="cad-custo" class="input-ctrl" value="50.00" step="0.01">
+          </div>
+        </div>
+        <div style="margin-top: 12px; text-align: right;">
+          <button type="button" id="btn-gravar-item" class="btn btn-amber">Gravar no Almoxarifado</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div class="card-header" style="margin:0;">Posição Geral do Galpão</div>
+          <input type="text" id="filtro-busca" class="input-ctrl" style="width: 220px;" placeholder="Filtrar bebidas...">
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Categoria</th>
+                <th>Item</th>
+                <th>Saldo</th>
+                <th>Custo Unit.</th>
+                <th>Subtotal</th>
+                <th style="text-align:center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-galpao-corpo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: SAÍDA P/ FESTA -->
+    <div id="view-carga" class="tab-view">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+        <div class="card">
+          <div class="card-header">1. Identificação da Festa</div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div class="field">
+              <label>Nome do Evento:</label>
+              <input type="text" id="festa-nome" class="input-ctrl" placeholder="Ex: Casamento Marina & Pedro">
+            </div>
+            <div class="field">
+              <label>Data:</label>
+              <input type="date" id="festa-data" class="input-ctrl">
+            </div>
+          </div>
+          <div class="field" style="margin-bottom: 12px;">
+            <label>Chefe de Bar / Responsável:</label>
+            <input type="text" id="festa-resp" class="input-ctrl" placeholder="Ex: Lucas Barman">
+          </div>
+
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+
+          <div style="display: grid; grid-template-columns: 3fr 1fr auto; gap: 8px; align-items: flex-end;">
+            <div class="field">
+              <label>Bebida do Galpão:</label>
+              <select id="select-carga-item" class="input-ctrl"></select>
+            </div>
+            <div class="field">
+              <label>Qtd:</label>
+              <input type="number" id="input-carga-qtd" class="input-ctrl" value="1" min="1">
+            </div>
+            <button type="button" id="btn-add-carga" class="btn btn-amber">+ Incluir</button>
+          </div>
+        </div>
+
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="card-header">📦 Itens Separados</div>
+              <button type="button" id="btn-limpar-carga" style="background:none; border:none; color:#dc2626; font-size:11px; cursor:pointer;">Limpar</button>
+            </div>
+            <div id="box-carga-separada" style="max-height: 180px; overflow-y: auto;"></div>
+          </div>
+          <button type="button" id="btn-despachar-festa" class="btn btn-amber" style="width:100%; margin-top:12px; padding: 10px;">🚚 Despachar Carga & Baixar Galpão</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 3: EDITAR CARGA DO EVENTO -->
+    <div id="view-edicao" class="tab-view">
+      <div class="card">
+        <div class="card-header">✏️ Alterar Carga do Evento em Andamento</div>
+        <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">Ajuste quantidades ou adicione novas garrafas enviadas no meio do evento. O saldo do galpão é atualizado automaticamente.</p>
+        
+        <div class="field" style="max-width: 400px; margin-bottom: 15px;">
+          <label>Selecione a Festa:</label>
+          <select id="select-evento-edicao" class="input-ctrl"></select>
+        </div>
+
+        <!-- Adicionar item extra ao evento -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+          <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: #475569; margin-bottom: 8px;">+ Adicionar Reforço / Novo Item ao Evento</div>
+          <div style="display: grid; grid-template-columns: 3fr 1fr auto; gap: 8px; align-items: flex-end;">
+            <div class="field">
+              <label>Bebida:</label>
+              <select id="select-edicao-extra-item" class="input-ctrl"></select>
+            </div>
+            <div class="field">
+              <label>Qtd Extra:</label>
+              <input type="number" id="input-edicao-extra-qtd" class="input-ctrl" value="1" min="1">
+            </div>
+            <button type="button" id="btn-adicionar-extra-evento" class="btn btn-blue">+ Adicionar à Festa</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qtd Enviada Atual</th>
+                <th>Nova Qtd Enviada</th>
+                <th style="text-align:center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-edicao-corpo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 4: RETORNO & SOBRAS -->
+    <div id="view-retorno" class="tab-view">
+      <div class="card">
+        <div class="card-header">2. Inventário de Retorno Pós-Festa</div>
+        <div class="field" style="max-width: 380px; margin-bottom: 12px;">
+          <label>Selecione a Festa em Andamento:</label>
+          <select id="select-evento-retorno" class="input-ctrl"></select>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Enviado</th>
+                <th>Voltou Lacrado</th>
+                <th>Quebra/Avaria</th>
+                <th>Consumo Real</th>
+                <th>Custo Total</th>
+                <th style="text-align:center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-retorno-corpo"></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 12px; text-align: right;">
+          <button type="button" id="btn-fechar-evento" class="btn btn-green">🏁 Fechar e Arquivar Evento</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 5: BALANÇO PERIÓDICO -->
+    <div id="view-balanco" class="tab-view">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <div class="card-header" style="margin:0;">📈 Balanço Periódico de Consumo e Custos</div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn btn-balanco-filtro btn-amber" data-periodo="mes">Mensal</button>
+            <button type="button" class="btn btn-balanco-filtro" data-periodo="semestre" style="background:#e2e8f0; color:#475569;">Semestral</button>
+            <button type="button" class="btn btn-balanco-filtro" data-periodo="ano" style="background:#e2e8f0; color:#475569;">Anual</button>
+          </div>
+        </div>
+
+        <div class="kpi-row" style="margin-bottom:15px;">
+          <div class="kpi-card">
+            <div class="kpi-title">Festas no Período</div>
+            <div class="kpi-val" id="kpi-balanco-festas">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Volume Consumido</div>
+            <div class="kpi-val" style="color: #d97706;" id="kpi-balanco-volume">0 un</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Custo Total Consumido</div>
+            <div class="kpi-val" style="color: #16a34a;" id="kpi-balanco-custo">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Código SKU</th>
+                <th>Bebida / Insumo</th>
+                <th>Qtd Total Enviada</th>
+                <th>Qtd Devolvida</th>
+                <th>Consumo Total</th>
+                <th>Custo Total Consumido</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-balanco-corpo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 6: RELATÓRIOS -->
+    <div id="view-relatorios" class="tab-view">
+      <div class="card">
+        <div class="card-header">Histórico de Consumo por Evento</div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Evento</th>
+                <th>Responsável</th>
+                <th>Item</th>
+                <th>Enviado</th>
+                <th>Devolvido</th>
+                <th>Consumido</th>
+                <th>Custo Total</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-relatorios-corpo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var DADOS_BASE = [
+      { codigo: "DEST-GIN", categoria: "Destilados", item: "Gin Tanqueray London Dry 750ml", unidade: "Garrafa", saldo: 24, custo: 85.00 },
+      { codigo: "DEST-VOD", categoria: "Destilados", item: "Vodka Absolut Regular 1L", unidade: "Garrafa", saldo: 30, custo: 68.00 },
+      { codigo: "DEST-WHI1", categoria: "Destilados", item: "Whisky Johnnie Walker Red Label 1L", unidade: "Garrafa", saldo: 18, custo: 74.00 },
+      { codigo: "DEST-WHI2", categoria: "Destilados", item: "Whisky Black Label 12 Anos 1L", unidade: "Garrafa", saldo: 10, custo: 138.00 },
+      { codigo: "DEST-RUM", categoria: "Destilados", item: "Rum Bacardi Carta Blanca 980ml", unidade: "Garrafa", saldo: 15, custo: 42.00 },
+      { codigo: "DEST-TEQ", categoria: "Destilados", item: "Tequila José Cuervo Ouro 750ml", unidade: "Garrafa", saldo: 8, custo: 95.00 },
+      { codigo: "DEST-APER", categoria: "Aperitivos & Licores", item: "Aperitivo Aperol 750ml", unidade: "Garrafa", saldo: 20, custo: 49.90 },
+      { codigo: "DEST-CAMP", categoria: "Aperitivos & Licores", item: "Campari Bitter 900ml", unidade: "Garrafa", saldo: 12, custo: 45.00 },
+      { codigo: "DEST-LIC", categoria: "Aperitivos & Licores", item: "Licor 43 Diego Zamora 700ml", unidade: "Garrafa", saldo: 6, custo: 125.00 },
+      { codigo: "ESP-BRUT", categoria: "Espumantes & Vinhos", item: "Espumante Chandon Brut 750ml", unidade: "Garrafa", saldo: 36, custo: 75.00 },
+      { codigo: "CERV-HEIN", categoria: "Cervejas", item: "Cerveja Heineken Long Neck (Pack 24un)", unidade: "Fardo/Pack", 25, custo: 132.00 },
+      { codigo: "CERV-CORO", categoria: "Cervejas", item: "Cerveja Corona Extra 330ml (Pack 24un)", unidade: "Fardo/Pack", 15, custo: 148.00 },
+      { codigo: "MIX-TON", categoria: "Misturas & Não Alcoólicos", item: "Água Tônica Antarctica (Pack 12un)", unidade: "Fardo/Pack", 30, custo: 38.00 },
+      { codigo: "MIX-RED", categoria: "Misturas & Não Alcoólicos", item: "Energético Red Bull 250ml (Pack 24un)", unidade: "Fardo/Pack", 20, custo: 162.00 },
+      { codigo: "XAR-FRUT", categoria: "Xaropes & Frutas", item: "Xarope Monin Sabores 700ml", unidade: "Garrafa", 16, custo: 52.00 }
+    ];
+
+    var cargaTemp = [];
+    var periodoBalancoAtual = "mes";
+
+    function carregarEstoque() {
+      try {
+        var local = localStorage.getItem("cucas_stock_v3");
+        if (local) {
+          var arr = JSON.parse(local);
+          if (Array.isArray(arr) && arr.length > 0) return arr;
+        }
+      } catch (e) {}
+      localStorage.setItem("cucas_stock_v3", JSON.stringify(DADOS_BASE));
+      return DADOS_BASE;
+    }
+
+    function salvarEstoque(dados) {
+      localStorage.setItem("cucas_stock_v3", JSON.stringify(dados));
+      renderizarTudo();
+    }
+
+    function carregarEventos() {
+      try {
+        var local = localStorage.getItem("cucas_eventos_v3");
+        if (local) return JSON.parse(local);
+      } catch (e) {}
+      return [];
+    }
+
+    function salvarEventos(dados) {
+      localStorage.setItem("cucas_eventos_v3", JSON.stringify(dados));
+      renderizarTudo();
+    }
+
+    function alternarAba(nomeAba) {
+      document.querySelectorAll(".tab-view").forEach(function(el) { el.classList.remove("active"); });
+      document.querySelectorAll(".tab-btn").forEach(function(el) { el.classList.remove("active"); });
+
+      var tabTarget = document.getElementById("view-" + nomeAba);
+      var btnTarget = document.querySelector('.tab-btn[data-tab="' + nomeAba + '"]');
+      if (tabTarget) tabTarget.classList.add("active");
+      if (btnTarget) btnTarget.classList.add("active");
+
+      if (nomeAba === "edicao") atualizarSelectEdicao();
+      if (nomeAba === "retorno") atualizarSelectRetorno();
+      if (nomeAba === "balanco") renderizarBalanco();
+      if (nomeAba === "relatorios") renderizarRelatorios();
+    }
+
+    function renderizarGalpao() {
+      var estoque = carregarEstoque();
+      var busca = (document.getElementById("filtro-busca").value || "").toLowerCase();
+      var corpo = document.getElementById("tabela-galpao-corpo");
+      var selCarga = document.getElementById("select-carga-item");
+      var selEdicaoExtra = document.getElementById("select-edicao-extra-item");
+
+      var skus = estoque.length;
+      var totalUn = 0;
+      var totalCapital = 0;
+      var criticos = 0;
+      var html = "";
+      var optHtml = "";
+
+      for (var i = 0; i < estoque.length; i++) {
+        var it = estoque[i];
+        totalUn += it.saldo;
+        totalCapital += (it.saldo * it.custo);
+        if (it.saldo <= 5) criticos++;
+
+        optHtml += '<option value="' + it.codigo + '">' + it.item + ' (Saldo: ' + it.saldo + ' ' + it.unidade + ')</option>';
+
+        if (it.item.toLowerCase().indexOf(busca) > -1 || it.codigo.toLowerCase().indexOf(busca) > -1) {
+          html += '<tr>' +
+            '<td style="font-weight:bold; font-family:monospace;">' + it.codigo + '</td>' +
+            '<td style="color:#64748b;">' + it.categoria + '</td>' +
+            '<td style="font-weight:bold;">' + it.item + '</td>' +
+            '<td style="font-weight:bold; color:' + (it.saldo <= 5 ? '#dc2626' : '#0f172a') + ';">' + it.saldo + ' ' + it.unidade + '</td>' +
+            '<td>R$ ' + it.custo.toFixed(2) + '</td>' +
+            '<td style="font-weight:bold; color:#16a34a;">R$ ' + (it.saldo * it.custo).toFixed(2) + '</td>' +
+            '<td style="text-align:center;"><button type="button" class="btn-excluir-item" data-sku="' + it.codigo + '" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:bold;">Excluir</button></td>' +
+          '</tr>';
+        }
+      }
+
+      corpo.innerHTML = html;
+      if (selCarga) selCarga.innerHTML = optHtml;
+      if (selEdicaoExtra) selEdicaoExtra.innerHTML = optHtml;
+
+      document.getElementById("kpi-skus").innerText = skus + " SKUs (" + totalUn + " un)";
+      document.getElementById("kpi-capital").innerText = "R$ " + totalCapital.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("kpi-criticos").innerText = criticos + " alerta(s)";
+
+      document.querySelectorAll(".btn-excluir-item").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var sku = this.getAttribute("data-sku");
+          if (confirm("Excluir item " + sku + " do almoxarifado?")) {
+            var filtrado = carregarEstoque().filter(function(x) { return x.codigo !== sku; });
+            salvarEstoque(filtrado);
+          }
+        });
+      });
+    }
+
+    function renderizarCargaBox() {
+      var box = document.getElementById("box-carga-separada");
+      if (cargaTemp.length === 0) {
+        box.innerHTML = '<p style="color:#94a3b8; font-size:12px; text-align:center; padding:15px;">Nenhum item na carga.</p>';
+        return;
+      }
+      var html = "";
+      for (var i = 0; i < cargaTemp.length; i++) {
+        var it = cargaTemp[i];
+        html += '<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">' +
+          '<div><b>' + it.item + '</b><br><span style="color:#64748b;">' + it.qtd + ' ' + it.unidade + '</span></div>' +
+        '</div>';
+      }
+      box.innerHTML = html;
+    }
+
+    // --- EDIÇÃO DE CARGA EM TEMPO REAL ---
+    function atualizarSelectEdicao() {
+      var eventos = carregarEventos().filter(function(e) { return e.status === "Em Andamento"; });
+      var select = document.getElementById("select-evento-edicao");
+      if (eventos.length === 0) {
+        select.innerHTML = '<option value="">Nenhuma festa em andamento</option>';
+        document.getElementById("tabela-edicao-corpo").innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:#94a3b8;">Nenhuma festa em andamento para edição.</td></tr>';
+        return;
+      }
+
+      var html = "";
+      for (var i = 0; i < eventos.length; i++) {
+        html += '<option value="' + eventos[i].id + '">' + eventos[i].nome + ' (' + eventos[i].data + ')</option>';
+      }
+      select.innerHTML = html;
+      renderizarLinhasEdicao();
+    }
+
+    function renderizarLinhasEdicao() {
+      var select = document.getElementById("select-evento-edicao");
+      var evId = parseInt(select.value);
+      if (!evId) return;
+
+      var eventos = carregarEventos();
+      var ev = eventos.find(function(x) { return x.id === evId; });
+      if (!ev) return;
+
+      var corpo = document.getElementById("tabela-edicao-corpo");
+      var html = "";
+      for (var j = 0; j < ev.itens.length; j++) {
+        var it = ev.itens[j];
+        html += '<tr>' +
+          '<td style="font-weight:bold;">' + it.item + '</td>' +
+          '<td style="font-weight:bold; color:#b45309;">' + it.enviado + ' ' + it.unidade + '</td>' +
+          '<td><input type="number" id="edit-qtd-inp-' + j + '" value="' + it.enviado + '" min="1" class="input-ctrl" style="width:80px; padding:4px;"></td>' +
+          '<td style="text-align:center;"><button type="button" class="btn btn-amber btn-salvar-edicao" data-ev="' + ev.id + '" data-idx="' + j + '" style="padding:4px 10px; font-size:11px;">Atualizar Qtd</button></td>' +
+        '</tr>';
+      }
+      corpo.innerHTML = html;
+
+      document.querySelectorAll(".btn-salvar-edicao").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var eId = parseInt(this.getAttribute("data-ev"));
+          var idx = parseInt(this.getAttribute("data-idx"));
+          salvarEdicaoQtdItem(eId, idx);
+        });
+      });
+    }
+
+    function salvarEdicaoQtdItem(evId, idx) {
+      var eventos = carregarEventos();
+      var estoque = carregarEstoque();
+      var ev = eventos.find(function(x) { return x.id === evId; });
+      if (!ev) return;
+
+      var it = ev.itens[idx];
+      var novaQtd = parseFloat(document.getElementById("edit-qtd-inp-" + idx).value) || 0;
+      if (novaQtd <= 0) {
+        alert("A quantidade deve ser maior que zero!");
+        return;
+      }
+
+      var diferenca = novaQtd - it.enviado; // Se positivo: tirou mais do galpão; Se negativo: devolveu ao galpão
+      var gItem = estoque.find(function(x) { return x.codigo === it.codigo; });
+
+      if (diferenca > 0 && gItem && gItem.saldo < diferenca) {
+        alert("Saldo insuficiente no galpão para adicionar essa quantidade! Disponível: " + gItem.saldo);
+        return;
+      }
+
+      if (gItem) gItem.saldo -= diferenca;
+      it.enviado = novaQtd;
+      it.consumido = Math.max(0, it.enviado - (it.devolvido + it.quebra));
+      it.custoTotal = (it.consumido + it.quebra) * it.custo;
+
+      salvarEstoque(estoque);
+      salvarEventos(eventos);
+      renderizarLinhasEdicao();
+      alert("Quantidade enviada de " + it.item + " atualizada para " + novaQtd + "!");
+    }
+
+    // --- RETORNO & SOBRAS ---
+    function atualizarSelectRetorno() {
+      var eventos = carregarEventos().filter(function(e) { return e.status === "Em Andamento"; });
+      var select = document.getElementById("select-evento-retorno");
+      document.getElementById("kpi-eventos").innerText = eventos.length;
+
+      if (eventos.length === 0) {
+        select.innerHTML = '<option value="">Nenhuma festa em andamento</option>';
+        document.getElementById("tabela-retorno-corpo").innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">Nenhuma festa em andamento.</td></tr>';
+        return;
+      }
+
+      var html = "";
+      for (var i = 0; i < eventos.length; i++) {
+        html += '<option value="' + eventos[i].id + '">' + eventos[i].nome + ' (' + eventos[i].data + ')</option>';
+      }
+      select.innerHTML = html;
+      renderizarLinhasRetorno();
+    }
+
+    function renderizarLinhasRetorno() {
+      var select = document.getElementById("select-evento-retorno");
+      var evId = parseInt(select.value);
+      if (!evId) return;
+
+      var eventos = carregarEventos();
+      var ev = eventos.find(function(x) { return x.id === evId; });
+      if (!ev) return;
+
+      var corpo = document.getElementById("tabela-retorno-corpo");
+      var html = "";
+      for (var j = 0; j < ev.itens.length; j++) {
+        var it = ev.itens[j];
+        html += '<tr>' +
+          '<td style="font-weight:bold;">' + it.item + '</td>' +
+          '<td style="font-weight:bold; color:#b45309;">' + it.enviado + ' ' + it.unidade + '</td>' +
+          '<td><input type="number" id="dev-inp-' + j + '" value="' + it.devolvido + '" min="0" max="' + it.enviado + '" class="input-ctrl" style="width:65px; padding:3px;"></td>' +
+          '<td><input type="number" id="que-inp-' + j + '" value="' + it.quebra + '" min="0" max="' + it.enviado + '" class="input-ctrl" style="width:65px; padding:3px; color:#dc2626;"></td>' +
+          '<td style="font-weight:bold;">' + it.consumido + ' ' + it.unidade + '</td>' +
+          '<td style="font-weight:bold; color:#16a34a;">R$ ' + it.custoTotal.toFixed(2) + '</td>' +
+          '<td style="text-align:center;"><button type="button" class="btn btn-amber btn-salvar-retorno" data-ev="' + ev.id + '" data-idx="' + j + '" style="padding:3px 8px; font-size:11px;">Salvar</button></td>' +
+        '</tr>';
+      }
+      corpo.innerHTML = html;
+
+      document.querySelectorAll(".btn-salvar-retorno").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var eId = parseInt(this.getAttribute("data-ev"));
+          var idx = parseInt(this.getAttribute("data-idx"));
+          salvarItemRetorno(eId, idx);
+        });
+      });
+    }
+
+    function salvarItemRetorno(evId, idx) {
+      var eventos = carregarEventos();
+      var estoque = carregarEstoque();
+      var ev = eventos.find(function(x) { return x.id === evId; });
+      if (!ev) return;
+
+      var it = ev.itens[idx];
+      var dev = parseFloat(document.getElementById("dev-inp-" + idx).value) || 0;
+      var que = parseFloat(document.getElementById("que-inp-" + idx).value) || 0;
+
+      if (dev + que > it.enviado) {
+        alert("Devolução + Quebra não pode ser maior que o enviado!");
+        return;
+      }
+
+      var dif = dev - it.devolvido;
+      var gItem = estoque.find(function(x) { return x.codigo === it.codigo; });
+      if (gItem) gItem.saldo += dif;
+
+      it.devolvido = dev;
+      it.quebra = que;
+      it.consumido = it.enviado - (dev + que);
+      it.custoTotal = (it.consumido + it.quebra) * it.custo;
+
+      salvarEstoque(estoque);
+      salvarEventos(eventos);
+      renderizarLinhasRetorno();
+    }
+
+    // --- BALANÇO PERIÓDICO (MENSAL, SEMESTRAL, ANUAL) ---
+    function renderizarBalanco() {
+      var eventos = carregarEventos();
+      var agora = new Date();
+      var dataLimite = new Date();
+
+      if (periodoBalancoAtual === "mes") {
+        dataLimite.setDate(agora.getDate() - 30);
+      } else if (periodoBalancoAtual === "semestre") {
+        dataLimite.setDate(agora.getDate() - 180);
+      } else if (periodoBalancoAtual === "ano") {
+        dataLimite.setDate(agora.getDate() - 365);
+      }
+
+      var eventosFiltrados = eventos.filter(function(e) {
+        var d = new Date(e.data);
+        return isNaN(d.getTime()) || d >= dataLimite;
+      });
+
+      var mapaItens = {};
+      var totalVolume = 0;
+      var totalCusto = 0;
+
+      eventosFiltrados.forEach(function(ev) {
+        ev.itens.forEach(function(it) {
+          if (!mapaItens[it.codigo]) {
+            mapaItens[it.codigo] = {
+              codigo: it.codigo,
+              item: it.item,
+              unidade: it.unidade,
+              enviado: 0,
+              devolvido: 0,
+              consumido: 0,
+              custoTotal: 0
+            };
+          }
+          mapaItens[it.codigo].enviado += it.enviado;
+          mapaItens[it.codigo].devolvido += it.devolvido;
+          mapaItens[it.codigo].consumido += it.consumido;
+          mapaItens[it.codigo].custoTotal += it.custoTotal;
+
+          totalVolume += it.consumido;
+          totalCusto += it.custoTotal;
+        });
+      });
+
+      document.getElementById("kpi-balanco-festas").innerText = eventosFiltrados.length + " evento(s)";
+      document.getElementById("kpi-balanco-volume").innerText = totalVolume + " un";
+      document.getElementById("kpi-balanco-custo").innerText = "R$ " + totalCusto.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      var corpo = document.getElementById("tabela-balanco-corpo");
+      var html = "";
+      Object.keys(mapaItens).forEach(function(k) {
+        var b = mapaItens[k];
+        html += '<tr>' +
+          '<td style="font-weight:bold; font-family:monospace;">' + b.codigo + '</td>' +
+          '<td style="font-weight:bold;">' + b.item + '</td>' +
+          '<td>' + b.enviado + ' ' + b.unidade + '</td>' +
+          '<td style="color:#16a34a; font-weight:bold;">' + b.devolvido + ' ' + b.unidade + '</td>' +
+          '<td style="color:#d97706; font-weight:bold;">' + b.consumido + ' ' + b.unidade + '</td>' +
+          '<td style="color:#16a34a; font-weight:bold;">R$ ' + b.custoTotal.toFixed(2) + '</td>' +
+        '</tr>';
+      });
+
+      corpo.innerHTML = html || '<tr><td colspan="6" style="text-align:center; padding:20px; color:#94a3b8;">Nenhum consumo registrado neste período.</td></tr>';
+    }
+
+    function renderizarRelatorios() {
+      var eventos = carregarEventos();
+      var corpo = document.getElementById("tabela-relatorios-corpo");
+      var html = "";
+
+      for (var i = 0; i < eventos.length; i++) {
+        var ev = eventos[i];
+        for (var j = 0; j < ev.itens.length; j++) {
+          var it = ev.itens[j];
+          html += '<tr>' +
+            '<td style="color:#64748b;">' + ev.data + '</td>' +
+            '<td style="font-weight:bold;">' + ev.nome + '</td>' +
+            '<td>' + ev.responsavel + '</td>' +
+            '<td>' + it.item + '</td>' +
+            '<td>' + it.enviado + '</td>' +
+            '<td style="color:#16a34a; font-weight:bold;">' + it.devolvido + '</td>' +
+            '<td style="color:#b45309; font-weight:bold;">' + it.consumido + '</td>' +
+            '<td style="color:#16a34a; font-weight:bold;">R$ ' + it.custoTotal.toFixed(2) + '</td>' +
+          '</tr>';
+        }
+      }
+      corpo.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px; color:#94a3b8;">Nenhum evento registrado.</td></tr>';
+    }
+
+    function renderizarTudo() {
+      renderizarGalpao();
+      renderizarCargaBox();
+      var evs = carregarEventos().filter(function(e) { return e.status === "Em Andamento"; });
+      document.getElementById("kpi-eventos").innerText = evs.length;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      // Abas
+      document.querySelectorAll(".tab-btn").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          alternarAba(this.getAttribute("data-tab"));
+        });
+      });
+
+      // Filtros de Balanço
+      document.querySelectorAll(".btn-balanco-filtro").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          document.querySelectorAll(".btn-balanco-filtro").forEach(function(b) {
+            b.style.background = "#e2e8f0";
+            b.style.color = "#475569";
+          });
+          this.style.background = "#d97706";
+          this.style.color = "#ffffff";
+          periodoBalancoAtual = this.getAttribute("data-periodo");
+          renderizarBalanco();
+        });
+      });
+
+      // Gravar Item
+      document.getElementById("btn-gravar-item").addEventListener("click", function() {
+        var cod = (document.getElementById("cad-sku").value || "").trim().toUpperCase();
+        var cat = document.getElementById("cad-cat").value;
+        var desc = (document.getElementById("cad-item").value || "").trim();
+        var un = document.getElementById("cad-un").value;
+        var saldo = parseFloat(document.getElementById("cad-saldo").value) || 0;
+        var custo = parseFloat(document.getElementById("cad-custo").value) || 0;
+
+        if (!cod || !desc) {
+          alert("Preencha Código SKU e Descrição!");
+          return;
+        }
+
+        var estoque = carregarEstoque();
+        var idx = estoque.findIndex(function(x) { return x.codigo === cod; });
+        var obj = { codigo: cod, categoria: cat, item: desc, unidade: un, saldo: saldo, custo: custo };
+
+        if (idx >= 0) estoque[idx] = obj;
+        else estoque.push(obj);
+
+        salvarEstoque(estoque);
+        document.getElementById("cad-sku").value = "";
+        document.getElementById("cad-item").value = "";
+        alert("Bebida gravada com sucesso!");
+      });
+
+      // Busca
+      document.getElementById("filtro-busca").addEventListener("input", renderizarGalpao);
+
+      // Adicionar Carga
+      document.getElementById("btn-add-carga").addEventListener("click", function() {
+        var cod = document.getElementById("select-carga-item").value;
+        var qtd = parseFloat(document.getElementById("input-carga-qtd").value) || 0;
+        if (!cod || qtd <= 0) return;
+
+        var estoque = carregarEstoque();
+        var prod = estoque.find(function(x) { return x.codigo === cod; });
+        if (!prod) return;
+
+        var jaSeparado = cargaTemp.filter(function(x) { return x.codigo === cod; }).reduce(function(a, b) { return a + b.qtd; }, 0);
+        if (jaSeparado + qtd > prod.saldo) {
+          alert("Saldo insuficiente no galpão! Disponível: " + prod.saldo + " " + prod.unidade);
+          return;
+        }
+
+        var existe = cargaTemp.find(function(x) { return x.codigo === cod; });
+        if (existe) existe.qtd += qtd;
+        else cargaTemp.push({ codigo: cod, item: prod.item, unidade: prod.unidade, qtd: qtd, custo: prod.custo });
+
+        renderizarCargaBox();
+      });
+
+      // Limpar Carga
+      document.getElementById("btn-limpar-carga").addEventListener("click", function() {
+        cargaTemp = [];
+        renderizarCargaBox();
+      });
+
+      // Despachar Festa
+      document.getElementById("btn-despachar-festa").addEventListener("click", function() {
+        var nome = (document.getElementById("festa-nome").value || "").trim();
+        var data = document.getElementById("festa-data").value || new Date().toISOString().split('T')[0];
+        var resp = (document.getElementById("festa-resp").value || "").trim() || "Equipe de Bar";
+
+        if (!nome) { alert("Digite o nome da festa / evento!"); return; }
+        if (cargaTemp.length === 0) { alert("Adicione itens à carga!"); return; }
+
+        var estoque = carregarEstoque();
+        var eventos = carregarEventos();
+
+        cargaTemp.forEach(function(c) {
+          var itemG = estoque.find(function(x) { return x.codigo === c.codigo; });
+          if (itemG) itemG.saldo = Math.max(0, itemG.saldo - c.qtd);
+        });
+
+        eventos.unshift({
+          id: new Date().getTime(),
+          nome: nome,
+          data: data,
+          responsavel: resp,
+          status: "Em Andamento",
+          itens: cargaTemp.map(function(c) {
+            return {
+              codigo: c.codigo,
+              item: c.item,
+              unidade: c.unidade,
+              custo: c.custo,
+              enviado: c.qtd,
+              devolvido: 0,
+              quebra: 0,
+              consumido: 0,
+              custoTotal: 0
+            };
+          })
+        });
+
+        salvarEstoque(estoque);
+        salvarEventos(eventos);
+
+        cargaTemp = [];
+        document.getElementById("festa-nome").value = "";
+        renderizarCargaBox();
+        alert("Carga despachada com sucesso!");
+        alternarAba("retorno");
+      });
+
+      // Adicionar Item Extra no Evento (Edição)
+      document.getElementById("btn-adicionar-extra-evento").addEventListener("click", function() {
+        var selectEv = document.getElementById("select-evento-edicao");
+        var evId = parseInt(selectEv.value);
+        if (!evId) return;
+
+        var cod = document.getElementById("select-edicao-extra-item").value;
+        var qtd = parseFloat(document.getElementById("input-edicao-extra-qtd").value) || 0;
+        if (!cod || qtd <= 0) return;
+
+        var estoque = carregarEstoque();
+        var eventos = carregarEventos();
+        var ev = eventos.find(function(x) { return x.id === evId; });
+        var gItem = estoque.find(function(x) { return x.codigo === cod; });
+
+        if (!ev || !gItem) return;
+
+        if (gItem.saldo < qtd) {
+          alert("Saldo insuficiente no galpão! Disponível: " + gItem.saldo + " " + gItem.unidade);
+          return;
+        }
+
+        gItem.saldo -= qtd;
+        var itemExistente = ev.itens.find(function(x) { return x.codigo === cod; });
+
+        if (itemExistente) {
+          itemExistente.enviado += qtd;
+          itemExistente.consumido = Math.max(0, itemExistente.enviado - (itemExistente.devolvido + itemExistente.quebra));
+          itemExistente.custoTotal = (itemExistente.consumido + itemExistente.quebra) * itemExistente.custo;
+        } else {
+          ev.itens.push({
+            codigo: gItem.codigo,
+            item: gItem.item,
+            unidade: gItem.unidade,
+            custo: gItem.custo,
+            enviado: qtd,
+            devolvido: 0,
+            quebra: 0,
+            consumido: 0,
+            custoTotal: 0
+          });
+        }
+
+        salvarEstoque(estoque);
+        salvarEventos(eventos);
+        renderizarLinhasEdicao();
+        alert(qtd + " un de " + gItem.item + " adicionadas ao evento!");
+      });
+
+      // Selects
+      document.getElementById("select-evento-edicao").addEventListener("change", renderizarLinhasEdicao);
+      document.getElementById("select-evento-retorno").addEventListener("change", renderizarLinhasRetorno);
+
+      // Fechar Evento
+      document.getElementById("btn-fechar-evento").addEventListener("click", function() {
+        var select = document.getElementById("select-evento-retorno");
+        var evId = parseInt(select.value);
+        if (!evId) return;
+
+        if (confirm("Finalizar e arquivar este evento nos relatórios?")) {
+          var eventos = carregarEventos();
+          var ev = eventos.find(function(x) { return x.id === evId; });
+          if (ev) ev.status = "Finalizado";
+          salvarEventos(eventos);
+          atualizarSelectRetorno();
+          alert("Evento finalizado com sucesso!");
+        }
+      });
+
+      // Reset
+      document.getElementById("btn-reset-cache").addEventListener("click", function() {
+        if (confirm("Deseja restaurar todo o estoque para as 15 bebidas padrão?")) {
+          localStorage.clear();
+          salvarEstoque(DADOS_BASE);
+          salvarEventos([]);
+          window.location.reload();
+        }
+      });
+
+      var dt = document.getElementById("festa-data");
+      if (dt) dt.value = new Date().toISOString().split('T')[0];
+
+      renderizarTudo();
+    });
+  </script>
 </body>
 </html>
