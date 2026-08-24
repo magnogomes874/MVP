@@ -34,7 +34,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <button class="tab-btn" data-tab="balanco">📈 Balanço</button>
 <button class="tab-btn" data-tab="relatorios">📊 Relatórios</button>
 </nav>
-<div style="display:flex;gap:6px;align-items:center"><span id="conexao" class="status offline">Conectando...</span><button id="btn-recarregar" class="btn btn-gray">↻ Atualizar</button></div>
+<div style="display:flex;gap:6px;align-items:center"><span id="conexao" class="status offline" title="Clique para configurar o banco">Conectando...</span><button id="btn-config" class="btn btn-gray">⚙ Banco</button><button id="btn-recarregar" class="btn btn-gray">↻ Atualizar</button></div>
 </div>
 </header>
 
@@ -163,24 +163,34 @@ function fecharConfig(){document.getElementById("modal-config").classList.remove
 async function conectar(){
  const url=localStorage.getItem("2cuca_supabase_url")||"";
  const key=localStorage.getItem("2cuca_supabase_key")||"";
- if(!url||!key){setConexao(false,"Banco não configurado");abrirConfig();return false}
+ if(!url||!key){setConexao(false,"Banco não configurado");return false}
  try{
+  if(!window.supabase || !window.supabase.createClient) throw new Error("Biblioteca do Supabase não carregou. Verifique sua conexão com a internet.");
   supabase=window.supabase.createClient(url,key);
-  // O app usa usuários anônimos para que a equipe compartilhe o mesmo banco
-  // sem precisar cadastrar e-mail/senha nesta primeira versão.
-  const { data: sess } = await supabase.auth.getSession();
-  if (!sess.session) {
-    const { error: authError } = await supabase.auth.signInAnonymously();
-    if (authError) throw authError;
-  }
-  const {error}=await supabase.from("estoque").select("codigo").limit(1);
-  if(error) throw error;
+
+  // Evita que uma falha/hang de rede congele a interface.
+  const timeout = new Promise((_, reject)=>setTimeout(()=>reject(new Error("Tempo limite de conexão com o Supabase.")),8000));
+  const conectarBanco = (async()=>{
+    const { data: sess, error: sessError } = await supabase.auth.getSession();
+    if(sessError) throw sessError;
+    if (!sess.session) {
+      const { error: authError } = await supabase.auth.signInAnonymously();
+      if (authError) throw new Error("Ative o login anônimo em Authentication > Providers > Anonymous no Supabase. " + authError.message);
+    }
+    const {error}=await supabase.from("estoque").select("codigo").limit(1);
+    if(error) throw error;
+    await carregarNuvem();
+    assinarRealtime();
+  })();
+  await Promise.race([conectarBanco, timeout]);
   setConexao(true,"● Online");
-  await carregarNuvem();
-  assinarRealtime();
+  showMsg("Banco conectado. As alterações serão compartilhadas em tempo real.","ok");
   return true;
  }catch(e){
-  console.error(e);setConexao(false,"Erro no banco");showMsg("Não foi possível conectar ao Supabase: "+(e.message||e),"warn");return false
+  console.error(e);
+  setConexao(false,"Offline / erro");
+  showMsg("O sistema está aberto, mas não conseguiu conectar ao banco: "+(e.message||e)+"<br><br>Use <b>⚙ Banco</b> para conferir a configuração.","warn");
+  return false;
  }
 }
 
@@ -356,8 +366,14 @@ document.addEventListener("DOMContentLoaded",async()=>{
  document.querySelectorAll(".filtro-balanco").forEach(b=>b.onclick=()=>{periodoBalanco=Number(b.dataset.p);document.querySelectorAll(".filtro-balanco").forEach(x=>x.className="btn filtro-balanco btn-gray");b.className="btn filtro-balanco btn-amber";renderBalanco()});
  document.getElementById("cfg-save").onclick=async()=>{const u=document.getElementById("cfg-url").value.trim(),k=document.getElementById("cfg-key").value.trim();if(!u||!k)return alert("Informe URL e publishable key.");localStorage.setItem("2cuca_supabase_url",u);localStorage.setItem("2cuca_supabase_key",k);fecharConfig();await conectar()};
  document.getElementById("cfg-cancel").onclick=fecharConfig;
+ document.getElementById("btn-config").onclick=abrirConfig;
+ document.getElementById("conexao").onclick=abrirConfig;
+
+ // A interface nunca fica bloqueada aguardando a nuvem.
+ // Primeiro mostra os dados locais/base; depois tenta sincronizar em segundo plano.
+ if(!estoque.length) estoque=DADOS_BASE.map(x=>({...x}));
  renderizarTudo();
- await conectar();
+ conectar();
 });
 </script>
 </body>
