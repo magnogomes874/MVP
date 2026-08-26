@@ -21,6 +21,24 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 #toast{position:fixed;right:18px;bottom:18px;z-index:800;display:none;max-width:380px}.toast{background:#0f172a;color:#fff;padding:12px 14px;border-radius:9px;font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .busy{position:fixed;inset:0;background:rgba(248,250,252,.72);z-index:450;display:none;align-items:center;justify-content:center}.busy.show{display:flex}.busy-box{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px 22px;box-shadow:0 15px 40px rgba(0,0,0,.12);font-size:13px;font-weight:800}
 @media(max-width:800px){.event-head{flex-direction:column}.event-summary{width:100%;justify-content:space-between}.event-summary div{text-align:left}.nav-bar{max-width:100%}}
+
+/* ===== AJUSTES V3 ===== */
+.stock-zero-row td{background:#fee2e2}
+.stock-zero-row td:first-child{border-left:4px solid #dc2626}
+.stock-low-row td{background:#fffbeb}
+.stock-status{font-size:9px;font-weight:900;padding:3px 7px;border-radius:999px;display:inline-block}
+.stock-zero{background:#fee2e2;color:#991b1b}
+.stock-low{background:#fef3c7;color:#92400e}
+.stock-ok{background:#dcfce7;color:#166534}
+#filtro-estoque{min-width:190px}
+.input-limitado{border-color:#dc2626!important;background:#fff1f2!important}
+.price-vol-card{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-top:15px;background:#fff}
+.price-vol-card h3{font-size:12px;text-transform:uppercase;margin-bottom:8px}
+.vol-low{color:#15803d;font-weight:900}
+.vol-medium{color:#b45309;font-weight:900}
+.vol-high{color:#dc2626;font-weight:900}
+.price-history{font-size:10px;line-height:1.45;color:#64748b}
+
 </style>
 </head>
 <body>
@@ -57,14 +75,26 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="field"><label>Categoria</label><select id="cad-cat" class="input-ctrl"><option>Destilados</option><option>Aperitivos & Licores</option><option>Espumantes & Vinhos</option><option>Cervejas</option><option>Misturas & Não Alcoólicos</option><option>Xaropes & Frutas</option></select></div>
 <div class="field" style="grid-column:span 2"><label>Descrição</label><input id="cad-item" class="input-ctrl" placeholder="Gin Tanqueray London Dry 750ml"></div>
 <div class="field"><label>Unidade</label><select id="cad-un" class="input-ctrl"><option>Garrafa</option><option>Fardo/Pack</option><option>Lata</option><option>Unidade</option></select></div>
-<div class="field"><label>Saldo Inicial / Entrada</label><input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0"></div>
+<div class="field"><label>Saldo Inicial / Entrada</label><input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0" step="1"></div>
 <div class="field"><label>Custo Unitário</label><input id="cad-custo" type="number" class="input-ctrl" value="50" step=".01" min="0"></div>
+<div class="field"><label>Estoque Mínimo</label><input id="cad-minimo" type="number" class="input-ctrl" value="5" min="0" step="1"></div>
+<div class="field"><label>Data da Entrada</label><input id="cad-data-entrada" type="date" class="input-ctrl"></div>
 </div>
 <div style="margin-top:12px;text-align:right"><button id="btn-gravar-item" class="btn btn-amber">Gravar no Almoxarifado</button></div>
 </div>
 <div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="card-header" style="margin:0">Posição Geral do Galpão</div><input id="filtro-busca" class="input-ctrl" style="width:240px" placeholder="Filtrar SKU ou produto..."></div>
-<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Categoria</th><th>Produto</th><th>Saldo</th><th>Custo</th><th>Subtotal</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+<div class="card-header" style="margin:0">Posição Geral do Galpão</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<input id="filtro-busca" class="input-ctrl" style="width:240px" placeholder="Filtrar SKU ou produto...">
+<select id="filtro-estoque" class="input-ctrl">
+<option value="todos">Todos</option>
+<option value="alerta">⚠️ Em alerta (baixo/zerado)</option>
+<option value="zerado">🔴 Zerados</option>
+<option value="normal">🟢 Normal</option>
+</select>
+</div></div>
+<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Categoria</th><th>Produto</th><th>Saldo</th><th>Mínimo</th><th>Custo</th><th>Subtotal</th><th>Status</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
 </div>
 </div>
 
@@ -75,7 +105,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="field"><label>Data</label><input id="festa-data" type="date" class="input-ctrl"></div>
 <div class="field"><label>Responsável</label><input id="festa-resp" class="input-ctrl" placeholder="Chefe de Bar"></div>
 <div class="field"><label>Produto</label><select id="select-carga-item" class="input-ctrl"></select></div>
-<div class="field"><label>Quantidade</label><input id="input-carga-qtd" type="number" class="input-ctrl" value="1" min="1"></div>
+<div class="field"><label>Quantidade</label><input id="input-carga-qtd" type="number" class="input-ctrl" value="1" min="1" max="1"></div>
 <div class="field" style="justify-content:flex-end"><button id="btn-add-carga" class="btn btn-amber">+ Incluir</button></div>
 </div>
 <hr style="border:0;border-top:1px solid #e2e8f0;margin:14px 0">
@@ -102,9 +132,23 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 
 <div id="view-balanco" class="tab-view">
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div class="card-header" style="margin:0">📈 Balanço por Evento</div><div><button class="btn filtro-balanco btn-amber" data-p="30">30 dias</button> <button class="btn filtro-balanco btn-gray" data-p="180">180 dias</button> <button class="btn filtro-balanco btn-gray" data-p="365">365 dias</button></div></div>
-<div class="alert alert-info">Cada evento é separado. As alterações feitas por qualquer pessoa aparecem para todos os usuários conectados.</div>
+<div class="alert alert-info">Cada evento é separado. Os dados são salvos somente neste navegador. Esta versão não usa nuvem.</div>
 <div class="kpi-row"><div class="kpi-card"><div class="kpi-title">Eventos</div><div class="kpi-val" id="bal-kpi-eventos">0</div></div><div class="kpi-card"><div class="kpi-title">Consumido</div><div class="kpi-val" id="bal-kpi-consumido">0 un</div></div><div class="kpi-card"><div class="kpi-title">Consumo + Avaria</div><div class="kpi-val" id="bal-kpi-custo">R$ 0,00</div></div></div>
 <div id="balanco-eventos"></div>
+<div class="price-vol-card">
+<h3>📉 Volatilidade do Preço de Compra</h3>
+<p style="font-size:11px;color:#64748b;margin-bottom:10px">
+A volatilidade considera as entradas registradas com data e custo. O CV é o desvio-padrão dividido pelo preço médio.
+</p>
+<div class="table-responsive">
+<table>
+<thead><tr>
+<th>SKU</th><th>Produto</th><th>Entradas</th><th>Preço Médio</th><th>Menor</th><th>Maior</th><th>Último</th><th>Variação</th><th>CV</th><th>Histórico</th>
+</tr></thead>
+<tbody id="tabela-volatilidade"></tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 
@@ -175,13 +219,23 @@ function esc(v){
 }
 
 function normalizarProduto(p){
+ let historico=Array.isArray(p.historicoEntradas)?p.historicoEntradas:[];
+ if(!historico.length && Number(p.custo)>0){
+  historico=[{
+   data:p.dataEntrada||new Date().toISOString().slice(0,10),
+   custo:Number(p.custo)||0,
+   qtd:0
+  }];
+ }
  return {
   codigo:String(p.codigo||"").toUpperCase(),
   categoria:p.categoria||"Outros",
   item:p.item||"",
   unidade:p.unidade||"Unidade",
   saldo:Math.max(0,Number(p.saldo)||0),
-  custo:Math.max(0,Number(p.custo)||0)
+  custo:Math.max(0,Number(p.custo)||0),
+  minimo:Math.max(0,Number(p.minimo??5)||0),
+  historicoEntradas:historico
  };
 }
 
@@ -254,30 +308,53 @@ function validarEventoItem(it){
 
 function renderizarGalpao(){
  const busca=($("filtro-busca")?.value||"").toLowerCase().trim();
- let html="";
+ const filtro=$("filtro-estoque")?.value||"todos";
  let totalUn=0,totalCap=0,crit=0;
 
- estoque.forEach(it=>{
-  totalUn+=it.saldo;
-  totalCap+=it.saldo*it.custo;
-  if(it.saldo<=5)crit++;
-
-  if((it.item+" "+it.codigo+" "+it.categoria).toLowerCase().includes(busca)){
-   html+=`<tr>
-    <td><b>${esc(it.codigo)}</b></td>
-    <td>${esc(it.categoria)}</td>
-    <td><b>${esc(it.item)}</b></td>
-    <td style="font-weight:900;color:${it.saldo<=5?"#dc2626":"#0f172a"}">${it.saldo} ${esc(it.unidade)}</td>
-    <td>${money(it.custo)}</td>
-    <td><b>${money(it.saldo*it.custo)}</b></td>
-    <td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td>
-   </tr>`;
-  }
+ const ordenado=estoque.slice().sort((a,b)=>{
+  const nivel=x=>x.saldo===0?0:(x.saldo<=x.minimo?1:2);
+  return (nivel(a)-nivel(b)) || String(a.item).localeCompare(String(b.item),"pt-BR");
  });
 
- $("tabela-galpao").innerHTML=html||`<tr><td colspan="7" style="text-align:center;padding:25px;color:#94a3b8">Nenhum produto.</td></tr>`;
+ let html="";
+ for(const it of ordenado){
+  totalUn+=it.saldo;
+  totalCap+=it.saldo*it.custo;
+  if(it.saldo<=it.minimo)crit++;
 
- const options=estoque.map(it=>`<option value="${esc(it.codigo)}">${esc(it.item)} — saldo ${it.saldo} ${esc(it.unidade)}</option>`).join("");
+  const status=it.saldo===0?"zerado":(it.saldo<=it.minimo?"baixo":"normal");
+  const passaFiltro =
+    filtro==="todos" ||
+    (filtro==="alerta" && status!=="normal") ||
+    (filtro==="zerado" && status==="zerado") ||
+    (filtro==="normal" && status==="normal");
+
+  const passaBusca=(it.item+" "+it.codigo+" "+it.categoria).toLowerCase().includes(busca);
+  if(!passaFiltro || !passaBusca) continue;
+
+  const rowClass=status==="zerado"?"stock-zero-row":(status==="baixo"?"stock-low-row":"");
+  const statusHtml=status==="zerado"
+    ? '<span class="stock-status stock-zero">ZERADO</span>'
+    : status==="baixo"
+      ? '<span class="stock-status stock-low">ESTOQUE BAIXO</span>'
+      : '<span class="stock-status stock-ok">NORMAL</span>';
+
+  html+=`<tr class="${rowClass}">
+   <td><b>${esc(it.codigo)}</b></td>
+   <td>${esc(it.categoria)}</td>
+   <td><b>${esc(it.item)}</b></td>
+   <td style="font-weight:900;color:${it.saldo===0?"#b91c1c":it.saldo<=it.minimo?"#b45309":"#0f172a"}">${it.saldo} ${esc(it.unidade)}</td>
+   <td>${it.minimo}</td>
+   <td>${money(it.custo)}</td>
+   <td><b>${money(it.saldo*it.custo)}</b></td>
+   <td>${statusHtml}</td>
+   <td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td>
+  </tr>`;
+ }
+
+ $("tabela-galpao").innerHTML=html||'<tr><td colspan="9" style="text-align:center;padding:25px;color:#94a3b8">Nenhum produto encontrado.</td></tr>';
+
+ const options=estoque.map(it=>`<option value="${esc(it.codigo)}">${esc(it.item)} — disponível: ${it.saldo} ${esc(it.unidade)}</option>`).join("");
  $("select-carga-item").innerHTML=options||'<option value="">Nenhum produto cadastrado</option>';
  $("select-extra").innerHTML=options||'<option value="">Nenhum produto cadastrado</option>';
 
@@ -286,13 +363,15 @@ function renderizarGalpao(){
  $("kpi-unidades").textContent=totalUn;
  $("kpi-criticos").textContent=crit;
 
+ atualizarLimiteCarga();
+
  document.querySelectorAll(".btn-del").forEach(b=>{
   b.onclick=()=>{
    const codigo=b.dataset.sku;
    if(!confirm("Excluir "+codigo+"?"))return;
    const usado=eventos.some(e=>e.itens.some(i=>i.codigo===codigo));
    if(usado){
-    alert("Este produto já está vinculado a um evento e não pode ser excluído. Você pode deixar o saldo em zero.");
+    alert("Este produto já está vinculado a um evento e não pode ser excluído. Você pode manter o saldo em zero.");
     return;
    }
    estoque=estoque.filter(x=>x.codigo!==codigo);
@@ -301,6 +380,31 @@ function renderizarGalpao(){
    toast("Produto excluído.");
   };
  });
+}
+
+function atualizarLimiteCarga(){
+ const sel=$("select-carga-item");
+ const inp=$("input-carga-qtd");
+ const btn=$("btn-add-carga");
+ if(!sel||!inp)return;
+
+ const p=estoque.find(x=>x.codigo===sel.value);
+ const ja=cargaTemp.find(x=>x.codigo===sel.value);
+ const disponivel=Math.max(0,(p?.saldo||0)-(ja?.qtd||0));
+
+ inp.max=String(disponivel);
+ if(disponivel<=0){
+  inp.value="0";
+  inp.disabled=true;
+  inp.classList.add("input-limitado");
+  if(btn)btn.disabled=true;
+ }else{
+  inp.disabled=false;
+  inp.classList.remove("input-limitado");
+  const atual=Number(inp.value)||1;
+  inp.value=String(Math.min(Math.max(1,atual),disponivel));
+  if(btn)btn.disabled=false;
+ }
 }
 
 function renderizarCarga(){
@@ -435,7 +539,59 @@ function salvarRetorno(evId,idx){
 
  salvarLocalStorage();
  renderizarTudo();
- toast("Retorno salvo.");
+ const sel=$("select-evento-retorno");
+ if(sel){sel.value=String(evId);renderRetorno();}
+ toast("Retorno/devolução/avaria salvo.");
+}
+
+function calcularVolatilidade(historico){
+ const arr=(historico||[]).map(x=>Number(x.custo)||0).filter(x=>x>0);
+ if(!arr.length)return {n:0,media:0,menor:0,maior:0,ultimo:0,cv:0,varPct:0};
+
+ const media=arr.reduce((a,b)=>a+b,0)/arr.length;
+ const variancia=arr.reduce((a,b)=>a+Math.pow(b-media,2),0)/arr.length;
+ const desvio=Math.sqrt(variancia);
+ const menor=Math.min(...arr);
+ const maior=Math.max(...arr);
+ const ultimo=arr[arr.length-1];
+ return {
+  n:arr.length,
+  media,
+  menor,
+  maior,
+  ultimo,
+  cv:media?desvio/media:0,
+  varPct:menor?((maior-menor)/menor)*100:0
+ };
+}
+
+function renderTabelaVolatilidade(){
+ const body=$("tabela-volatilidade");
+ if(!body)return;
+
+ const produtos=estoque.slice().sort((a,b)=>String(a.item).localeCompare(String(b.item),"pt-BR"));
+
+ body.innerHTML=produtos.map(p=>{
+  const v=calcularVolatilidade(p.historicoEntradas);
+  const cls=v.cv>=0.25?"vol-high":v.cv>=0.10?"vol-medium":"vol-low";
+  const hist=(p.historicoEntradas||[]).slice()
+    .sort((a,b)=>String(a.data).localeCompare(String(b.data)))
+    .map(x=>`${esc(x.data)}: ${money(x.custo)}`)
+    .join("<br>");
+
+  return `<tr>
+   <td><b>${esc(p.codigo)}</b></td>
+   <td><b>${esc(p.item)}</b></td>
+   <td>${v.n}</td>
+   <td>${money(v.media)}</td>
+   <td>${money(v.menor)}</td>
+   <td>${money(v.maior)}</td>
+   <td>${money(v.ultimo)}</td>
+   <td>${v.varPct.toFixed(1)}%</td>
+   <td class="${cls}">${(v.cv*100).toFixed(1)}%</td>
+   <td><div class="price-history">${hist||"Sem histórico."}</div></td>
+  </tr>`;
+ }).join("")||'<tr><td colspan="10" style="text-align:center;padding:25px;color:#94a3b8">Sem histórico de preços.</td></tr>';
 }
 
 function renderBalanco(){
@@ -444,14 +600,17 @@ function renderBalanco(){
  lim.setDate(lim.getDate()-periodoBalanco);
 
  const arr=eventos.filter(e=>{
-  const d=new Date(e.data+"T00:00:00");
+  const d=new Date(String(e.data)+"T00:00:00");
   return !isNaN(d.getTime())&&d>=lim;
  }).sort((a,b)=>new Date(b.data)-new Date(a.data));
 
- let cons=0,custo=0;
+ let cons=0,custo=0,devol=0,quebra=0;
 
  arr.forEach(e=>e.itens.forEach(it=>{
+  validarEventoItem(it);
   cons+=Number(it.consumido)||0;
+  devol+=Number(it.devolvido)||0;
+  quebra+=Number(it.quebra)||0;
   custo+=((Number(it.consumido)||0)+(Number(it.quebra)||0))*(Number(it.custo)||0);
  }));
 
@@ -462,11 +621,12 @@ function renderBalanco(){
  $("balanco-eventos").innerHTML=arr.length?arr.map(e=>{
   let en=0,de=0,qu=0,co=0,ct=0;
   e.itens.forEach(it=>{
+   validarEventoItem(it);
    en+=Number(it.enviado)||0;
    de+=Number(it.devolvido)||0;
    qu+=Number(it.quebra)||0;
    co+=Number(it.consumido)||0;
-   ct+=Number(it.custoTotal)||0;
+   ct+=((Number(it.consumido)||0)+(Number(it.quebra)||0))*(Number(it.custo)||0);
   });
 
   return `<div class="event" id="evb-${e.id}">
@@ -477,13 +637,19 @@ function renderBalanco(){
     </div>
     <div class="event-summary">
      <div><small>Enviado</small><b>${en}</b></div>
-     <div><small>Devolvido</small><b>${de}</b></div>
+     <div><small>Devolvido</small><b style="color:#15803d">${de}</b></div>
      <div><small>Consumido</small><b>${co}</b></div>
-     <div><small>Quebra</small><b>${qu}</b></div>
+     <div><small>Quebra</small><b style="color:#dc2626">${qu}</b></div>
      <div><small>Custo</small><b>${money(ct)}</b></div>
     </div>
    </button>
    <div class="event-body">
+    <div class="kpi-row" style="margin:12px 0">
+     <div class="kpi-card"><div class="kpi-title">Enviado</div><div class="kpi-val">${en} un</div></div>
+     <div class="kpi-card"><div class="kpi-title">Devolvido</div><div class="kpi-val" style="color:#15803d">${de} un</div></div>
+     <div class="kpi-card"><div class="kpi-title">Consumido</div><div class="kpi-val" style="color:#d97706">${co} un</div></div>
+     <div class="kpi-card"><div class="kpi-title">Quebra / Avaria</div><div class="kpi-val" style="color:#dc2626">${qu} un</div></div>
+    </div>
     <div class="table-responsive">
      <table>
       <thead><tr><th>SKU</th><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo Unit.</th><th>Custo Total</th></tr></thead>
@@ -492,17 +658,19 @@ function renderBalanco(){
         <td>${esc(it.codigo)}</td>
         <td><b>${esc(it.item)}</b></td>
         <td>${it.enviado} ${esc(it.unidade)}</td>
-        <td>${it.devolvido}</td>
-        <td>${it.quebra}</td>
-        <td><b>${it.consumido}</b></td>
+        <td style="color:#15803d;font-weight:900">${it.devolvido} ${esc(it.unidade)}</td>
+        <td style="color:#dc2626;font-weight:900">${it.quebra} ${esc(it.unidade)}</td>
+        <td style="color:#d97706;font-weight:900">${it.consumido} ${esc(it.unidade)}</td>
         <td>${money(it.custo)}</td>
-        <td>${money(it.custoTotal)}</td>
+        <td>${money(((Number(it.consumido)||0)+(Number(it.quebra)||0))*(Number(it.custo)||0))}</td>
        </tr>`).join("")}</tbody>
      </table>
     </div>
    </div>
   </div>`;
  }).join(""):'<div style="text-align:center;padding:25px;color:#94a3b8">Nenhum evento no período.</div>';
+
+ renderTabelaVolatilidade();
 }
 
 function renderRelatorios(){
@@ -541,6 +709,8 @@ function gravarProduto(){
  const unidade=$("cad-un").value;
  const saldo=Math.max(0,Number($("cad-saldo").value)||0);
  const custo=Math.max(0,Number($("cad-custo").value)||0);
+ const minimo=Math.max(0,Number($("cad-minimo").value)||0);
+ const dataEntrada=$("cad-data-entrada").value||new Date().toISOString().slice(0,10);
 
  if(!codigo||!item){
   alert("Preencha SKU e descrição.");
@@ -555,8 +725,16 @@ function gravarProduto(){
   existente.categoria=categoria;
   existente.item=item;
   existente.unidade=unidade;
+  existente.minimo=minimo;
+  if(!Array.isArray(existente.historicoEntradas))existente.historicoEntradas=[];
+  if(saldo>0){
+   existente.historicoEntradas.push({data:dataEntrada,custo:custo,qtd:saldo});
+  }
  }else{
-  estoque.push({codigo,categoria,item,unidade,saldo,custo});
+  estoque.push({
+   codigo,categoria,item,unidade,saldo,custo,minimo,
+   historicoEntradas:saldo>0?[{data:dataEntrada,custo,qtd:saldo}]:[]
+  });
  }
 
  salvarLocalStorage();
@@ -566,13 +744,16 @@ function gravarProduto(){
  $("cad-item").value="";
  $("cad-saldo").value="1";
  $("cad-custo").value="0";
+ $("cad-minimo").value="5";
+ $("cad-data-entrada").value=new Date().toISOString().slice(0,10);
 
- toast("Produto salvo no armazenamento local.");
+ toast("Produto/entrada salvo.");
 }
 
 function adicionarCarga(){
  const codigo=$("select-carga-item").value;
- const qtd=Number($("input-carga-qtd").value)||0;
+ const inp=$("input-carga-qtd");
+ const qtd=Number(inp.value)||0;
  const g=estoque.find(x=>x.codigo===codigo);
 
  if(!g||qtd<=0){
@@ -581,17 +762,24 @@ function adicionarCarga(){
  }
 
  const ja=cargaTemp.find(x=>x.codigo===codigo);
+ const reservado=ja?ja.qtd:0;
+ const disponivel=Math.max(0,g.saldo-reservado);
 
- if((ja?ja.qtd:0)+qtd>g.saldo){
-  alert("Quantidade maior que o saldo disponível.");
+ if(qtd>disponivel){
+  inp.value=disponivel>0?String(disponivel):"0";
+  inp.classList.add("input-limitado");
+  alert(`Limite atingido. O máximo disponível é ${disponivel} ${g.unidade}.`);
   return;
  }
+
+ inp.classList.remove("input-limitado");
 
  if(ja)ja.qtd+=qtd;
  else cargaTemp.push({...g,qtd});
 
  renderizarCarga();
- $("input-carga-qtd").value="1";
+ inp.value="1";
+ atualizarLimiteCarga();
 }
 
 function despachar(){
@@ -798,6 +986,22 @@ document.addEventListener("DOMContentLoaded",()=>{
 
  // Estoque
  $("filtro-busca").oninput=renderizarGalpao;
+ $("filtro-estoque").onchange=renderizarGalpao;
+ $("select-carga-item").onchange=atualizarLimiteCarga;
+ $("input-carga-qtd").oninput=()=>{
+  const sel=$("select-carga-item");
+  const p=estoque.find(x=>x.codigo===sel.value);
+  const ja=cargaTemp.find(x=>x.codigo===sel.value);
+  const disponivel=Math.max(0,(p?.saldo||0)-(ja?.qtd||0));
+  let v=Number($("input-carga-qtd").value)||0;
+  if(v>disponivel){
+   $("input-carga-qtd").value=String(disponivel);
+   $("input-carga-qtd").classList.add("input-limitado");
+   toast("A quantidade foi limitada ao saldo disponível.");
+  }else{
+   $("input-carga-qtd").classList.remove("input-limitado");
+  }
+ };
  $("btn-gravar-item").onclick=gravarProduto;
 
  // Saída
