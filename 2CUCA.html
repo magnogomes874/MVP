@@ -118,13 +118,11 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div id="cadastro-novo" style="display:none">
 <div class="grid-form">
 <div class="field"><label>SKU *</label><input id="cad-sku" class="input-ctrl" placeholder="Ex.: BEB-GIN-001" autocomplete="off"></div>
-<div class="field"><label>Grupo *</label><select id="cad-grupo" class="input-ctrl">
-<option>Bebidas</option><option>Frutas & Insumos</option><option>Descartáveis</option><option>Utensílios & Decoração</option><option>Diversos</option>
-</select></div>
+
 <div class="field"><label>Categoria *</label><input id="cad-cat" class="input-ctrl" placeholder="Ex.: Destilados, Taças, Frutas..."></div>
 <div class="field" style="grid-column:span 2"><label>Produto *</label><input id="cad-item" class="input-ctrl" placeholder="Ex.: Gin Tanqueray 750ml / Taça Gin / Limão Tahiti" autocomplete="off"><div class="cadastro-help">Cadastro livre. O sistema bloqueia SKU duplicado e alerta para nomes já existentes.</div><div id="dup-alert" class="dup-alert"></div></div>
-<div class="field"><label>Unidade *</label><select id="cad-un" class="input-ctrl"><option>Unidade</option><option>Fardo/Pack</option><option>Kg</option><option>Caixa</option><option>Pacote</option><option>Litro</option></select></div>
-<div class="field"><label>Tipo de controle *</label><select id="cad-tipo" class="input-ctrl"><option value="Consumível">Consumível</option><option value="Retornável">Retornável</option><option value="Descartável">Descartável</option></select></div>
+<div class="field"><label>Unidade *</label><select id="cad-un" class="input-ctrl"></select></div>
+
 <div class="field"><label>Estoque mínimo</label><input id="cad-minimo" type="number" class="input-ctrl" value="5" min="0" step="1"></div>
 </div>
 </div>
@@ -155,7 +153,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <option value="normal">🟢 Normal</option>
 </select>
 </div></div>
-<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Categoria</th><th>Tipo</th><th>Unidade</th><th>Saldo</th><th>Mínimo</th><th>Custo Unitário</th><th>Subtotal</th><th>Status</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
+<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Categoria</th><th>Unidade</th><th>Saldo</th><th>Mínimo</th><th>Custo Unitário</th><th>Subtotal</th><th>Status</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
 </div>
 </div>
 
@@ -377,9 +375,9 @@ function renderizarGalpao(){
   if(!passaFiltro||!passaBusca)continue;
   const rowClass=status==="zerado"?"stock-zero-row":status==="baixo"?"stock-low-row":"";
   const statusHtml=status==="zerado"?'<span class="stock-status stock-zero">ZERADO</span>':status==="baixo"?'<span class="stock-status stock-low">ESTOQUE BAIXO</span>':'<span class="stock-status stock-ok">NORMAL</span>';
-  rows+=`<tr class="${rowClass}"><td><b>${esc(it.codigo)}</b></td><td><b>${esc(it.item)}</b></td><td>${esc(it.categoria)}</td><td><span class="group-pill">${esc(it.tipoControle)}</span></td><td>${esc(it.unidade)}</td><td><b>${it.saldo}</b></td><td>${it.minimo}</td><td>${money(it.custo)}</td><td><b>${money(it.saldo*it.custo)}</b></td><td>${statusHtml}</td><td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td></tr>`;
+  rows+=`<tr class="${rowClass}"><td><b>${esc(it.codigo)}</b></td><td><b>${esc(it.item)}</b></td><td>${esc(it.categoria)}</td><td>${esc(it.unidade)}</td><td><b>${it.saldo}</b></td><td>${it.minimo}</td><td>${money(it.custo)}</td><td><b>${money(it.saldo*it.custo)}</b></td><td>${statusHtml}</td><td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td></tr>`;
  }
- $("tabela-galpao").innerHTML=rows||'<tr><td colspan="11" style="text-align:center;padding:25px;color:#94a3b8">Nenhum item neste estoque.</td></tr>';
+ $("tabela-galpao").innerHTML=rows||'<tr><td colspan="10" style="text-align:center;padding:25px;color:#94a3b8">Nenhum item neste estoque.</td></tr>';
  if($("titulo-estoque"))$("titulo-estoque").textContent=grupoEstoqueAtual==="Todos"?"Estoque Geral":"Estoque — "+grupoEstoqueAtual;
  const options=estoque.slice().sort((a,b)=>a.grupo.localeCompare(b.grupo)||a.item.localeCompare(b.item,"pt-BR")).map(it=>`<option value="${esc(it.codigo)}">[${esc(it.grupo)}] ${esc(it.item)} — disponível: ${it.saldo} ${esc(it.unidade)}</option>`).join("");
  $("select-carga-item").innerHTML=options||'<option value="">Nenhum item cadastrado</option>';
@@ -504,7 +502,7 @@ function renderRetorno(){
  if(!ev){body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento.</td></tr>';return;}
  body.innerHTML=ev.itens.map((it,i)=>{
   validarEventoItem(it);
-  return `<tr><td><b>${esc(it.item)}</b><br><span class="group-pill">${esc(it.grupo||"")}</span> <span class="group-pill">${esc(it.tipoControle||"")}</span></td>
+  return `<tr><td><b>${esc(it.item)}</b><br><span class="group-pill">${esc(it.grupo||"")}</span></td>
   <td>${it.enviado} ${esc(it.unidade)}</td>
   <td><input id="dev-${i}" type="number" min="0" value="${it.devolvido}" class="input-ctrl" style="width:68px" oninput="atualizarRetornoLinha(${ev.id},${i})"></td>
   <td><input id="que-${i}" type="number" min="0" value="${it.quebra}" class="input-ctrl" style="width:68px" oninput="atualizarRetornoLinha(${ev.id},${i})"></td>
@@ -659,6 +657,39 @@ function alternarCadastro(modo){
  $('modo-produto-novo').classList.toggle('active',!existente);
  if(existente)atualizarListaCadastro(); else {atualizarCatalogoProdutos();setTimeout(()=>$('cad-sku').focus(),30);}
 }
+
+function tipoControlePorGrupo(grupo){
+ if(grupo==="Utensílios & Decoração"||grupo==="Diversos")return "Retornável";
+ if(grupo==="Descartáveis")return "Descartável";
+ return "Consumível";
+}
+function unidadesPorGrupo(grupo){
+ const mapa={
+  "Bebidas":["Unidade","Fardo/Pack"],
+  "Frutas & Insumos":["Unidade","Kg","Caixa","Pacote","Litro"],
+  "Descartáveis":["Unidade","Fardo/Pack","Pacote","Caixa"],
+  "Utensílios & Decoração":["Unidade","Caixa"],
+  "Diversos":["Unidade","Fardo/Pack","Pacote","Caixa","Kg","Litro"]
+ };
+ return mapa[grupo]||["Unidade"];
+}
+function atualizarUnidadesCadastro(){
+ const sel=$("cad-un");if(!sel)return;
+ const unidades=unidadesPorGrupo(grupoEstoqueAtual);
+ const anterior=sel.value;
+ sel.innerHTML=unidades.map(u=>`<option>${esc(u)}</option>`).join("");
+ if(unidades.includes(anterior))sel.value=anterior;
+}
+function selecionarEstoque(grupo,botaoNav){
+ grupoEstoqueAtual=grupo;
+ alternarAba("galpao");
+ document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+ const nav=botaoNav||document.querySelector(`.estoque-nav[data-grupo="${CSS.escape(grupo)}"]`);
+ if(nav)nav.classList.add("active");
+ document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x.dataset.groupFilter===grupo));
+ atualizarUnidadesCadastro();
+ renderizarGalpao();
+}
 function verificarNomeDuplicado(){
  const alerta=$('dup-alert'); if(!alerta)return true;
  const p=produtoMesmoNome($('cad-item').value);
@@ -686,14 +717,14 @@ function gravarProduto(){
  const quantidade=Math.max(0,Number($("cad-saldo").value)||0),custoInformado=Math.max(0,Number($("cad-custo").value)||0);
  const dataEntrada=$("cad-data-entrada").value||new Date().toISOString().slice(0,10);
  if(modoNovo){
-  const codigo=$("cad-sku").value.trim().toUpperCase(),grupo=$("cad-grupo").value,categoria=$("cad-cat").value.trim(),item=$("cad-item").value.trim();
-  const unidade=$("cad-un").value,tipoControle=$("cad-tipo").value,minimo=Math.max(0,Number($("cad-minimo").value)||0);
-  if(!codigo||!grupo||!categoria||!item||!unidade||!tipoControle){alert("Preencha todos os campos obrigatórios.");return;}
+  const codigo=$("cad-sku").value.trim().toUpperCase(),grupo=grupoEstoqueAtual,categoria=$("cad-cat").value.trim(),item=$("cad-item").value.trim();
+  const unidade=$("cad-un").value,tipoControle=tipoControlePorGrupo(grupo),minimo=Math.max(0,Number($("cad-minimo").value)||0);
+  if(!codigo||!categoria||!item||!unidade){alert("Preencha todos os campos obrigatórios.");return;}
   if(estoque.some(p=>p.codigo===codigo)){alert("Este SKU já está cadastrado.");return;}
   if(!verificarNomeDuplicado())return;
   if(!confirm(`Cadastrar "${item}" (${codigo}) em ${grupo}?`))return;
   estoque.push({codigo,grupo,categoria,item,unidade,tipoControle,saldo:quantidade,custo:custoInformado,minimo,historicoEntradas:quantidade>0?[{data:dataEntrada,custo:custoInformado,qtd:quantidade}]:[]});
-  grupoEstoqueAtual=grupo;salvarLocalStorage();renderizarTudo();
+  grupoEstoqueAtual=grupo;salvarLocalStorage();renderizarTudo();atualizarUnidadesCadastro();renderizarGalpao();
   $("cad-sku").value="";$("cad-cat").value="";$("cad-item").value="";$("cad-saldo").value="1";$("cad-custo").value="0";$("cad-minimo").value="5";
   toast("Novo item cadastrado.");return;
  }
@@ -963,19 +994,20 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
  };
  $("btn-gravar-item").onclick=gravarProduto;
- document.querySelectorAll(".group-tab").forEach(b=>b.onclick=()=>{
-  grupoEstoqueAtual=b.dataset.groupFilter;
-  document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x===b));
-  renderizarGalpao();
+ document.querySelectorAll(".estoque-nav").forEach(b=>{
+  b.onclick=()=>selecionarEstoque(b.dataset.grupo,b);
  });
- document.querySelectorAll(".estoque-nav").forEach(b=>b.onclick=()=>{
-  grupoEstoqueAtual=b.dataset.grupo||"Bebidas";
-  alternarAba("galpao");
-  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x.dataset.groupFilter===grupoEstoqueAtual));
-  renderizarGalpao();
+ document.querySelectorAll(".group-tab").forEach(b=>{
+  b.onclick=()=>{
+   grupoEstoqueAtual=b.dataset.groupFilter;
+   document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x===b));
+   atualizarUnidadesCadastro();
+   renderizarGalpao();
+  };
  });
+ atualizarUnidadesCadastro();
+ 
+ 
  $("cad-item").oninput=verificarNomeDuplicado;
  $('modo-produto-existente').onclick=()=>alternarCadastro('existente');
  $('modo-produto-novo').onclick=()=>alternarCadastro('novo');
@@ -1031,6 +1063,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
  if($('cad-data-entrada'))$('cad-data-entrada').value=new Date().toISOString().slice(0,10);
  renderizarTudo();
+ atualizarUnidadesCadastro();
+ renderizarGalpao();
  alternarCadastro('existente');
 });
 </script>
