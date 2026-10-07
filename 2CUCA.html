@@ -96,52 +96,72 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="card-header">➕ CADASTRAR</div>
 
 <div class="cadastro-modo">
-<button type="button" id="modo-produto-existente" class="active">📦 Produto cadastrado</button>
-<button type="button" id="modo-produto-novo">🆕 Cadastrar novo produto</button>
+<button type="button" id="modo-produto-novo" class="active">➕ Novo item</button>
+<button type="button" id="modo-produto-existente">📦 Dar entrada em item existente</button>
 </div>
 
-<div id="cadastro-existente">
-<div class="field">
-<label>Produto cadastrado</label>
-<select id="cad-produto" class="input-ctrl"></select>
-<div class="cadastro-help">Selecione o produto já cadastrado. Nome, SKU, categoria, unidade e estoque mínimo são preenchidos automaticamente.</div>
-</div>
-<div class="grid-form" style="margin-top:10px">
-<div class="field"><label>SKU</label><input id="cad-sku-auto" class="input-ctrl auto-field" readonly></div>
-<div class="field"><label>Categoria</label><input id="cad-cat-auto" class="input-ctrl auto-field" readonly></div>
-<div class="field" style="grid-column:span 2"><label>Produto</label><input id="cad-item-auto" class="input-ctrl auto-field" readonly></div>
-<div class="field"><label>Unidade</label><input id="cad-un-auto" class="input-ctrl auto-field" readonly></div>
-<div class="field"><label>Estoque mínimo</label><input id="cad-min-auto" class="input-ctrl auto-field" readonly></div>
-</div>
-</div>
-
-<div id="cadastro-novo" style="display:none">
+<div id="cadastro-novo">
 <div class="grid-form">
-<div class="field"><label>SKU *</label><input id="cad-sku" class="input-ctrl" placeholder="Ex.: BEB-GIN-001" autocomplete="off"></div>
+<div class="field">
+<label>SKU *</label>
+<input id="cad-sku" class="input-ctrl" placeholder="Ex.: DEST-GIN / FRU-LIMAO / UTEN-TACA" autocomplete="off">
+<div class="cadastro-help">Você pode criar o código livremente. O sistema impede SKU duplicado.</div>
+</div>
 
-<div class="field"><label>Categoria *</label><input id="cad-cat" class="input-ctrl" placeholder="Ex.: Destilados, Taças, Frutas..."></div>
-<div class="field" style="grid-column:span 2"><label>Produto *</label><input id="cad-item" class="input-ctrl" placeholder="Ex.: Gin Tanqueray 750ml / Taça Gin / Limão Tahiti" autocomplete="off"><div class="cadastro-help">Cadastro livre. O sistema bloqueia SKU duplicado e alerta para nomes já existentes.</div><div id="dup-alert" class="dup-alert"></div></div>
-<div class="field"><label>Unidade *</label><select id="cad-un" class="input-ctrl"></select></div>
+<div class="field">
+<label>Categoria *</label>
+<input id="cad-cat" class="input-ctrl" placeholder="Ex.: Destilados, Frutas, Taças..." autocomplete="off">
+<div class="cadastro-help">Quando o prefixo do SKU for reconhecido, a categoria é sugerida automaticamente, mas continua editável.</div>
+</div>
 
-<div class="field"><label>Estoque mínimo</label><input id="cad-minimo" type="number" class="input-ctrl" value="5" min="0" step="1"></div>
+<div class="field" style="grid-column:span 2">
+<label>Produto *</label>
+<input id="cad-item" class="input-ctrl" placeholder="Ex.: Gin Tanqueray 750ml / Limão Tahiti / Taça Gin" autocomplete="off">
+<div class="cadastro-help">O nome é livre. O sistema avisa caso já exista um item com o mesmo nome.</div>
+<div id="dup-alert" class="dup-alert"></div>
+</div>
+
+<div class="field">
+<label>Unidade *</label>
+<select id="cad-un" class="input-ctrl"></select>
+</div>
+
+<div class="field">
+<label>Estoque mínimo</label>
+<input id="cad-minimo" type="number" class="input-ctrl" value="5" min="0" step="1">
 </div>
 </div>
+</div>
+
+<div id="cadastro-existente" style="display:none">
+<div class="field">
+<label>Item já cadastrado</label>
+<select id="cad-produto" class="input-ctrl"></select>
+<div id="cad-produto-info" class="cadastro-help" style="margin-top:6px"></div>
+</div>
+</div>
+
 <div class="grid-form" style="margin-top:10px">
-<div class="field"><label>Quantidade de entrada</label><input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0" step="1"></div>
-<div class="field"><label>Custo Unitário</label><div class="money-input"><span>R$</span><input id="cad-custo" type="number" class="input-ctrl" value="0" step=".01" min="0"></div></div>
-<div class="field"><label>Data da Entrada</label><input id="cad-data-entrada" type="date" class="input-ctrl"></div>
+<div class="field">
+<label>Quantidade de entrada</label>
+<input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0" step="1">
 </div>
-<div style="margin-top:12px;text-align:right"><button id="btn-gravar-item" class="btn btn-amber">Salvar no estoque</button></div>
+<div class="field">
+<label>Custo Unitário</label>
+<div class="money-input"><span>R$</span><input id="cad-custo" type="number" class="input-ctrl" value="0" step=".01" min="0"></div>
 </div>
+<div class="field">
+<label>Data da Entrada</label>
+<input id="cad-data-entrada" type="date" class="input-ctrl">
+</div>
+</div>
+
+<div style="margin-top:12px;text-align:right">
+<button id="btn-gravar-item" class="btn btn-amber">Salvar no estoque</button>
+</div>
+</div>
+
 <div class="card">
-<div class="group-tabs" id="group-tabs">
-<button class="group-tab active" data-group-filter="Bebidas">🥃 Bebidas</button>
-<button class="group-tab" data-group-filter="Frutas & Insumos">🍓 Frutas & Insumos</button>
-<button class="group-tab" data-group-filter="Descartáveis">🥤 Descartáveis</button>
-<button class="group-tab" data-group-filter="Utensílios & Decoração">🍽️ Utensílios & Decoração</button>
-<button class="group-tab" data-group-filter="Diversos">📦 Diversos</button>
-<button class="group-tab" data-group-filter="Todos">📋 Todos</button>
-</div>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
 <div class="card-header" id="titulo-estoque" style="margin:0">Estoque — Bebidas</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -229,12 +249,13 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 const CHAVE_ESTOQUE = "2cuca_estoque_local_v1";
 const CHAVE_EVENTOS = "2cuca_eventos_local_v1";
 const CHAVE_VERSAO = "2cuca_versao_local_v1";
-const VERSAO=20;
+const VERSAO=21;
 
 let estoque = [];
 let eventos = [];
 let cargaTemp = [];
 let periodoBalanco = 30;
+let grupoEstoqueAtual = "Bebidas";
 
 const DADOS_BASE = [
  {codigo:"DEST-GIN",categoria:"Destilados",item:"Gin Tanqueray London Dry 750ml",unidade:"Garrafa",saldo:24,custo:85},
@@ -293,14 +314,29 @@ function inferirTipo(p,grupo){
 }
 function normalizarProduto(p){
  let historico=Array.isArray(p.historicoEntradas)?p.historicoEntradas:[];
- if(!historico.length && Number(p.custo)>0)historico=[{data:p.dataEntrada||new Date().toISOString().slice(0,10),custo:Number(p.custo)||0,qtd:0}];
+ if(!historico.length && Number(p.custo)>0){
+  historico=[{data:p.dataEntrada||new Date().toISOString().slice(0,10),custo:Number(p.custo)||0,qtd:0}];
+ }
+
  const grupo=inferirGrupo(p);
+ const permitidas=unidadesPorGrupo(grupo);
+ let unidade=String(p.unidade||"Unidade");
+
+ // Migração dos cadastros antigos para as unidades válidas do novo estoque.
+ if(grupo==="Bebidas" && unidade!=="Fardo/Pack")unidade="Unidade";
+ else if(!permitidas.includes(unidade))unidade=permitidas[0];
+
  return {
-  codigo:String(p.codigo||"").toUpperCase(),grupo,
-  categoria:p.categoria||"Outros",item:p.item||"",unidade:p.unidade||"Unidade",
+  codigo:String(p.codigo||"").toUpperCase(),
+  grupo,
+  categoria:p.categoria||"Outros",
+  item:p.item||"",
+  unidade,
   tipoControle:inferirTipo(p,grupo),
-  saldo:Math.max(0,Number(p.saldo)||0),custo:Math.max(0,Number(p.custo)||0),
-  minimo:Math.max(0,Number(p.minimo??5)||0),historicoEntradas:historico
+  saldo:Math.max(0,Number(p.saldo)||0),
+  custo:Math.max(0,Number(p.custo)||0),
+  minimo:Math.max(0,Number(p.minimo??5)||0),
+  historicoEntradas:historico
  };
 }
 function normalizarEvento(e){
@@ -331,13 +367,13 @@ function carregarLocalStorage(){
   if(Array.isArray(e)){
    estoque=e.map(normalizarProduto).filter(x=>x.codigo);
   }else{
-   estoque=DADOS_BASE.map(normalizarProduto);
+   estoque=[];
   }
 
   eventos=Array.isArray(v)?v.map(normalizarEvento):[];
  }catch(err){
   console.error(err);
-  estoque=DADOS_BASE.map(normalizarProduto);
+  estoque=[];
   eventos=[];
   toast("Não foi possível ler os dados salvos. O sistema iniciou uma base nova.");
  }
@@ -615,54 +651,28 @@ function renderizarTudo(){
 
 
 function normalizarNomeProduto(nome){
- return String(nome||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+ return String(nome||"")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g," ")
+  .trim()
+  .replace(/\s+/g," ");
 }
-function prefixoSku(categoria){
- const mapa={'Destilados':'DEST','Aperitivos & Licores':'APER','Espumantes & Vinhos':'ESP','Cervejas':'CERV','Misturas & Não Alcoólicos':'MIX','Xaropes & Frutas':'XAR'};
- return mapa[categoria]||'PROD';
-}
-function gerarSku(categoria){
- const prefixo=prefixoSku(categoria); let maior=0;
- estoque.forEach(p=>{const m=String(p.codigo||'').match(new RegExp('^'+prefixo+'-(\\d+)$','i')); if(m)maior=Math.max(maior,Number(m[1])||0);});
- let n=maior+1, sku=prefixo+'-'+String(n).padStart(3,'0');
- while(estoque.some(p=>p.codigo===sku)){n++;sku=prefixo+'-'+String(n).padStart(3,'0');}
- return sku;
-}
+
 function produtoMesmoNome(nome){
- const alvo=normalizarNomeProduto(nome); if(!alvo)return null;
+ const alvo=normalizarNomeProduto(nome);
+ if(!alvo)return null;
  return estoque.find(p=>normalizarNomeProduto(p.item)===alvo)||null;
-}
-function atualizarProdutoCadastro(){
- const sel=$('cad-produto'); if(!sel)return;
- const p=estoque.find(x=>x.codigo===sel.value);
- $('cad-sku-auto').value=p?.codigo||'';
- $('cad-cat-auto').value=p?.categoria||'';
- $('cad-item-auto').value=p?.item||'';
- $('cad-un-auto').value=p?.unidade||'';
- $('cad-min-auto').value=p?.minimo??5;
- if(p)$('cad-custo').value=Number(p.custo||0);
-}
-function atualizarListaCadastro(){
- const sel=$('cad-produto'); if(!sel)return;
- const lista=estoque.slice().sort((a,b)=>String(a.item).localeCompare(String(b.item),'pt-BR'));
- sel.innerHTML=lista.length?lista.map(p=>`<option value="${esc(p.codigo)}">${esc(p.item)} — ${esc(p.codigo)}</option>`).join(''):'<option value="">Nenhum produto cadastrado</option>';
- atualizarProdutoCadastro();
- atualizarCatalogoProdutos();
-}
-function alternarCadastro(modo){
- const existente=modo==='existente';
- $('cadastro-existente').style.display=existente?'block':'none';
- $('cadastro-novo').style.display=existente?'none':'block';
- $('modo-produto-existente').classList.toggle('active',existente);
- $('modo-produto-novo').classList.toggle('active',!existente);
- if(existente)atualizarListaCadastro(); else {atualizarCatalogoProdutos();setTimeout(()=>$('cad-sku').focus(),30);}
 }
 
 function tipoControlePorGrupo(grupo){
+ // Regra interna; o usuário não precisa escolher isso no cadastro.
  if(grupo==="Utensílios & Decoração"||grupo==="Diversos")return "Retornável";
  if(grupo==="Descartáveis")return "Descartável";
  return "Consumível";
 }
+
 function unidadesPorGrupo(grupo){
  const mapa={
   "Bebidas":["Unidade","Fardo/Pack"],
@@ -673,67 +683,215 @@ function unidadesPorGrupo(grupo){
  };
  return mapa[grupo]||["Unidade"];
 }
+
 function atualizarUnidadesCadastro(){
- const sel=$("cad-un");if(!sel)return;
+ const sel=$("cad-un");
+ if(!sel)return;
  const unidades=unidadesPorGrupo(grupoEstoqueAtual);
  const anterior=sel.value;
- sel.innerHTML=unidades.map(u=>`<option>${esc(u)}</option>`).join("");
- if(unidades.includes(anterior))sel.value=anterior;
-}
-function selecionarEstoque(grupo,botaoNav){
- grupoEstoqueAtual=grupo;
- alternarAba("galpao");
- document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
- const nav=botaoNav||document.querySelector(`.estoque-nav[data-grupo="${CSS.escape(grupo)}"]`);
- if(nav)nav.classList.add("active");
- document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x.dataset.groupFilter===grupo));
- atualizarUnidadesCadastro();
- renderizarGalpao();
-}
-function verificarNomeDuplicado(){
- const alerta=$('dup-alert'); if(!alerta)return true;
- const p=produtoMesmoNome($('cad-item').value);
- if(p){alerta.style.display='block';alerta.textContent=`⚠️ Já existe o produto "${p.item}" (${p.codigo}). Use "Produto cadastrado" para registrar uma entrada.`;return false;}
- alerta.style.display='none';alerta.textContent='';return true;
+ sel.innerHTML=unidades.map(u=>`<option value="${esc(u)}">${esc(u)}</option>`).join("");
+ sel.value=unidades.includes(anterior)?anterior:unidades[0];
 }
 
 function categoriaPorSku(sku){
- const cod=String(sku||'').trim().toUpperCase();
- const conhecido=[...estoque,...DADOS_BASE].find(p=>String(p.codigo).toUpperCase()===cod);
- if(conhecido)return conhecido.categoria;
- if(cod.startsWith('DEST-'))return 'Destilados'; if(cod.startsWith('ESP-'))return 'Espumantes & Vinhos'; if(cod.startsWith('CERV-'))return 'Cervejas'; if(cod.startsWith('MIX-'))return 'Misturas & Não Alcoólicos'; if(cod.startsWith('XAR-'))return 'Xaropes & Frutas'; return '';
+ const cod=String(sku||"").trim().toUpperCase();
+ const existente=estoque.find(p=>String(p.codigo||"").toUpperCase()===cod);
+ if(existente)return existente.categoria||"";
+
+ const prefixo=cod.split("-")[0];
+ const mapa={
+  "DEST":"Destilados",
+  "APER":"Aperitivos & Licores",
+  "LIC":"Aperitivos & Licores",
+  "ESP":"Espumantes & Vinhos",
+  "VIN":"Espumantes & Vinhos",
+  "CERV":"Cervejas",
+  "FRU":"Frutas",
+  "ACU":"Açúcares",
+  "INS":"Insumos",
+  "DESC":"Descartáveis",
+  "COP":"Copos",
+  "TACA":"Taças",
+  "TAC":"Taças",
+  "UTEN":"Utensílios",
+  "DEC":"Decoração",
+  "BOL":"Boleiras",
+  "BAN":"Bandejas",
+  "BAL":"Baldes",
+  "CX":"Caixas"
+ };
+ return mapa[prefixo]||"";
 }
-function atualizarCategoriaSku(){const el=$('cad-sku');if(!el)return;el.value=el.value.toUpperCase().replace(/\s+/g,'');$('cad-cat').value=categoriaPorSku(el.value);}
-function atualizarCatalogoProdutos(){const sel=$('cad-item');if(!sel)return;const mapa=new Map();[...DADOS_BASE,...estoque].forEach(p=>{if(p.item)mapa.set(normalizarNomeProduto(p.item),p.item);});const atual=sel.value;sel.innerHTML='<option value="">Selecione...</option>'+[...mapa.values()].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');if([...sel.options].some(o=>o.value===atual))sel.value=atual;}
+
+function atualizarCategoriaSku(){
+ const sku=$("cad-sku");
+ const categoria=$("cad-cat");
+ if(!sku||!categoria)return;
+
+ sku.value=sku.value.toUpperCase().replace(/\s+/g,"");
+ const sugerida=categoriaPorSku(sku.value);
+ if(sugerida)categoria.value=sugerida;
+}
+
 function verificarNomeDuplicado(){
- const nome=String($("cad-item")?.value||"").trim().toLowerCase();
- const alerta=$("dup-alert");if(!alerta)return true;
- const achou=estoque.find(p=>p.item.trim().toLowerCase()===nome);
- if(nome&&achou){alerta.style.display="block";alerta.textContent=`⚠️ Já existe um item com este nome: ${achou.item} (${achou.codigo}).`;return false;}
- alerta.style.display="none";alerta.textContent="";return true;
+ const alerta=$("dup-alert");
+ if(!alerta)return true;
+ const existente=produtoMesmoNome($("cad-item")?.value||"");
+ if(existente){
+  alerta.style.display="block";
+  alerta.textContent=`⚠️ Já existe "${existente.item}" (${existente.codigo}). Use "Dar entrada em item existente" se for o mesmo produto.`;
+  return false;
+ }
+ alerta.style.display="none";
+ alerta.textContent="";
+ return true;
 }
+
+function atualizarProdutoCadastro(){
+ const sel=$("cad-produto");
+ const info=$("cad-produto-info");
+ if(!sel||!info)return;
+
+ const p=estoque.find(x=>x.codigo===sel.value);
+ if(!p){
+  info.textContent="Nenhum item cadastrado neste estoque.";
+  return;
+ }
+ info.textContent=`SKU: ${p.codigo} • Categoria: ${p.categoria} • Unidade: ${p.unidade} • Saldo atual: ${p.saldo}`;
+ $("cad-custo").value=Number(p.custo||0);
+}
+
+function atualizarListaCadastro(){
+ const sel=$("cad-produto");
+ if(!sel)return;
+
+ const lista=estoque
+  .filter(p=>p.grupo===grupoEstoqueAtual)
+  .slice()
+  .sort((a,b)=>String(a.item).localeCompare(String(b.item),"pt-BR"));
+
+ const atual=sel.value;
+ sel.innerHTML=lista.length
+  ? lista.map(p=>`<option value="${esc(p.codigo)}">${esc(p.item)} — ${esc(p.codigo)}</option>`).join("")
+  : '<option value="">Nenhum item cadastrado neste estoque</option>';
+
+ if(lista.some(p=>p.codigo===atual))sel.value=atual;
+ atualizarProdutoCadastro();
+}
+
+function alternarCadastro(modo){
+ const novo=modo==="novo";
+ $("cadastro-novo").style.display=novo?"block":"none";
+ $("cadastro-existente").style.display=novo?"none":"block";
+ $("modo-produto-novo").classList.toggle("active",novo);
+ $("modo-produto-existente").classList.toggle("active",!novo);
+
+ if(novo){
+  atualizarUnidadesCadastro();
+  setTimeout(()=>$("cad-sku")?.focus(),30);
+ }else{
+  atualizarListaCadastro();
+ }
+}
+
+function selecionarEstoque(grupo,botaoNav){
+ grupoEstoqueAtual=grupo;
+
+ document.querySelectorAll(".tab-view").forEach(x=>x.classList.remove("active"));
+ document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+
+ $("view-galpao")?.classList.add("active");
+ if(botaoNav)botaoNav.classList.add("active");
+
+ atualizarUnidadesCadastro();
+ atualizarListaCadastro();
+
+ if($("filtro-busca"))$("filtro-busca").value="";
+ if($("filtro-estoque"))$("filtro-estoque").value="todos";
+
+ renderizarGalpao();
+}
+
 function gravarProduto(){
  const modoNovo=$("cadastro-novo").style.display!=="none";
- const quantidade=Math.max(0,Number($("cad-saldo").value)||0),custoInformado=Math.max(0,Number($("cad-custo").value)||0);
+ const quantidade=Math.max(0,Number($("cad-saldo").value)||0);
+ const custoInformado=Math.max(0,Number($("cad-custo").value)||0);
  const dataEntrada=$("cad-data-entrada").value||new Date().toISOString().slice(0,10);
+
  if(modoNovo){
-  const codigo=$("cad-sku").value.trim().toUpperCase(),grupo=grupoEstoqueAtual,categoria=$("cad-cat").value.trim(),item=$("cad-item").value.trim();
-  const unidade=$("cad-un").value,tipoControle=tipoControlePorGrupo(grupo),minimo=Math.max(0,Number($("cad-minimo").value)||0);
-  if(!codigo||!categoria||!item||!unidade){alert("Preencha todos os campos obrigatórios.");return;}
-  if(estoque.some(p=>p.codigo===codigo)){alert("Este SKU já está cadastrado.");return;}
+  const codigo=$("cad-sku").value.trim().toUpperCase();
+  const categoria=$("cad-cat").value.trim();
+  const item=$("cad-item").value.trim();
+  const unidade=$("cad-un").value;
+  const minimo=Math.max(0,Number($("cad-minimo").value)||0);
+  const grupo=grupoEstoqueAtual;
+  const tipoControle=tipoControlePorGrupo(grupo);
+
+  if(!codigo||!categoria||!item||!unidade){
+   alert("Preencha SKU, Categoria, Produto e Unidade.");
+   return;
+  }
+  if(estoque.some(p=>String(p.codigo).toUpperCase()===codigo)){
+   alert("Este SKU já está cadastrado. Use 'Dar entrada em item existente'.");
+   return;
+  }
   if(!verificarNomeDuplicado())return;
-  if(!confirm(`Cadastrar "${item}" (${codigo}) em ${grupo}?`))return;
-  estoque.push({codigo,grupo,categoria,item,unidade,tipoControle,saldo:quantidade,custo:custoInformado,minimo,historicoEntradas:quantidade>0?[{data:dataEntrada,custo:custoInformado,qtd:quantidade}]:[]});
-  grupoEstoqueAtual=grupo;salvarLocalStorage();renderizarTudo();atualizarUnidadesCadastro();renderizarGalpao();
-  $("cad-sku").value="";$("cad-cat").value="";$("cad-item").value="";$("cad-saldo").value="1";$("cad-custo").value="0";$("cad-minimo").value="5";
-  toast("Novo item cadastrado.");return;
+
+  if(!confirm(`Cadastrar "${item}" no estoque de ${grupo}?`))return;
+
+  estoque.push({
+   codigo,grupo,categoria,item,unidade,tipoControle,
+   saldo:quantidade,custo:custoInformado,minimo,
+   historicoEntradas:quantidade>0?[{data:dataEntrada,custo:custoInformado,qtd:quantidade}]:[]
+  });
+
+  salvarLocalStorage();
+
+  $("cad-sku").value="";
+  $("cad-cat").value="";
+  $("cad-item").value="";
+  $("cad-saldo").value="1";
+  $("cad-custo").value="0";
+  $("cad-minimo").value="5";
+  $("dup-alert").style.display="none";
+
+  if($("filtro-busca"))$("filtro-busca").value="";
+  if($("filtro-estoque"))$("filtro-estoque").value="todos";
+
+  renderizarTudo();
+  atualizarUnidadesCadastro();
+  renderizarGalpao();
+  toast("Item cadastrado e exibido no estoque.");
+  return;
  }
- const codigo=$("cad-produto").value,p=estoque.find(x=>x.codigo===codigo);
- if(!p){alert("Selecione um item cadastrado.");return;}if(quantidade<=0){alert("Informe uma quantidade maior que zero.");return;}
- const custo=custoInformado>0?custoInformado:Number(p.custo||0);p.saldo+=quantidade;p.custo=custo;
- if(!Array.isArray(p.historicoEntradas))p.historicoEntradas=[];p.historicoEntradas.push({data:dataEntrada,custo,qtd:quantidade});
- grupoEstoqueAtual=p.grupo;salvarLocalStorage();renderizarTudo();$("cad-saldo").value="1";toast("Entrada registrada.");
+
+ const codigo=$("cad-produto").value;
+ const p=estoque.find(x=>x.codigo===codigo);
+
+ if(!p){
+  alert("Selecione um item já cadastrado.");
+  return;
+ }
+ if(quantidade<=0){
+  alert("Informe uma quantidade de entrada maior que zero.");
+  return;
+ }
+
+ const custo=custoInformado>0?custoInformado:Number(p.custo||0);
+ p.saldo+=quantidade;
+ p.custo=custo;
+
+ if(!Array.isArray(p.historicoEntradas))p.historicoEntradas=[];
+ p.historicoEntradas.push({data:dataEntrada,custo,qtd:quantidade});
+
+ salvarLocalStorage();
+ $("cad-saldo").value="1";
+ renderizarTudo();
+ atualizarListaCadastro();
+ renderizarGalpao();
+ toast("Entrada adicionada ao estoque.");
 }
+
 function adicionarCarga(){
  const codigo=$("select-carga-item").value;
  const inp=$("input-carga-qtd");
@@ -948,13 +1106,14 @@ function limparDados(){
  localStorage.removeItem(CHAVE_ESTOQUE);
  localStorage.removeItem(CHAVE_EVENTOS);
 
- estoque=DADOS_BASE.map(normalizarProduto);
+ estoque=[];
  eventos=[];
  cargaTemp=[];
 
  salvarLocalStorage();
  renderizarTudo();
- toast("Dados limpos. Estoque base restaurado.");
+ alternarCadastro("novo");
+ toast("Dados limpos. A base ficou vazia.");
 }
 
 function alternarAba(n){
@@ -1009,10 +1168,9 @@ document.addEventListener("DOMContentLoaded",()=>{
  
  
  $("cad-item").oninput=verificarNomeDuplicado;
- $('modo-produto-existente').onclick=()=>alternarCadastro('existente');
  $('modo-produto-novo').onclick=()=>alternarCadastro('novo');
+ $('modo-produto-existente').onclick=()=>alternarCadastro('novo');
  $('cad-produto').onchange=atualizarProdutoCadastro;
- $('cad-item').onchange=produtoCatalogoSelecionado;
  $('cad-sku').oninput=atualizarCategoriaSku;
 
  // Saída
@@ -1056,10 +1214,6 @@ document.addEventListener("DOMContentLoaded",()=>{
  // Se não houver dados salvos, cria a base inicial.
  carregarLocalStorage();
 
- if(!estoque.length){
-  estoque=DADOS_BASE.map(normalizarProduto);
-  salvarLocalStorage();
- }
 
  if($('cad-data-entrada'))$('cad-data-entrada').value=new Date().toISOString().slice(0,10);
  renderizarTudo();
