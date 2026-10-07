@@ -52,6 +52,13 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 .money-input{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:7px;background:#fff;overflow:hidden}.money-input span{padding:8px 9px;background:#f1f5f9;border-right:1px solid #cbd5e1;font-size:11px;font-weight:900;color:#475569}.money-input .input-ctrl{border:0;border-radius:0;box-shadow:none}
 .balance-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.section-subtitle{font-size:11px;color:#64748b;margin-top:4px}.balance-kpis{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:10px;margin-bottom:18px}.balance-section-title{font-size:11px;font-weight:900;text-transform:uppercase;color:#475569;margin:4px 0 9px}.kpi-green{color:#15803d}.kpi-red{color:#dc2626}.vol-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900}.vol-badge.low{background:#dcfce7;color:#166534}.vol-badge.medium{background:#fef3c7;color:#92400e}.vol-badge.high{background:#fee2e2;color:#991b1b}.trend-up{color:#dc2626;font-weight:900}.trend-down{color:#15803d;font-weight:900}.trend-flat{color:#64748b;font-weight:900}.atypical{display:inline-block;margin-top:4px;color:#b91c1c;font-size:9px;font-weight:900}.price-detail{font-size:10px;line-height:1.55;color:#64748b;min-width:220px}.detail-toggle{cursor:pointer;font-size:10px;font-weight:900;color:#d97706}.event-head .view-detail{font-size:10px;color:#d97706;font-weight:900;margin-top:5px}.return-invalid{border-color:#dc2626!important;background:#fef2f2!important}
 @media(max-width:1000px){.balance-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.balance-kpis{grid-template-columns:repeat(2,1fr)}}
+
+.group-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.group-tab{border:1px solid #cbd5e1;background:#fff;color:#475569;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:900;cursor:pointer}
+.group-tab.active{background:#d97706;color:#fff;border-color:#d97706}
+.group-pill{display:inline-flex;padding:3px 7px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:9px;font-weight:900}
+.return-note{font-size:10px;color:#64748b;margin:6px 0 12px}
+
 </style>
 </head>
 <body>
@@ -59,7 +66,11 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="header-box">
 <div class="brand"><div class="brand-icon">🍸</div><div><h1>2 Cuca</h1><p>Bar Experience</p></div></div>
 <nav class="nav-bar">
-<button class="tab-btn active" data-tab="galpao">🏢 Estoque</button>
+<button class="tab-btn active estoque-nav" data-tab="galpao" data-grupo="Bebidas">🥃 Bebidas</button>
+<button class="tab-btn estoque-nav" data-tab="galpao" data-grupo="Frutas & Insumos">🍓 Frutas & Insumos</button>
+<button class="tab-btn estoque-nav" data-tab="galpao" data-grupo="Descartáveis">🥤 Descartáveis</button>
+<button class="tab-btn estoque-nav" data-tab="galpao" data-grupo="Utensílios & Decoração">🍽️ Utensílios & Decoração</button>
+<button class="tab-btn estoque-nav" data-tab="galpao" data-grupo="Diversos">📦 Diversos</button>
 <button class="tab-btn" data-tab="carga">🚚 Saída Festa</button>
 <button class="tab-btn" data-tab="edicao">✏️ Editar Carga</button>
 <button class="tab-btn" data-tab="retorno">🔄 Retorno</button>
@@ -106,14 +117,17 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 
 <div id="cadastro-novo" style="display:none">
 <div class="grid-form">
-<div class="field"><label>SKU *</label><input id="cad-sku" class="input-ctrl" placeholder="Ex.: DEST-GIN" autocomplete="off"></div>
-<div class="field"><label>Categoria</label><input id="cad-cat" class="input-ctrl auto-field" readonly placeholder="Preenchida pelo SKU"></div>
-<div class="field" style="grid-column:span 2"><label>Produto *</label><select id="cad-item" class="input-ctrl"></select><div class="cadastro-help">Selecione um nome padronizado para evitar produtos duplicados por erro de digitação.</div><div id="dup-alert" class="dup-alert"></div></div>
-<div class="field"><label>Unidade</label><select id="cad-un" class="input-ctrl"><option>Fardo/Pack</option><option selected>Unidade</option></select></div>
+<div class="field"><label>SKU *</label><input id="cad-sku" class="input-ctrl" placeholder="Ex.: BEB-GIN-001" autocomplete="off"></div>
+<div class="field"><label>Grupo *</label><select id="cad-grupo" class="input-ctrl">
+<option>Bebidas</option><option>Frutas & Insumos</option><option>Descartáveis</option><option>Utensílios & Decoração</option><option>Diversos</option>
+</select></div>
+<div class="field"><label>Categoria *</label><input id="cad-cat" class="input-ctrl" placeholder="Ex.: Destilados, Taças, Frutas..."></div>
+<div class="field" style="grid-column:span 2"><label>Produto *</label><input id="cad-item" class="input-ctrl" placeholder="Ex.: Gin Tanqueray 750ml / Taça Gin / Limão Tahiti" autocomplete="off"><div class="cadastro-help">Cadastro livre. O sistema bloqueia SKU duplicado e alerta para nomes já existentes.</div><div id="dup-alert" class="dup-alert"></div></div>
+<div class="field"><label>Unidade *</label><select id="cad-un" class="input-ctrl"><option>Unidade</option><option>Fardo/Pack</option><option>Kg</option><option>Caixa</option><option>Pacote</option><option>Litro</option></select></div>
+<div class="field"><label>Tipo de controle *</label><select id="cad-tipo" class="input-ctrl"><option value="Consumível">Consumível</option><option value="Retornável">Retornável</option><option value="Descartável">Descartável</option></select></div>
 <div class="field"><label>Estoque mínimo</label><input id="cad-minimo" type="number" class="input-ctrl" value="5" min="0" step="1"></div>
 </div>
 </div>
-
 <div class="grid-form" style="margin-top:10px">
 <div class="field"><label>Quantidade de entrada</label><input id="cad-saldo" type="number" class="input-ctrl" value="1" min="0" step="1"></div>
 <div class="field"><label>Custo Unitário</label><div class="money-input"><span>R$</span><input id="cad-custo" type="number" class="input-ctrl" value="0" step=".01" min="0"></div></div>
@@ -122,8 +136,16 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div style="margin-top:12px;text-align:right"><button id="btn-gravar-item" class="btn btn-amber">Salvar no estoque</button></div>
 </div>
 <div class="card">
+<div class="group-tabs" id="group-tabs">
+<button class="group-tab active" data-group-filter="Bebidas">🥃 Bebidas</button>
+<button class="group-tab" data-group-filter="Frutas & Insumos">🍓 Frutas & Insumos</button>
+<button class="group-tab" data-group-filter="Descartáveis">🥤 Descartáveis</button>
+<button class="group-tab" data-group-filter="Utensílios & Decoração">🍽️ Utensílios & Decoração</button>
+<button class="group-tab" data-group-filter="Diversos">📦 Diversos</button>
+<button class="group-tab" data-group-filter="Todos">📋 Todos</button>
+</div>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-<div class="card-header" style="margin:0">Estoque Geral</div>
+<div class="card-header" id="titulo-estoque" style="margin:0">Estoque — Bebidas</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
 <input id="filtro-busca" class="input-ctrl" style="width:240px" placeholder="Filtrar SKU ou produto...">
 <select id="filtro-estoque" class="input-ctrl">
@@ -133,7 +155,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <option value="normal">🟢 Normal</option>
 </select>
 </div></div>
-<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Unidade</th><th>Saldo</th><th>Mínimo</th><th>Custo Unitário</th><th>Subtotal</th><th>Status</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
+<div class="table-responsive"><table><thead><tr><th>SKU</th><th>Produto</th><th>Categoria</th><th>Tipo</th><th>Unidade</th><th>Saldo</th><th>Mínimo</th><th>Custo Unitário</th><th>Subtotal</th><th>Status</th><th>Ação</th></tr></thead><tbody id="tabela-galpao"></tbody></table></div>
 </div>
 </div>
 
@@ -164,7 +186,8 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div id="view-retorno" class="tab-view">
 <div class="card"><div class="card-header">🔄 Retorno & Sobras</div>
 <div class="field" style="max-width:420px"><label>Evento em andamento</label><select id="select-evento-retorno" class="input-ctrl"></select></div>
-<div class="table-responsive"><table><thead><tr><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Consumido</th><th>Custo</th><th>Ação</th></tr></thead><tbody id="tabela-retorno"></tbody></table></div>
+<div class="return-note">A soma de Devolvido + Quebra + Perda + Utilizado/Consumido nunca pode ultrapassar o total enviado. Para itens retornáveis, normalmente o utilizado fica 0; para consumíveis e descartáveis, ele representa o que foi efetivamente usado.</div>
+<div class="table-responsive"><table><thead><tr><th>Produto</th><th>Enviado</th><th>Devolvido</th><th>Quebra</th><th>Perda</th><th>Utilizado / Consumido</th><th>Custo da baixa</th><th>Ação</th></tr></thead><tbody id="tabela-retorno"></tbody></table></div>
 <div style="text-align:right;margin-top:12px"><button id="btn-fechar-evento" class="btn btn-green">🏁 Finalizar Evento</button></div>
 </div>
 </div>
@@ -177,7 +200,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 <div class="kpi-card"><div class="kpi-title">Enviado</div><div class="kpi-val" id="bal-kpi-enviado">0 un</div></div>
 <div class="kpi-card"><div class="kpi-title">Consumido</div><div class="kpi-val" id="bal-kpi-consumido">0 un</div></div>
 <div class="kpi-card"><div class="kpi-title">Devolvido</div><div class="kpi-val kpi-green" id="bal-kpi-devolvido">0 un</div></div>
-<div class="kpi-card"><div class="kpi-title">Quebra / Avaria</div><div class="kpi-val kpi-red" id="bal-kpi-quebra">0 un</div></div>
+<div class="kpi-card"><div class="kpi-title">Quebra / Perda</div><div class="kpi-val kpi-red" id="bal-kpi-quebra">0 un</div></div>
 <div class="kpi-card"><div class="kpi-title">Custo</div><div class="kpi-val" id="bal-kpi-custo">R$ 0,00</div></div>
 </div>
 <div class="balance-section-title">Eventos</div><div id="balanco-eventos"></div>
@@ -208,7 +231,7 @@ header{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;positio
 const CHAVE_ESTOQUE = "2cuca_estoque_local_v1";
 const CHAVE_EVENTOS = "2cuca_eventos_local_v1";
 const CHAVE_VERSAO = "2cuca_versao_local_v1";
-const VERSAO = 1;
+const VERSAO=20;
 
 let estoque = [];
 let eventos = [];
@@ -255,48 +278,47 @@ function esc(v){
   .replace(/'/g,"&#039;");
 }
 
+function inferirGrupo(p){
+ if(p.grupo)return p.grupo;
+ const c=String(p.categoria||"").toLowerCase();
+ const sku=String(p.codigo||"").toUpperCase();
+ if(c.includes("frut")||c.includes("açúcar")||c.includes("acucar")||sku.startsWith("FRU-")||sku.startsWith("INS-"))return "Frutas & Insumos";
+ if(c.includes("descart")||c.includes("copo")||c.includes("guardan")||c.includes("canudo"))return "Descartáveis";
+ if(c.includes("taça")||c.includes("taca")||c.includes("bandeja")||c.includes("boleira")||c.includes("decora")||c.includes("balde"))return "Utensílios & Decoração";
+ return "Bebidas";
+}
+function inferirTipo(p,grupo){
+ if(p.tipoControle)return p.tipoControle;
+ if(grupo==="Utensílios & Decoração"||grupo==="Diversos")return "Retornável";
+ if(grupo==="Descartáveis")return "Descartável";
+ return "Consumível";
+}
 function normalizarProduto(p){
  let historico=Array.isArray(p.historicoEntradas)?p.historicoEntradas:[];
- if(!historico.length && Number(p.custo)>0){
-  historico=[{
-   data:p.dataEntrada||new Date().toISOString().slice(0,10),
-   custo:Number(p.custo)||0,
-   qtd:0
-  }];
- }
+ if(!historico.length && Number(p.custo)>0)historico=[{data:p.dataEntrada||new Date().toISOString().slice(0,10),custo:Number(p.custo)||0,qtd:0}];
+ const grupo=inferirGrupo(p);
  return {
-  codigo:String(p.codigo||"").toUpperCase(),
-  categoria:p.categoria||"Outros",
-  item:p.item||"",
-  unidade:p.unidade||"Unidade",
-  saldo:Math.max(0,Number(p.saldo)||0),
-  custo:Math.max(0,Number(p.custo)||0),
-  minimo:Math.max(0,Number(p.minimo??5)||0),
-  historicoEntradas:historico
+  codigo:String(p.codigo||"").toUpperCase(),grupo,
+  categoria:p.categoria||"Outros",item:p.item||"",unidade:p.unidade||"Unidade",
+  tipoControle:inferirTipo(p,grupo),
+  saldo:Math.max(0,Number(p.saldo)||0),custo:Math.max(0,Number(p.custo)||0),
+  minimo:Math.max(0,Number(p.minimo??5)||0),historicoEntradas:historico
  };
 }
-
 function normalizarEvento(e){
  return {
-  id:Number(e.id)||Date.now(),
-  nome:e.nome||"Evento sem nome",
-  data:e.data||new Date().toISOString().slice(0,10),
-  responsavel:e.responsavel||"Equipe de Bar",
-  status:e.status==="Finalizado"?"Finalizado":"Em Andamento",
+  id:Number(e.id)||Date.now(),nome:e.nome||"Evento sem nome",data:e.data||new Date().toISOString().slice(0,10),
+  responsavel:e.responsavel||"Equipe",status:e.status==="Finalizado"?"Finalizado":"Em Andamento",
   itens:Array.isArray(e.itens)?e.itens.map(i=>({
-   codigo:String(i.codigo||"").toUpperCase(),
-   item:i.item||"",
-   unidade:i.unidade||"Unidade",
-   custo:Number(i.custo)||0,
-   enviado:Math.max(0,Number(i.enviado)||0),
-   devolvido:Math.max(0,Number(i.devolvido)||0),
-   quebra:Math.max(0,Number(i.quebra)||0),
-   consumido:Math.max(0,Number(i.consumido)||0),
+   codigo:String(i.codigo||"").toUpperCase(),item:i.item||"",grupo:i.grupo||"Bebidas",
+   categoria:i.categoria||"",tipoControle:i.tipoControle||"Consumível",unidade:i.unidade||"Unidade",
+   custo:Number(i.custo)||0,enviado:Math.max(0,Number(i.enviado)||0),
+   devolvido:Math.max(0,Number(i.devolvido)||0),quebra:Math.max(0,Number(i.quebra)||0),
+   perda:Math.max(0,Number(i.perda)||0),consumido:Math.max(0,Number(i.consumido)||0),
    custoTotal:Math.max(0,Number(i.custoTotal)||0)
   })):[]
  };
 }
-
 function salvarLocalStorage(){
  localStorage.setItem(CHAVE_ESTOQUE,JSON.stringify(estoque));
  localStorage.setItem(CHAVE_EVENTOS,JSON.stringify(eventos));
@@ -311,13 +333,13 @@ function carregarLocalStorage(){
   if(Array.isArray(e)){
    estoque=e.map(normalizarProduto).filter(x=>x.codigo);
   }else{
-   estoque=DADOS_BASE.map(x=>({...x}));
+   estoque=DADOS_BASE.map(normalizarProduto);
   }
 
   eventos=Array.isArray(v)?v.map(normalizarEvento):[];
  }catch(err){
   console.error(err);
-  estoque=DADOS_BASE.map(x=>({...x}));
+  estoque=DADOS_BASE.map(normalizarProduto);
   eventos=[];
   toast("Não foi possível ler os dados salvos. O sistema iniciou uma base nova.");
  }
@@ -327,91 +349,49 @@ function atualizarStatusLocal(){ /* indicador visual removido */ }
 
 function validarEventoItem(it){
  const enviado=Math.max(0,Number(it.enviado)||0);
- const devolvido=Math.max(0,Number(it.devolvido)||0);
- const quebra=Math.max(0,Number(it.quebra)||0);
- it.enviado=enviado;
- it.devolvido=Math.min(devolvido,enviado);
- it.quebra=Math.min(quebra,Math.max(0,enviado-it.devolvido));
- it.consumido=Math.max(0,enviado-it.devolvido-it.quebra);
- it.custoTotal=(it.consumido+it.quebra)*(Number(it.custo)||0);
+ let devolvido=Math.max(0,Number(it.devolvido)||0);
+ let quebra=Math.max(0,Number(it.quebra)||0);
+ let perda=Math.max(0,Number(it.perda)||0);
+ devolvido=Math.min(devolvido,enviado);
+ quebra=Math.min(quebra,Math.max(0,enviado-devolvido));
+ perda=Math.min(perda,Math.max(0,enviado-devolvido-quebra));
+ it.enviado=enviado;it.devolvido=devolvido;it.quebra=quebra;it.perda=perda;
+ it.consumido=Math.max(0,enviado-devolvido-quebra-perda);
+ it.custoTotal=(it.consumido+it.quebra+it.perda)*(Number(it.custo)||0);
 }
-
 function renderizarGalpao(){
  const busca=($("filtro-busca")?.value||"").toLowerCase().trim();
  const filtro=$("filtro-estoque")?.value||"todos";
  let totalUn=0,totalCap=0,crit=0;
-
- const ordenado=estoque.slice().sort((a,b)=>{
+ const todos=estoque.slice();
+ todos.forEach(it=>{totalUn+=it.saldo;totalCap+=it.saldo*it.custo;if(it.saldo<=it.minimo)crit++;});
+ const lista=todos.filter(it=>grupoEstoqueAtual==="Todos"||it.grupo===grupoEstoqueAtual).sort((a,b)=>{
   const nivel=x=>x.saldo===0?0:(x.saldo<=x.minimo?1:2);
-  return (nivel(a)-nivel(b)) || String(a.item).localeCompare(String(b.item),"pt-BR");
+  return (nivel(a)-nivel(b))||String(a.item).localeCompare(String(b.item),"pt-BR");
  });
-
- let html="";
- for(const it of ordenado){
-  totalUn+=it.saldo;
-  totalCap+=it.saldo*it.custo;
-  if(it.saldo<=it.minimo)crit++;
-
+ let rows="";
+ for(const it of lista){
   const status=it.saldo===0?"zerado":(it.saldo<=it.minimo?"baixo":"normal");
-  const passaFiltro =
-    filtro==="todos" ||
-    (filtro==="alerta" && status!=="normal") ||
-    (filtro==="zerado" && status==="zerado") ||
-    (filtro==="normal" && status==="normal");
-
-  const passaBusca=(it.item+" "+it.codigo+" "+it.categoria).toLowerCase().includes(busca);
-  if(!passaFiltro || !passaBusca) continue;
-
-  const rowClass=status==="zerado"?"stock-zero-row":(status==="baixo"?"stock-low-row":"");
-  const statusHtml=status==="zerado"
-    ? '<span class="stock-status stock-zero">ZERADO</span>'
-    : status==="baixo"
-      ? '<span class="stock-status stock-low">ESTOQUE BAIXO</span>'
-      : '<span class="stock-status stock-ok">NORMAL</span>';
-
-  html+=`<tr class="${rowClass}">
-   <td><b>${esc(it.codigo)}</b></td>
-   <td><b>${esc(it.item)}</b></td>
-   <td>${esc(it.unidade)}</td>
-   <td style="font-weight:900;color:${it.saldo===0?"#b91c1c":it.saldo<=it.minimo?"#b45309":"#0f172a"}">${it.saldo}</td>
-   <td>${it.minimo}</td>
-   <td>${money(it.custo)}</td>
-   <td><b>${money(it.saldo*it.custo)}</b></td>
-   <td>${statusHtml}</td>
-   <td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td>
-  </tr>`;
+  const passaFiltro=filtro==="todos"||(filtro==="alerta"&&status!=="normal")||(filtro==="zerado"&&status==="zerado")||(filtro==="normal"&&status==="normal");
+  const passaBusca=(it.item+" "+it.codigo+" "+it.categoria+" "+it.grupo).toLowerCase().includes(busca);
+  if(!passaFiltro||!passaBusca)continue;
+  const rowClass=status==="zerado"?"stock-zero-row":status==="baixo"?"stock-low-row":"";
+  const statusHtml=status==="zerado"?'<span class="stock-status stock-zero">ZERADO</span>':status==="baixo"?'<span class="stock-status stock-low">ESTOQUE BAIXO</span>':'<span class="stock-status stock-ok">NORMAL</span>';
+  rows+=`<tr class="${rowClass}"><td><b>${esc(it.codigo)}</b></td><td><b>${esc(it.item)}</b></td><td>${esc(it.categoria)}</td><td><span class="group-pill">${esc(it.tipoControle)}</span></td><td>${esc(it.unidade)}</td><td><b>${it.saldo}</b></td><td>${it.minimo}</td><td>${money(it.custo)}</td><td><b>${money(it.saldo*it.custo)}</b></td><td>${statusHtml}</td><td><button class="btn btn-red btn-del" data-sku="${esc(it.codigo)}" style="padding:5px 9px">Excluir</button></td></tr>`;
  }
-
- $("tabela-galpao").innerHTML=html||'<tr><td colspan="9" style="text-align:center;padding:25px;color:#94a3b8">Nenhum produto encontrado.</td></tr>';
-
- const options=estoque.map(it=>`<option value="${esc(it.codigo)}">${esc(it.item)} — disponível: ${it.saldo} ${esc(it.unidade)}</option>`).join("");
- $("select-carga-item").innerHTML=options||'<option value="">Nenhum produto cadastrado</option>';
- $("select-extra").innerHTML=options||'<option value="">Nenhum produto cadastrado</option>';
-
- $("kpi-skus").textContent=estoque.length;
- $("kpi-capital").textContent=money(totalCap);
- $("kpi-unidades").textContent=totalUn;
- $("kpi-criticos").textContent=crit;
-
+ $("tabela-galpao").innerHTML=rows||'<tr><td colspan="11" style="text-align:center;padding:25px;color:#94a3b8">Nenhum item neste estoque.</td></tr>';
+ if($("titulo-estoque"))$("titulo-estoque").textContent=grupoEstoqueAtual==="Todos"?"Estoque Geral":"Estoque — "+grupoEstoqueAtual;
+ const options=estoque.slice().sort((a,b)=>a.grupo.localeCompare(b.grupo)||a.item.localeCompare(b.item,"pt-BR")).map(it=>`<option value="${esc(it.codigo)}">[${esc(it.grupo)}] ${esc(it.item)} — disponível: ${it.saldo} ${esc(it.unidade)}</option>`).join("");
+ $("select-carga-item").innerHTML=options||'<option value="">Nenhum item cadastrado</option>';
+ $("select-extra").innerHTML=options||'<option value="">Nenhum item cadastrado</option>';
+ $("kpi-skus").textContent=estoque.length;$("kpi-capital").textContent=money(totalCap);$("kpi-unidades").textContent=totalUn;$("kpi-criticos").textContent=crit;
  atualizarLimiteCarga();
-
- document.querySelectorAll(".btn-del").forEach(b=>{
-  b.onclick=()=>{
-   const codigo=b.dataset.sku;
-   if(!confirm("Excluir "+codigo+"?"))return;
-   const usado=eventos.some(e=>e.itens.some(i=>i.codigo===codigo));
-   if(usado){
-    alert("Este produto já está vinculado a um evento e não pode ser excluído. Você pode manter o saldo em zero.");
-    return;
-   }
-   estoque=estoque.filter(x=>x.codigo!==codigo);
-   salvarLocalStorage();
-   renderizarTudo();
-   toast("Produto excluído.");
-  };
+ document.querySelectorAll(".btn-del").forEach(b=>b.onclick=()=>{
+  const codigo=b.dataset.sku;if(!confirm("Excluir "+codigo+"?"))return;
+  if(eventos.some(e=>e.itens.some(i=>i.codigo===codigo))){alert("Este item já está vinculado a um evento e não pode ser excluído.");return;}
+  estoque=estoque.filter(x=>x.codigo!==codigo);salvarLocalStorage();renderizarTudo();toast("Item excluído.");
  });
 }
-
 function atualizarLimiteCarga(){
  const sel=$("select-carga-item");
  const inp=$("input-carga-qtd");
@@ -445,7 +425,7 @@ function renderizarCarga(){
  }
  box.innerHTML=cargaTemp.map((x,i)=>`
   <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9">
-   <span><b>${esc(x.item)}</b><br><small>${x.qtd} ${esc(x.unidade)}</small></span>
+   <span><b>${esc(x.item)}</b> <span class="group-pill">${esc(x.grupo||"")}</span><br><small>${x.qtd} ${esc(x.unidade)}</small></span>
    <button class="btn btn-red" style="padding:4px 8px" onclick="cargaTemp.splice(${i},1);renderizarCarga()">Remover</button>
   </div>`).join("");
 }
@@ -520,65 +500,42 @@ function salvarEdicao(evId,idx){
 }
 
 function renderRetorno(){
- const id=Number($("select-evento-retorno").value);
- const ev=eventos.find(x=>x.id===id);
- const body=$("tabela-retorno");
- if(!ev){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento.</td></tr>';return;}
+ const id=Number($("select-evento-retorno").value),ev=eventos.find(x=>x.id===id),body=$("tabela-retorno");
+ if(!ev){body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">Nenhum evento.</td></tr>';return;}
  body.innerHTML=ev.itens.map((it,i)=>{
   validarEventoItem(it);
-  const maxDev=Math.max(0,it.enviado-it.quebra), maxQue=Math.max(0,it.enviado-it.devolvido);
-  return `<tr>
-   <td><b>${esc(it.item)}</b></td><td>${it.enviado} ${esc(it.unidade)}</td>
-   <td><input id="dev-${i}" type="number" min="0" max="${maxDev}" value="${it.devolvido}" class="input-ctrl" style="width:70px" oninput="atualizarRetornoLinha(${ev.id},${i},'dev')"></td>
-   <td><input id="que-${i}" type="number" min="0" max="${maxQue}" value="${it.quebra}" class="input-ctrl" style="width:70px" oninput="atualizarRetornoLinha(${ev.id},${i},'que')"></td>
-   <td><b id="cons-${i}">${it.consumido} ${esc(it.unidade)}</b></td><td id="custo-ret-${i}">${money(it.custoTotal)}</td>
-   <td><button class="btn btn-green" style="padding:5px 9px" onclick="salvarRetorno(${ev.id},${i})">Salvar</button></td></tr>`;
+  return `<tr><td><b>${esc(it.item)}</b><br><span class="group-pill">${esc(it.grupo||"")}</span> <span class="group-pill">${esc(it.tipoControle||"")}</span></td>
+  <td>${it.enviado} ${esc(it.unidade)}</td>
+  <td><input id="dev-${i}" type="number" min="0" value="${it.devolvido}" class="input-ctrl" style="width:68px" oninput="atualizarRetornoLinha(${ev.id},${i})"></td>
+  <td><input id="que-${i}" type="number" min="0" value="${it.quebra}" class="input-ctrl" style="width:68px" oninput="atualizarRetornoLinha(${ev.id},${i})"></td>
+  <td><input id="per-${i}" type="number" min="0" value="${it.perda||0}" class="input-ctrl" style="width:68px" oninput="atualizarRetornoLinha(${ev.id},${i})"></td>
+  <td><b id="cons-${i}">${it.consumido} ${esc(it.unidade)}</b></td><td id="custo-ret-${i}">${money(it.custoTotal)}</td>
+  <td><button class="btn btn-green" style="padding:5px 9px" onclick="salvarRetorno(${ev.id},${i})">Salvar</button></td></tr>`;
  }).join("");
 }
-
-function atualizarRetornoLinha(evId,idx,campo){
- const ev=eventos.find(x=>x.id===evId); if(!ev)return; const it=ev.itens[idx];
- const devEl=$("dev-"+idx), queEl=$("que-"+idx);
- let dev=Math.max(0,Number(devEl.value)||0), que=Math.max(0,Number(queEl.value)||0);
- if(campo==='dev'){dev=Math.min(dev,Math.max(0,it.enviado-que));devEl.value=dev;}
- else{que=Math.min(que,Math.max(0,it.enviado-dev));queEl.value=que;}
- devEl.max=Math.max(0,it.enviado-que); queEl.max=Math.max(0,it.enviado-dev);
- const consumido=Math.max(0,it.enviado-dev-que);
- $("cons-"+idx).textContent=consumido+" "+it.unidade;
- $("custo-ret-"+idx).textContent=money((consumido+que)*(Number(it.custo)||0));
+function atualizarRetornoLinha(evId,idx){
+ const ev=eventos.find(x=>x.id===evId);if(!ev)return;const it=ev.itens[idx];
+ const d=$("dev-"+idx),q=$("que-"+idx),p=$("per-"+idx);
+ let dev=Math.max(0,Number(d.value)||0),que=Math.max(0,Number(q.value)||0),per=Math.max(0,Number(p.value)||0);
+ if(dev+que+per>it.enviado){
+  const excesso=dev+que+per-it.enviado;
+  if(document.activeElement===p)per=Math.max(0,per-excesso);
+  else if(document.activeElement===q)que=Math.max(0,que-excesso);
+  else dev=Math.max(0,dev-excesso);
+ }
+ d.value=dev;q.value=que;p.value=per;
+ d.max=Math.max(0,it.enviado-que-per);q.max=Math.max(0,it.enviado-dev-per);p.max=Math.max(0,it.enviado-dev-que);
+ const usado=Math.max(0,it.enviado-dev-que-per);
+ $("cons-"+idx).textContent=usado+" "+it.unidade;
+ $("custo-ret-"+idx).textContent=money((usado+que+per)*(Number(it.custo)||0));
 }
-
 function salvarRetorno(evId,idx){
- const ev=eventos.find(x=>x.id===evId);
- if(!ev)return;
-
- const it=ev.itens[idx];
- const dev=Number($("dev-"+idx)?.value)||0;
- const que=Number($("que-"+idx)?.value)||0;
-
- if(dev<0||que<0||dev+que>it.enviado){
-  alert("Devolução + quebra não pode ser maior que o enviado.");
-  return;
- }
-
- const g=estoque.find(x=>x.codigo===it.codigo);
- if(!g){
-  alert("Produto não encontrado no estoque.");
-  return;
- }
-
- // Retira a devolução anterior e aplica a nova.
- g.saldo += dev-it.devolvido;
-
- it.devolvido=dev;
- it.quebra=que;
- validarEventoItem(it);
-
- salvarLocalStorage();
- renderizarTudo();
- const sel=$("select-evento-retorno");
- if(sel){sel.value=String(evId);renderRetorno();}
- toast("Retorno/devolução/avaria salvo.");
+ const ev=eventos.find(x=>x.id===evId);if(!ev)return;const it=ev.itens[idx];
+ const dev=Number($("dev-"+idx)?.value)||0,que=Number($("que-"+idx)?.value)||0,per=Number($("per-"+idx)?.value)||0;
+ if(dev<0||que<0||per<0||dev+que+per>it.enviado){alert("Devolvido + quebra + perda não pode ultrapassar o enviado.");return;}
+ const g=estoque.find(x=>x.codigo===it.codigo);if(!g){alert("Item não encontrado no estoque.");return;}
+ g.saldo+=dev-it.devolvido;it.devolvido=dev;it.quebra=que;it.perda=per;validarEventoItem(it);
+ salvarLocalStorage();renderizarTudo();const sel=$("select-evento-retorno");if(sel){sel.value=String(evId);renderRetorno();}toast("Retorno salvo.");
 }
 
 function calcularVolatilidade(historico){
@@ -717,43 +674,35 @@ function categoriaPorSku(sku){
 }
 function atualizarCategoriaSku(){const el=$('cad-sku');if(!el)return;el.value=el.value.toUpperCase().replace(/\s+/g,'');$('cad-cat').value=categoriaPorSku(el.value);}
 function atualizarCatalogoProdutos(){const sel=$('cad-item');if(!sel)return;const mapa=new Map();[...DADOS_BASE,...estoque].forEach(p=>{if(p.item)mapa.set(normalizarNomeProduto(p.item),p.item);});const atual=sel.value;sel.innerHTML='<option value="">Selecione...</option>'+[...mapa.values()].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');if([...sel.options].some(o=>o.value===atual))sel.value=atual;}
-function produtoCatalogoSelecionado(){const nome=$('cad-item').value;const p=[...estoque,...DADOS_BASE].find(x=>x.item===nome);if(p){$('cad-sku').value=p.codigo;$('cad-cat').value=p.categoria;$('cad-un').value=p.unidade==='Fardo/Pack'?'Fardo/Pack':'Unidade';verificarNomeDuplicado();}}
-
-function gravarProduto(){
- const modoNovo=$('cadastro-novo').style.display!=='none';
- const quantidade=Math.max(0,Number($('cad-saldo').value)||0);
- const custoInformado=Math.max(0,Number($('cad-custo').value)||0);
- const dataEntrada=$('cad-data-entrada').value||new Date().toISOString().slice(0,10);
-
- if(modoNovo){
-  const item=$('cad-item').value;
-  const codigoDigitado=$('cad-sku').value.trim().toUpperCase();
-  const categoria=categoriaPorSku(codigoDigitado);
-  const unidade=$('cad-un').value;
-  const minimo=Math.max(0,Number($('cad-minimo').value)||0);
-  if(!item){alert('Selecione o produto.');return;}
-  if(!codigoDigitado){alert('Informe o SKU.');return;}
-  if(!categoria){alert('SKU não reconhecido. Use um prefixo válido, como DEST-, ESP-, CERV-, MIX- ou XAR-.');return;}
-  if(estoque.some(p=>p.codigo===codigoDigitado)){alert('Este SKU já está cadastrado. Use Produto cadastrado para dar entrada.');return;}
-  if(!verificarNomeDuplicado()){return;}
-  const codigo=codigoDigitado;
-  estoque.push({codigo,categoria,item,unidade,saldo:quantidade,custo:custoInformado,minimo,historicoEntradas:quantidade>0?[{data:dataEntrada,custo:custoInformado,qtd:quantidade}]:[]});
-  salvarLocalStorage();renderizarTudo();
-  $('cad-item').value='';$('cad-sku').value='';$('cad-cat').value='';$('cad-saldo').value='1';$('cad-custo').value='0';$('cad-minimo').value='5';$('cad-data-entrada').value=new Date().toISOString().slice(0,10);
-  alternarCadastro('existente');toast(`Produto cadastrado: ${codigo}.`);return;
- }
-
- const codigo=$('cad-produto').value; const p=estoque.find(x=>x.codigo===codigo);
- if(!p){alert('Selecione um produto cadastrado.');return;}
- if(quantidade<=0){alert('Informe uma quantidade maior que zero.');return;}
- const custo=custoInformado>0?custoInformado:Number(p.custo||0);
- p.saldo+=quantidade;p.custo=custo;if(!Array.isArray(p.historicoEntradas))p.historicoEntradas=[];
- p.historicoEntradas.push({data:dataEntrada,custo,qtd:quantidade});
- salvarLocalStorage();renderizarTudo();
- $('cad-saldo').value='1';$('cad-data-entrada').value=new Date().toISOString().slice(0,10);atualizarProdutoCadastro();
- toast(`Entrada registrada em ${p.item}.`);
+function verificarNomeDuplicado(){
+ const nome=String($("cad-item")?.value||"").trim().toLowerCase();
+ const alerta=$("dup-alert");if(!alerta)return true;
+ const achou=estoque.find(p=>p.item.trim().toLowerCase()===nome);
+ if(nome&&achou){alerta.style.display="block";alerta.textContent=`⚠️ Já existe um item com este nome: ${achou.item} (${achou.codigo}).`;return false;}
+ alerta.style.display="none";alerta.textContent="";return true;
 }
-
+function gravarProduto(){
+ const modoNovo=$("cadastro-novo").style.display!=="none";
+ const quantidade=Math.max(0,Number($("cad-saldo").value)||0),custoInformado=Math.max(0,Number($("cad-custo").value)||0);
+ const dataEntrada=$("cad-data-entrada").value||new Date().toISOString().slice(0,10);
+ if(modoNovo){
+  const codigo=$("cad-sku").value.trim().toUpperCase(),grupo=$("cad-grupo").value,categoria=$("cad-cat").value.trim(),item=$("cad-item").value.trim();
+  const unidade=$("cad-un").value,tipoControle=$("cad-tipo").value,minimo=Math.max(0,Number($("cad-minimo").value)||0);
+  if(!codigo||!grupo||!categoria||!item||!unidade||!tipoControle){alert("Preencha todos os campos obrigatórios.");return;}
+  if(estoque.some(p=>p.codigo===codigo)){alert("Este SKU já está cadastrado.");return;}
+  if(!verificarNomeDuplicado())return;
+  if(!confirm(`Cadastrar "${item}" (${codigo}) em ${grupo}?`))return;
+  estoque.push({codigo,grupo,categoria,item,unidade,tipoControle,saldo:quantidade,custo:custoInformado,minimo,historicoEntradas:quantidade>0?[{data:dataEntrada,custo:custoInformado,qtd:quantidade}]:[]});
+  grupoEstoqueAtual=grupo;salvarLocalStorage();renderizarTudo();
+  $("cad-sku").value="";$("cad-cat").value="";$("cad-item").value="";$("cad-saldo").value="1";$("cad-custo").value="0";$("cad-minimo").value="5";
+  toast("Novo item cadastrado.");return;
+ }
+ const codigo=$("cad-produto").value,p=estoque.find(x=>x.codigo===codigo);
+ if(!p){alert("Selecione um item cadastrado.");return;}if(quantidade<=0){alert("Informe uma quantidade maior que zero.");return;}
+ const custo=custoInformado>0?custoInformado:Number(p.custo||0);p.saldo+=quantidade;p.custo=custo;
+ if(!Array.isArray(p.historicoEntradas))p.historicoEntradas=[];p.historicoEntradas.push({data:dataEntrada,custo,qtd:quantidade});
+ grupoEstoqueAtual=p.grupo;salvarLocalStorage();renderizarTudo();$("cad-saldo").value="1";toast("Entrada registrada.");
+}
 function adicionarCarga(){
  const codigo=$("select-carga-item").value;
  const inp=$("input-carga-qtd");
@@ -817,11 +766,15 @@ function despachar(){
   itens:cargaTemp.map(c=>({
    codigo:c.codigo,
    item:c.item,
+   grupo:c.grupo,
+   categoria:c.categoria,
+   tipoControle:c.tipoControle,
    unidade:c.unidade,
    custo:c.custo,
    enviado:c.qtd,
    devolvido:0,
    quebra:0,
+   perda:0,
    consumido:0,
    custoTotal:0
   }))
@@ -866,11 +819,15 @@ function adicionarExtra(){
   ev.itens.push({
    codigo:g.codigo,
    item:g.item,
+   grupo:g.grupo,
+   categoria:g.categoria,
+   tipoControle:g.tipoControle,
    unidade:g.unidade,
    custo:g.custo,
    enviado:q,
    devolvido:0,
    quebra:0,
+   perda:0,
    consumido:0,
    custoTotal:0
   });
@@ -960,7 +917,7 @@ function limparDados(){
  localStorage.removeItem(CHAVE_ESTOQUE);
  localStorage.removeItem(CHAVE_EVENTOS);
 
- estoque=DADOS_BASE.map(x=>({...x}));
+ estoque=DADOS_BASE.map(normalizarProduto);
  eventos=[];
  cargaTemp=[];
 
@@ -974,8 +931,7 @@ function alternarAba(n){
  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
 
  const view=$("view-"+n);
- const btn=document.querySelector(`[data-tab="${n}"]`);
-
+ const btn=n==="galpao"?document.querySelector(`.estoque-nav[data-grupo="${grupoEstoqueAtual}"]`):document.querySelector(`[data-tab="${n}"]`);
  if(view)view.classList.add("active");
  if(btn)btn.classList.add("active");
 
@@ -984,7 +940,7 @@ function alternarAba(n){
 
 document.addEventListener("DOMContentLoaded",()=>{
  // Navegação
- document.querySelectorAll(".tab-btn").forEach(b=>{
+ document.querySelectorAll(".tab-btn:not(.estoque-nav)").forEach(b=>{
   b.onclick=()=>alternarAba(b.dataset.tab);
  });
 
@@ -1007,6 +963,20 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
  };
  $("btn-gravar-item").onclick=gravarProduto;
+ document.querySelectorAll(".group-tab").forEach(b=>b.onclick=()=>{
+  grupoEstoqueAtual=b.dataset.groupFilter;
+  document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x===b));
+  renderizarGalpao();
+ });
+ document.querySelectorAll(".estoque-nav").forEach(b=>b.onclick=()=>{
+  grupoEstoqueAtual=b.dataset.grupo||"Bebidas";
+  alternarAba("galpao");
+  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll(".group-tab").forEach(x=>x.classList.toggle("active",x.dataset.groupFilter===grupoEstoqueAtual));
+  renderizarGalpao();
+ });
+ $("cad-item").oninput=verificarNomeDuplicado;
  $('modo-produto-existente').onclick=()=>alternarCadastro('existente');
  $('modo-produto-novo').onclick=()=>alternarCadastro('novo');
  $('cad-produto').onchange=atualizarProdutoCadastro;
@@ -1055,7 +1025,7 @@ document.addEventListener("DOMContentLoaded",()=>{
  carregarLocalStorage();
 
  if(!estoque.length){
-  estoque=DADOS_BASE.map(x=>({...x}));
+  estoque=DADOS_BASE.map(normalizarProduto);
   salvarLocalStorage();
  }
 
@@ -1066,4 +1036,5 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 </body>
-</html>
+</htmllet grupoEstoqueAtual="Bebidas";
+>
